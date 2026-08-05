@@ -60,6 +60,13 @@
     scroll-behavior: smooth;
   }
 
+  /* Every jump link on this site points at an id. Without this the target
+     stops hard against the top edge of the window, with its rule and its
+     eyebrow cut off by the browser chrome. */
+  [id] {
+    scroll-margin-top: 2.5rem;
+  }
+
   body {
     background-color: var(--color-paper);
     color: var(--color-ink);

@@ -61,12 +61,17 @@ export default function CoachesPage() {
               Wie je tegenover je hebt
             </p>
 
-            {/* The words of the old H1, without its exclamation mark. */}
+            {/* The words of the old H1, without its exclamation mark. The loud
+                line is the display step from sm up, so this page opens with the
+                same weight as the traject page and every city page. Below sm it
+                drops to the headline step: "studiekeuzecoaches" is one word of
+                eighteen letters that cannot break, and at the display size it
+                runs past the gutter on every telephone. */}
             <h1 className="mt-5">
               {/* The trailing space is not decoration: without it a screen
                   reader runs the two spans together into one word. */}
               <span className="text-title block font-medium">Leer onze </span>
-              <span className="text-headline mt-1 block max-w-[16ch] font-extrabold">
+              <span className="text-headline sm:text-display mt-1 block font-extrabold">
                 studiekeuzecoaches kennen
               </span>
             </h1>
@@ -89,9 +94,14 @@ export default function CoachesPage() {
                 </div>
               </div>
 
-              <nav aria-label="De coaches op deze pagina">
+              {/* The index of the two sibling pages lists sections. Here it
+                  lists people, because a reader who came for one city wants the
+                  person, not the section. The label says so: "De coaches" is
+                  the heading of the roster further down, and one name for two
+                  different things sends a reader to the wrong place. */}
+              <nav aria-label="Direct naar een coach">
                 <p className="text-eyebrow border-t border-ochre-line pt-4 uppercase">
-                  De coaches
+                  Direct naar
                 </p>
                 <ul className="mt-4 flex flex-col gap-2">
                   {coaches.map((person) => (
@@ -146,8 +156,12 @@ export default function CoachesPage() {
               </p>
             </div>
 
+            {/* No portrait here carries `priority`. The roster starts about two
+                screens down, the largest paint of this page is the ochre poster
+                at the top, and preloading a face nobody has scrolled to yet
+                only takes bandwidth away from it. */}
             <ul className="mt-14 border-b border-hairline md:mt-20">
-              {coaches.map((person, index) => (
+              {coaches.map((person) => (
                 <li
                   className={`${readingRow} border-t border-hairline py-14 md:py-20`}
                   id={person.slug}
@@ -159,9 +173,13 @@ export default function CoachesPage() {
                       // Below lg the cap is wider than the reading column, so
                       // the photo runs flush with the text on a telephone. From
                       // lg it sits in the 20rem margin column of the site.
-                      className="w-full max-w-[22rem] lg:max-w-[20rem]"
+                      // The source files are square. A column of five squares
+                      // reads as a row of profile pictures, which is the team
+                      // grid DESIGN.md sends us away from, so they are cropped
+                      // to a portrait 4:5. It also shortens the empty paper
+                      // under the face, which the long texts leave behind.
+                      className="aspect-[4/5] w-full max-w-[22rem] object-cover lg:max-w-[20rem]"
                       placeholder="blur"
-                      priority={index === 0}
                       sizes="(max-width: 1024px) 352px, 320px"
                       src={person.portrait}
                     />

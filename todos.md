@@ -2,8 +2,8 @@
 
 The working list for studiekeuzeadvies.nl. Claude keeps this file up to date.
 
-**Last update:** 2026-08-05 (the coaches page is built, and the coaches now live
-in their own file)
+**Last update:** 2026-08-05 (the coaches page is built and polished, and the
+coaches now live in their own file)
 
 ---
 
@@ -252,6 +252,19 @@ needs an answer first about what you offer a freelance coach.
       the intake. Removed on purpose: the 8,8 rating, and the twelve real names,
       histories and photos of the old page. The menu item "Coaches" now points
       here instead of at the section on the home page.
+- [x] **Polished `/studiekeuzecoaches/`.** Done on 2026-08-05. Five changes.
+      The loud line of the H1 is the display step from `sm` up, so the page
+      opens with the weight of the traject page and the city pages; below `sm`
+      it stays on the headline step, because "studiekeuzecoaches" is one word of
+      eighteen letters that runs past the gutter on every telephone at the
+      display size. The hero index is labelled "Direct naar" instead of "De
+      coaches", which is the heading of the roster further down. The portraits
+      are cropped to 4:5 instead of the square of the source files, so a column
+      of five faces does not read as a row of profile pictures. The first
+      portrait lost `priority`: the roster starts two screens down and the
+      preload only competed with the poster at the top. And `[id]` now carries
+      `scroll-margin-top` in `app/globals.css`, so a jump link on any page lands
+      with air above it instead of flush against the window edge.
 - [ ] **Five coaches, three cities.** `/studiekeuzecoaches` names five work
       regions, `/locaties` names three cities. Only Hanneke and Bram have a city
       page to link to. That is a choice, not a bug, but the two numbers must
@@ -308,3 +321,5 @@ Do not re-open these without a reason.
 | The coaches page shows five coaches; `/locaties` keeps three cities | 2026-08-05 |
 | The coaches page speaks only to the studiekiezer and the parent. Recruiting a coach waits for its own page | 2026-08-05 |
 | The face of a coach sits in the 20rem margin column, the column that holds a heading on every other page | 2026-08-05 |
+| Coach portraits are cropped 4:5, not square. Five squares in a column read as profile pictures, which is the team grid DESIGN.md sends us away from | 2026-08-05 |
+| A page title may drop one type step below `sm` when a long compound word does not fit. The step above stays the same as every sibling page | 2026-08-05 |
