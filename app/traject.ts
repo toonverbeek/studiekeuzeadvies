@@ -92,8 +92,9 @@ export const paths: Path[] = [
     body: "Ben je gestopt met een studie en weet je niet wat je nu wilt gaan doen? Of ben je nog bezig met een studie, maar twijfel je of die wel bij je past? Aan het eind van het traject heb je een overwogen keuze gemaakt voor de studie die écht bij je past. Wachten tot september hoeft niet.",
   },
   {
-    // No page of its own yet. See todos.md.
-    href: null,
+    // The page behind this door is about ADD and ADHD only. The door keeps the
+    // wider wording; see the note on the same door in app/page.tsx.
+    href: "/studiekeuze-met-add-adhd",
     title: "Studeren met ADD, ADHD of autisme",
     body: "Ben je gediagnosticeerd met ADD, ADHD of autisme? Dan helpt overzicht meer dan nog meer opties. Vaste stappen, één ding per keer, dezelfde coach elke afspraak, en van tevoren weten wat er gaat gebeuren. Zeg het in het intakegesprek, dan houdt je coach er rekening mee.",
   },

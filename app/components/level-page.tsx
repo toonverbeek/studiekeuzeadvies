@@ -4,23 +4,24 @@ import { ContactSection } from "@/app/components/contact-section";
 import { ReadAlso } from "@/app/components/read-also";
 import { SiteFooter } from "@/app/components/site-footer";
 import { SiteHeader, type NavItem } from "@/app/components/site-header";
+import { type Level, levelThemes } from "@/app/levels";
 import { button, linkOnOchre, linkOnPaper, readingRow, shell } from "@/app/shell";
-import type { Situation } from "@/app/situations";
 
 /**
- * The template behind /eerste-studiekeuze, /verkeerde-studiekeuze and
- * /studiekeuze-met-add-adhd.
+ * The template behind the three level pages: /mbo-opleiding-kiezen,
+ * /hbo-opleiding-kiezen and /wo-opleiding-kiezen.
  *
- * Two root dynamic segments cannot live next to each other, so these are real
- * folders and not one [situatie] route. A static route also wins over
- * app/[artikel], which is what keeps all three URLs working.
+ * It is a skeleton and almost nothing else. Every word a reader reads comes out
+ * of app/levels.ts, and it is written for one level. The old site put the same
+ * text on all three URLs with the level swapped, and that is the pattern this
+ * component exists to avoid, so resist the urge to move a nice sentence up into
+ * here: a sentence in this file appears three times on the site.
  *
- * The shape is the traject page's shape on purpose: ochre poster with an index,
- * reading rows on paper, then the invitation and the form. The words differ per
- * page; the skeleton does not.
+ * The shape is the site's shape: ochre poster with an index, reading rows on
+ * paper, the doors and the invitation on ochre, then "Lees ook" and the form.
  */
-export function SituationPage({ situation }: { situation: Situation }) {
-  const related = situation.related
+export function LevelPage({ level }: { level: Level }) {
+  const related = level.related
     .map((slug) => getArticle(slug))
     .filter((article) => article !== undefined);
 
@@ -32,11 +33,12 @@ export function SituationPage({ situation }: { situation: Situation }) {
   ];
 
   const jumps: NavItem[] = [
-    ...situation.sections.map((section) => ({
+    ...level.sections.map((section) => ({
       href: `#${headingId(section.title)}`,
       label: section.title,
     })),
-    { href: "#gesprekken", label: "De vier gesprekken" },
+    { href: "#gesprekken", label: "Hoe het traject werkt" },
+    { href: "#situaties", label: "Waar sta jij nu?" },
     { href: "#contact", label: "Gratis intakegesprek" },
   ];
 
@@ -48,31 +50,40 @@ export function SituationPage({ situation }: { situation: Situation }) {
         <section className="bg-ochre text-ink">
           <div className={`${shell} pb-20 md:pb-28`}>
             <p className="text-eyebrow pt-16 uppercase sm:pt-24">
-              {situation.eyebrow}
+              {level.eyebrow}
             </p>
 
-            {/* A few short words. That is what the display size is built for,
-                and every one of them comes from the old page. */}
-            <h1 className="text-display mt-5 max-w-[12ch] font-extrabold">
-              {situation.title}
+            {/* The old h1, word for word, in two voices. Display size is built
+                for one or two words, and the word that separates this page from
+                the other two is the level. So the level gets the poster type and
+                the rest of the sentence stays a sentence. */}
+            <h1 className="mt-5">
+              {/* The trailing space is not decoration: without it a screen
+                  reader reads "studiekeuzembo" as one word. */}
+              <span className="text-title block font-medium">
+                {level.titleLead}{" "}
+              </span>
+              <span className="text-display mt-1 block font-extrabold">
+                {level.titleLevel}
+              </span>
             </h1>
 
             <div className="mt-12 grid items-start gap-x-16 gap-y-12 lg:mt-16 lg:grid-cols-[minmax(0,1fr)_minmax(240px,320px)]">
               <div className="flex flex-col items-start gap-6">
-                <p className="text-lead max-w-[52ch]">{situation.lead}</p>
+                <p className="text-lead max-w-[52ch]">{level.lead}</p>
 
                 <div className="mt-2 flex flex-wrap items-center gap-x-8 gap-y-4">
                   <a className={button} href="#contact">
                     Plan een gratis intakegesprek
                   </a>
-                  <Link className={linkOnOchre} href={situation.crossLink.href}>
-                    {situation.crossLink.label}
-                  </Link>
+                  <a className={linkOnOchre} href="#situaties">
+                    Eerst lezen waar je staat
+                  </a>
                 </div>
               </div>
 
-              {/* Overview before detail. A requirement for one of the named
-                  user groups, and the way a parent finds the answer fast. */}
+              {/* Overview before detail. A requirement for one of the named user
+                  groups, and the way a parent finds the answer fast. */}
               <nav aria-label="Op deze pagina">
                 <p className="text-eyebrow border-t border-ochre-line pt-4 uppercase">
                   Op deze pagina
@@ -91,9 +102,10 @@ export function SituationPage({ situation }: { situation: Situation }) {
           </div>
         </section>
 
+        {/* The answer to the search question, and nothing sold yet. */}
         <section className="bg-paper">
-          <div className={`${shell} py-8 md:py-12`}>
-            {situation.sections.map((section) => (
+          <div className={`${shell} pt-4 pb-10 md:pt-8 md:pb-14`}>
+            {level.sections.map((section) => (
               <div
                 className={`${readingRow} border-t border-hairline py-12 md:py-16`}
                 id={headingId(section.title)}
@@ -106,37 +118,25 @@ export function SituationPage({ situation }: { situation: Situation }) {
                   {section.paragraphs.map((paragraph) => (
                     <p key={paragraph.slice(0, 24)}>{paragraph}</p>
                   ))}
-
-                  {/* Where the answer continues on another page. A short list,
-                      one line each, so it reads as a door and not as a card. */}
-                  {section.links && (
-                    <ul className="flex flex-col gap-3">
-                      {section.links.map((link) => (
-                        <li key={link.href}>
-                          <Link className={linkOnPaper} href={link.href}>
-                            {link.label}
-                          </Link>
-                        </li>
-                      ))}
-                    </ul>
-                  )}
                 </div>
               </div>
             ))}
 
-            {/* The four themes, as the old page listed them: names only. The
-                descriptions live on the traject page, and they stay there. */}
+            {/* The four themes as the old page listed them: names only. The
+                descriptions live on the traject page, and they stay there.
+                A wider band than the rows above it, because it closes the
+                reading zone and opens the part where we ask something. */}
             <div
-              className={`${readingRow} border-t border-b border-hairline py-12 md:py-16`}
+              className={`${readingRow} border-t border-b border-hairline py-16 md:py-24`}
               id="gesprekken"
             >
               <h2 className="text-section scroll-mt-8 font-extrabold">
-                Hoe ziet dit traject eruit?
+                Hoe werkt het traject?
               </h2>
               <div className="flex flex-col gap-6">
-                <p className="max-w-[62ch]">{situation.themesIntro}</p>
+                <p className="max-w-[62ch]">{level.themesIntro}</p>
                 <ol className="grid gap-x-16 gap-y-4 sm:grid-cols-2">
-                  {situation.themes.map((theme, index) => (
+                  {levelThemes.map((theme, index) => (
                     <li
                       className="grid grid-cols-[2.5rem_minmax(0,1fr)] items-baseline gap-x-4 border-t border-hairline pt-4"
                       key={theme}
@@ -161,19 +161,42 @@ export function SituationPage({ situation }: { situation: Situation }) {
           </div>
         </section>
 
+        {/* The two doors of the old page. They are a fork in the road, not a
+            product range, so they are two rows on a rule and not two cards with
+            an icon: one reader belongs in the first row and one in the second,
+            and a row you can read in one line is easier to sort yourself into. */}
+        <section className="bg-ochre text-ink" id="situaties">
+          <div className={`${shell} pt-20 md:pt-28`}>
+            <h2 className="text-section max-w-[14ch] font-extrabold">
+              Waar sta jij nu?
+            </h2>
+            <ul className="mt-10 border-b border-ochre-line md:mt-14">
+              {level.doors.map((door) => (
+                <li
+                  className={`${readingRow} border-t border-ochre-line py-10 md:py-14`}
+                  key={door.href}
+                >
+                  <h3 className="text-title font-bold">
+                    <Link className={linkOnOchre} href={door.href}>
+                      {door.label}
+                    </Link>
+                  </h3>
+                  <p className="max-w-[58ch]">{door.body}</p>
+                </li>
+              ))}
+            </ul>
+          </div>
+        </section>
+
         {/* The answer has been given, so now the offer may come. Not before it. */}
         <section className="bg-ochre text-ink">
-          <div className={`${shell} py-20 md:py-28`}>
+          <div className={`${shell} pt-14 pb-20 md:pt-20 md:pb-28`}>
             <div className="grid gap-x-16 gap-y-8 lg:grid-cols-[minmax(0,20rem)_minmax(0,1fr)]">
               <h2 className="text-section max-w-[16ch] font-extrabold">
                 Plan een gratis en vrijblijvend intakegesprek
               </h2>
               <div className="flex flex-col items-start gap-8">
-                <p className="text-lead max-w-[52ch]">
-                  In het intakegesprek vertel je wat er speelt, en horen we of
-                  dit traject bij je past. Het kost je niets en je zegt daarna
-                  gewoon nee als het niet klopt.
-                </p>
+                <p className="text-lead max-w-[52ch]">{level.invitation}</p>
                 <div className="flex flex-wrap items-center gap-x-8 gap-y-4">
                   <a className={button} href="#contact">
                     Plan een gratis intakegesprek
@@ -192,16 +215,7 @@ export function SituationPage({ situation }: { situation: Situation }) {
         <ContactSection />
       </main>
 
-      <SiteFooter
-        pageLinks={[
-          ...situation.sections.map((section) => ({
-            href: `#${headingId(section.title)}`,
-            label: section.title,
-          })),
-          { href: "#gesprekken", label: "De vier gesprekken" },
-          { href: "#contact", label: "Gratis intakegesprek" },
-        ]}
-      />
+      <SiteFooter pageLinks={jumps} />
     </>
   );
 }

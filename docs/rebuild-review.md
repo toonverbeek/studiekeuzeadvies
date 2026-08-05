@@ -285,6 +285,13 @@ Console export exists, which is the deadline item in `todos.md` section 2.
 
 ## 6. The order I would build in
 
+> **Update, later on 2026-08-05.** Everything under *Next, because it is
+> unblocked and cheap* is built: `/studiekeuze-met-add-adhd`,
+> `/veelgestelde-vragen` (without the price question) and the three level
+> pages. The design brief is `docs/five-pages-brief.md`, and `todos.md` records
+> what each page removed. The rest of this section still stands, and the
+> plumbing is now the first item with a deadline.
+
 **Now, because it expires.** Search Console and GA4 export. Everything in
 sections 3.1, 3.2 and 5 is a guess until that data exists, and it disappears
 with the seller's tenant in about four weeks. This is the only work on the list
