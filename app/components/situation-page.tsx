@@ -8,11 +8,12 @@ import { button, linkOnOchre, linkOnPaper, readingRow, shell } from "@/app/shell
 import type { Situation } from "@/app/situations";
 
 /**
- * The template behind /eerste-studiekeuze and /verkeerde-studiekeuze.
+ * The template behind /eerste-studiekeuze, /verkeerde-studiekeuze and
+ * /studiekeuze-met-add-adhd.
  *
  * Two root dynamic segments cannot live next to each other, so these are real
  * folders and not one [situatie] route. A static route also wins over
- * app/[artikel], which is what keeps both URLs working.
+ * app/[artikel], which is what keeps all three URLs working.
  *
  * The shape is the traject page's shape on purpose: ochre poster with an index,
  * reading rows on paper, then the invitation and the form. The words differ per
@@ -22,10 +23,6 @@ export function SituationPage({ situation }: { situation: Situation }) {
   const related = situation.related
     .map((slug) => getArticle(slug))
     .filter((article) => article !== undefined);
-
-  const other = situation.slug === "eerste-studiekeuze"
-    ? { href: "/verkeerde-studiekeuze", label: "Ik ben al eens gestopt" }
-    : { href: "/eerste-studiekeuze", label: "Ik kies voor het eerst" };
 
   const nav: NavItem[] = [
     { href: "/studiekeuzetraject", label: "Het traject" },
@@ -54,8 +51,8 @@ export function SituationPage({ situation }: { situation: Situation }) {
               {situation.eyebrow}
             </p>
 
-            {/* Two words. That is what the display size is built for, and it is
-                the h1 of the old page, word for word. */}
+            {/* A few short words. That is what the display size is built for,
+                and every one of them comes from the old page. */}
             <h1 className="text-display mt-5 max-w-[12ch] font-extrabold">
               {situation.title}
             </h1>
@@ -68,8 +65,8 @@ export function SituationPage({ situation }: { situation: Situation }) {
                   <a className={button} href="#contact">
                     Plan een gratis intakegesprek
                   </a>
-                  <Link className={linkOnOchre} href={other.href}>
-                    {other.label}
+                  <Link className={linkOnOchre} href={situation.crossLink.href}>
+                    {situation.crossLink.label}
                   </Link>
                 </div>
               </div>
@@ -109,6 +106,20 @@ export function SituationPage({ situation }: { situation: Situation }) {
                   {section.paragraphs.map((paragraph) => (
                     <p key={paragraph.slice(0, 24)}>{paragraph}</p>
                   ))}
+
+                  {/* Where the answer continues on another page. A short list,
+                      one line each, so it reads as a door and not as a card. */}
+                  {section.links && (
+                    <ul className="flex flex-col gap-3">
+                      {section.links.map((link) => (
+                        <li key={link.href}>
+                          <Link className={linkOnPaper} href={link.href}>
+                            {link.label}
+                          </Link>
+                        </li>
+                      ))}
+                    </ul>
+                  )}
                 </div>
               </div>
             ))}

@@ -37,6 +37,13 @@ export function SiteFooter({ pageLinks = homeLinks }: { pageLinks?: NavItem[] })
                 {site.email}
               </a>
             </li>
+            {/* Answer before you offer: the questions we are asked most are
+                one click away from every page, before anybody has to call. */}
+            <li>
+              <Link className={linkOnInk} href="/veelgestelde-vragen">
+                Veelgestelde vragen
+              </Link>
+            </li>
           </ul>
         </div>
 

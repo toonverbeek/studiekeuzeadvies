@@ -1,0 +1,175 @@
+import type { Metadata } from "next";
+import Link from "next/link";
+import { ContactSection } from "@/app/components/contact-section";
+import { SiteFooter } from "@/app/components/site-footer";
+import { SiteHeader, type NavItem } from "@/app/components/site-header";
+import { questions } from "@/app/faq";
+import { button, linkOnOchre, linkOnPaper, readingRow, shell } from "@/app/shell";
+
+// The old title, word for word, hyphen and all. This page had 182 inbound
+// links on the old site and the old URL redirects here, so the title stays.
+export const metadata: Metadata = {
+  title: "Veelgestelde vragen - StudieKeuzeAdvies",
+  description:
+    "Wat is een studiekeuzetraject, hoe lang duurt het, wie is je coach en waar spreek je af? De vragen die we het vaakst krijgen, met het antwoord eronder.",
+  alternates: { canonical: "/veelgestelde-vragen" },
+};
+
+const nav: NavItem[] = [
+  { href: "/studiekeuzetraject", label: "Het traject" },
+  { href: "/studiekeuzecoaches", label: "Coaches" },
+  { href: "/locaties", label: "Locaties" },
+  { href: "/artikelen", label: "Artikelen" },
+  { href: "#contact", label: "Contact" },
+];
+
+/**
+ * EVERY ANSWER IS OPEN. No accordion, no <details>, nothing that hides a line
+ * a reader came for. Two reasons, and both are in PRODUCT.md. Choosers with
+ * ADD, ADHD or autism are a named user group and they need overview more than
+ * interaction. And the second reader of this page is a parent who scans for one
+ * answer: on an open page the browser's own find works, and eight closed rows
+ * hide the words they search for.
+ *
+ * The index in the poster is the map. It repeats every question, so the reader
+ * still gets the overview an accordion is usually built for.
+ */
+export default function FaqPage() {
+  return (
+    <>
+      <SiteHeader homeHref="/" nav={nav} />
+
+      <main id="top">
+        <section className="bg-ochre text-ink">
+          <div className={`${shell} pb-16 md:pb-20`}>
+            <p className="text-eyebrow pt-16 uppercase sm:pt-24">
+              Antwoorden op één pagina
+            </p>
+
+            {/* "Veelgestelde" is one word of twelve letters. At the display
+                size it runs past the gutter on a small telephone, so the loud
+                step starts at sm, as on the coaches page. */}
+            <h1 className="text-headline sm:text-display mt-5 max-w-[14ch] font-extrabold">
+              Veelgestelde vragen
+            </h1>
+
+            <div className="mt-12 grid items-start gap-x-16 gap-y-12 lg:mt-16 lg:grid-cols-[minmax(0,1fr)_minmax(240px,320px)]">
+              <div className="flex flex-col items-start gap-6">
+                <p className="text-lead max-w-[52ch]">
+                  Hieronder staan de vragen die we het vaakst krijgen, van
+                  studiekiezers en van ouders. Alle antwoorden staan open op deze
+                  pagina: je hoeft nergens op te klikken en niets uit te vouwen.
+                </p>
+                <p className="max-w-[58ch]">
+                  Staat je vraag er niet bij? Stel hem gerust. Bellen mag, appen
+                  mag, en het formulier onderaan deze pagina mag ook.
+                </p>
+
+                <div className="mt-2 flex flex-wrap items-center gap-x-8 gap-y-4">
+                  <a className={button} href="#contact">
+                    Plan een gratis intakegesprek
+                  </a>
+                  <Link className={linkOnOchre} href="/studiekeuzetraject">
+                    Lees hoe het traject werkt
+                  </Link>
+                </div>
+              </div>
+
+              {/* The index, and on this page it is the whole list. A reader who
+                  came for one answer jumps; a reader who came for the overview
+                  has it before the first word of body text. */}
+              <nav aria-label="Op deze pagina">
+                <p className="text-eyebrow border-t border-ochre-line pt-4 uppercase">
+                  Op deze pagina
+                </p>
+                <ul className="mt-4 flex flex-col gap-2">
+                  {questions.map((item) => (
+                    <li key={item.id}>
+                      <a className={linkOnOchre} href={`#${item.id}`}>
+                        {item.question}
+                      </a>
+                    </li>
+                  ))}
+                </ul>
+              </nav>
+            </div>
+          </div>
+        </section>
+
+        {/* The reading zone. The question sits in the column that holds a
+            heading on every other page of this site, so the answers start on
+            the same line here as they do there. */}
+        <section className="bg-paper">
+          <div className={`${shell} py-8 md:py-12`}>
+            <ul className="border-b border-hairline">
+              {questions.map((item) => (
+                <li
+                  className={`${readingRow} border-t border-hairline py-10 md:py-14`}
+                  id={item.id}
+                  key={item.id}
+                >
+                  <h2 className="text-title font-bold">{item.question}</h2>
+
+                  <div className="flex max-w-[62ch] flex-col gap-5">
+                    {item.answer.map((paragraph) => (
+                      <p key={paragraph.slice(0, 24)}>{paragraph}</p>
+                    ))}
+
+                    {item.links.length > 0 && (
+                      <div className="flex flex-wrap gap-x-8 gap-y-2">
+                        {item.links.map((link) => (
+                          <Link
+                            className={linkOnPaper}
+                            href={link.href}
+                            key={link.href}
+                          >
+                            {link.label}
+                          </Link>
+                        ))}
+                      </div>
+                    )}
+                  </div>
+                </li>
+              ))}
+            </ul>
+          </div>
+        </section>
+
+        {/* The answers have been given, so now the offer may come. Not before. */}
+        <section className="bg-ochre text-ink" id="vraag">
+          <div className={`${shell} py-20 md:py-28`}>
+            <div className="grid gap-x-16 gap-y-8 lg:grid-cols-[minmax(0,20rem)_minmax(0,1fr)]">
+              <h2 className="text-section font-extrabold">
+                Staat je vraag er niet bij?
+              </h2>
+              <div className="flex flex-col items-start gap-8">
+                <p className="text-lead max-w-[52ch]">
+                  Stel hem gewoon, dan zoeken we het samen uit. Wil je meteen
+                  verder praten? In het intakegesprek vertel je wat er speelt en
+                  leggen we uit hoe een traject werkt. Het kost je niets en je
+                  zegt daarna gewoon nee als het niet klopt.
+                </p>
+                <a className={button} href="#contact">
+                  Plan een gratis intakegesprek
+                </a>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <ContactSection />
+      </main>
+
+      {/* Four of the eight, not all eight. The footer is a way back, not a
+          second index: the one in the poster is the index. */}
+      <SiteFooter
+        pageLinks={[
+          { href: "#wat-is-het", label: "Wat houdt StudieKeuzeAdvies in?" },
+          { href: "#hoe-lang", label: "Hoe lang duurt een traject?" },
+          { href: "#je-coach", label: "Wie is mijn coach?" },
+          { href: "#contact", label: "Gratis intakegesprek" },
+        ]}
+      />
+    </>
+  );
+}

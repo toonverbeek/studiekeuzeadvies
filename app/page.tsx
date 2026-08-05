@@ -27,9 +27,13 @@ const situations = [
     body: "Je bent begonnen aan een opleiding die niet blijkt te passen. Dat is balen, en het zegt niets over jou. We kijken samen wat er wel klopt.",
   },
   {
-    // No page of its own yet. See todos.md.
+    // The page behind this door is about ADD and ADHD only, because that is
+    // where the archived copy is. The door still names autism, because the
+    // group is named in PRODUCT.md and a coach can answer it in the intake.
+    // See todos.md: the page must gain an autism section, or this door must
+    // lose the word.
     number: "03",
-    href: null,
+    href: "/studiekeuze-met-add-adhd",
     title: "Je hebt ADD, ADHD of autisme",
     body: "Dan helpt overzicht meer dan nog meer opties. Minder keuzes tegelijk, een vast ritme, en een coach die weet dat de manier van kiezen net zo belangrijk is als de keuze zelf.",
   },
