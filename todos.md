@@ -271,8 +271,11 @@ first about what you offer a freelance coach.
       the shared parts first.
 - [ ] **Put body length back into the two situation pages.** Measured on
       2026-08-05 with `scripts/compare-word-counts.py`: `/eerste-studiekeuze` is
-      38 percent shorter than the old page and `/verkeerde-studiekeuze` is 33
-      percent shorter. What was cut is the Qompas block, the Keuzegids block and
+      37 percent shorter than the old page and `/verkeerde-studiekeuze` is 25
+      percent shorter. (It was 33 percent before the section "Misschien lag het
+      aan het niveau" was added on 2026-08-05. That section was written for the
+      internal links, and the length came with it. The same trick works again:
+      the copy that is missing is copy about the reader, not about us.) What was cut is the Qompas block, the Keuzegids block and
       the proof numbers, and none of it is coming back. These two pages are the
       ad landing pages and the link target of all 63 articles, so this is the
       one place where new copy has to be written rather than migrated.
@@ -335,6 +338,22 @@ first about what you offer a freelance coach.
       the pages nearest to the doorway pattern of section 5, even though they no
       longer share a text. If Google picks one and drops the other two, the
       shared skeleton is the first thing to change.
+- [x] **The route in to the five new pages.** Done on 2026-08-05. Measured on
+      the built HTML, not on the source. `/veelgestelde-vragen` is on all 19
+      real pages, through the footer. `/studiekeuze-met-add-adhd` has two: the
+      third door on the home page and on the traject page. The three level
+      pages started with one link each, which is the orphan condition section
+      3.2 describes for the old article corpus, so two things were added. They
+      now link to each other, under the heading "Past een ander niveau beter?",
+      with a sentence written per level. And `/verkeerde-studiekeuze` gained the
+      section "Misschien lag het aan het niveau", which points at all three.
+      That page is the link target of 54 of the 63 archived articles, so it is
+      the strongest route the site can give them. Each level page now has four
+      inbound links.
+- [ ] **`/studiekeuzecoaches` could point at `/studiekeuze-met-add-adhd`.** One
+      coach on that page is described as an autisme coach, so the door fits
+      there. Not done, because the coaches on that page are invented and the
+      whole page changes when real coaches sign.
 - [ ] `/onze-diensten-en-producten/` (793 words) and `/tarieven/` (718 words),
       the other two children of "Ons aanbod". Both need the price answer first.
 - [x] **`/studiekeuzecoaches/`. The coaches page.** Built on 2026-08-05.

@@ -37,6 +37,7 @@ export function LevelPage({ level }: { level: Level }) {
       href: `#${headingId(section.title)}`,
       label: section.title,
     })),
+    { href: "#ander-niveau", label: "Past een ander niveau beter?" },
     { href: "#gesprekken", label: "Hoe het traject werkt" },
     { href: "#situaties", label: "Waar sta jij nu?" },
     { href: "#contact", label: "Gratis intakegesprek" },
@@ -121,6 +122,33 @@ export function LevelPage({ level }: { level: Level }) {
                 </div>
               </div>
             ))}
+
+            {/* The way to the other two levels. It sits here, straight after
+                the level's own text and before we say anything about the
+                traject, because this is the moment a reader finds out that this
+                page is not their page. Sending them on is worth more than
+                keeping them. The sentence is written per level; only this
+                heading is shared, and it is four words. */}
+            <div
+              className={`${readingRow} border-t border-hairline py-12 md:py-16`}
+              id="ander-niveau"
+            >
+              <h2 className="text-section scroll-mt-8 font-extrabold">
+                Past een ander niveau beter?
+              </h2>
+              <div className="flex flex-col gap-5">
+                <p className="max-w-[62ch]">{level.otherLevels.intro}</p>
+                <ul className="flex flex-col gap-3">
+                  {level.otherLevels.links.map((link) => (
+                    <li key={link.href}>
+                      <Link className={linkOnPaper} href={link.href}>
+                        {link.label}
+                      </Link>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            </div>
 
             {/* The four themes as the old page listed them: names only. The
                 descriptions live on the traject page, and they stay there.

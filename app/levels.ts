@@ -108,6 +108,21 @@ export type Door = {
   body: string;
 };
 
+/**
+ * The route to the other two level pages. Not on the old site, where these
+ * three URLs never mentioned each other: a reader on the mbo page who worked
+ * out that they wanted the hbo had to go back to Google.
+ *
+ * The heading above it lives in the template, because it is four words. The
+ * sentence below is written per level, because the doubt is different per
+ * level: on the hbo page it comes from both sides, and on the other two it
+ * comes from one.
+ */
+export type OtherLevels = {
+  intro: string;
+  links: { href: string; label: string }[];
+};
+
 export type Level = {
   slug: string;
   /** The small line above the title. The breadcrumb line of the old page. */
@@ -125,6 +140,8 @@ export type Level = {
   /** The opening sentences of the old page. */
   lead: string;
   sections: LevelSection[];
+  /** The way to the other two levels. See the type above. */
+  otherLevels: OtherLevels;
   doors: Door[];
   /** The line above the four themes. Written per level on purpose. */
   themesIntro: string;
@@ -179,6 +196,14 @@ export const levels: Level[] = [
         ],
       },
     ],
+    otherLevels: {
+      intro:
+        "Op het vmbo lijkt het mbo de enige route, en zo vast ligt het niet. Met een diploma op niveau 4 kun je later naar het hbo, en er zijn genoeg mensen die die stap zetten. Denk je daar nu al aan, kijk dan ook eens verder vooruit.",
+      links: [
+        { href: "/hbo-opleiding-kiezen", label: "Een hbo opleiding kiezen" },
+        { href: "/wo-opleiding-kiezen", label: "Een wo opleiding kiezen" },
+      ],
+    },
     doors: [
       {
         href: "/eerste-studiekeuze",
@@ -229,6 +254,14 @@ export const levels: Level[] = [
         ],
       },
     ],
+    otherLevels: {
+      intro:
+        "Het hbo ligt tussen de andere twee in, en daarom komt de twijfel hier van twee kanten. De ene helft vraagt zich af of het mbo praktischer en prettiger is, de andere of de universiteit meer past. Dat is een echte vraag, en je hoeft hem nu niet in je eentje te beantwoorden.",
+      links: [
+        { href: "/mbo-opleiding-kiezen", label: "Een mbo opleiding kiezen" },
+        { href: "/wo-opleiding-kiezen", label: "Een wo opleiding kiezen" },
+      ],
+    },
     doors: [
       {
         href: "/eerste-studiekeuze",
@@ -282,6 +315,14 @@ export const levels: Level[] = [
         ],
       },
     ],
+    otherLevels: {
+      intro:
+        "Met een vwo-diploma ligt de universiteit voor de hand, en verplicht ben je tot niets. Het hbo is geen stap terug maar een andere manier van leren: dichter op de praktijk, met stages erin. Wie dat liever doet, hoort daar thuis en niet in een collegezaal.",
+      links: [
+        { href: "/hbo-opleiding-kiezen", label: "Een hbo opleiding kiezen" },
+        { href: "/mbo-opleiding-kiezen", label: "Een mbo opleiding kiezen" },
+      ],
+    },
     doors: [
       {
         href: "/eerste-studiekeuze",

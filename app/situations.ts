@@ -22,6 +22,18 @@
  * The line about online meetings stays. It is the old copy, and the traject
  * page already makes the same promise.
  *
+ * ONE SECTION ON /verkeerde-studiekeuze IS NEW: "Misschien lag het aan het
+ * niveau". It is added after "Nieuwe studie kiezen", so it changes nothing in
+ * the order of the old sections. Two reasons for it. This page is the link
+ * target of 54 of the 63 archived articles and it pointed at none of the three
+ * level pages, which had one inbound link each. And section 4 of
+ * docs/rebuild-review.md measures this page 33 percent shorter than the old
+ * one, and names it as one of the two pages where new copy has to be written
+ * rather than migrated. The claims in it are about the education system, not
+ * about us: a level is a question and not a given, and a diploma decides what
+ * you may do rather than what fits you. The second one is the sentence
+ * /eerste-studiekeuze already carries.
+ *
  * ---
  *
  * THE THIRD PAGE, /studiekeuze-met-add-adhd. The old page is
@@ -134,6 +146,19 @@ export const situations: Situation[] = [
         paragraphs: [
           "Het allerbelangrijkst: heb je een verkeerde studiekeuze gemaakt, realiseer je dan dat er geen man overboord is. Het voelt misschien als het eind van de wereld, dat is het niet. Dat neemt natuurlijk niet weg dat een studie die niet passend blijkt te zijn erg vervelend is. Gelukkig zijn er best dingen te regelen. Want geloof het of niet: als jij één keer, of zelfs meerdere keren, een verkeerde studiekeuze hebt gemaakt heeft dat voordelen. Door je verkeerde keuze heb je al de nodige ervaring opgedaan. Ervaring die wij inzetten om samen met jou dit keer wél de juiste studiekeuze te maken.",
           "Volgens ons heb je dus bepaalde voordelen als je al eens eerder een verkeerde studie hebt gekozen. Ten eerste dankzij de ervaring die je meebrengt. Je hebt al een tijdje op een hogeschool of universiteit rondgelopen, dus je weet hoe het werkt. Tentamenperiode op de uni of de hogeschool? Jij hebt het meegemaakt. Wat is een werkgroep? Weet jij al. Hoe gaat een hoorcollege in zijn werk? Niets bijzonders. Kortom, als opnieuw-studiekiezer zijn er enorm veel zaken die jij al weet. Vergelijk jezelf eens met de persoon die je was toen je net van de middelbare school afkwam. Je mag dan in eerste instantie een verkeerde studiekeuze hebben gemaakt, de ervaring die je op die niet-passende studie hebt opgedaan is onbetaalbaar tijdens het opnieuw kiezen van een studie. En wel de juiste studie.",
+        ],
+      },
+      {
+        // New, and not on the old page. See the note at the top of this file.
+        title: "Misschien lag het aan het niveau",
+        paragraphs: [
+          "Als een studie niet blijkt te passen, ligt dat niet altijd aan het vak. Soms lag het aan het niveau, aan het tempo, of aan de manier waarop er les werd gegeven. Iemand die stopt op het hbo vindt soms een mbo-opleiding waarin hetzelfde vak veel beter valt, en die stap wordt net zo goed de andere kant op gezet.",
+          "Je diploma bepaalt wat je mág gaan doen, niet wat bij je past. In het traject kijken we naar allebei, en het niveau is daarbij een vraag en geen gegeven.",
+        ],
+        links: [
+          { href: "/mbo-opleiding-kiezen", label: "Een mbo opleiding kiezen" },
+          { href: "/hbo-opleiding-kiezen", label: "Een hbo opleiding kiezen" },
+          { href: "/wo-opleiding-kiezen", label: "Een wo opleiding kiezen" },
         ],
       },
       {
