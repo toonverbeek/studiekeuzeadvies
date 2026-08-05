@@ -39,3 +39,9 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# agent tooling
+# Local settings, vendored skills, and the worktrees that agents make. A
+# worktree is a full copy of the repo, so this line also keeps hundreds of
+# megabytes out of the history.
+/.claude
