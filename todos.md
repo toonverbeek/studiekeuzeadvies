@@ -2,8 +2,8 @@
 
 The working list for studiekeuzeadvies.nl. Claude keeps this file up to date.
 
-**Last update:** 2026-08-05 (a global review of the new site against the old
-archive, with a full URL map)
+**Last update:** 2026-08-06 (Janneke is the first real coach on
+`/studiekeuzecoaches`, and Amsterdam is the first real city on `/locaties`)
 
 **Read first:** `docs/rebuild-review.md` measures the whole rebuild against the
 archive: what is covered, what is missing, how much body text each page lost in
@@ -27,20 +27,26 @@ cannot get them back later.
 - [ ] **The intake form delivers nothing.** `app/actions.ts` validates, then
       writes a warning to the console. A real request is lost. Connect it to a
       mailbox or a form service, and add spam protection at the same time.
-- [ ] **The coaches are invented people.** `app/coaches.ts` holds five: Hanneke,
-      Bram, Nadia, Wietske and Joris. Invented names, invented histories,
-      invented work regions, and five generated faces
-      (`public/images/coach-placeholder.png` and `-2` to `-5`). They carry the
-      whole `/studiekeuzecoaches` page and two city pages. Replace with real
-      coaches under contract, with their written permission for name and photo.
-      Delete every portrait file that no real coach replaces.
+- [ ] **Five of the six coaches are invented people.** `app/coaches.ts` holds
+      six. Janneke is real and stands first; Hanneke, Bram, Nadia, Wietske and
+      Joris are not. Invented names, invented histories, invented work regions,
+      and five generated faces (`public/images/coach-placeholder.png` and `-2`
+      to `-5`). The field `isPlaceholder` on each coach says which is which, and
+      it is the only thing that does. Replace the five with real coaches under
+      contract, with their written permission for name and photo. Delete every
+      portrait file that no real coach replaces.
+- [x] **Janneke's name, story and photo.** Cleared on 2026-08-06. The rights to
+      the archive are bought, so her interview at `/janneke-van-den-brand/` and
+      her photo are ours to use. Not a blocker any more. One nice-to-have stays
+      in section 7: her archive photo is from 2019, so ask her for a newer one.
 - [ ] **The four claims under "Wat elke coach gemeen heeft" are promises.**
       `app/studiekeuzecoaches/page.tsx`, the `shared` array. Two come from the
       old page (studied and worked, years with this age group), two are ours
       (one coach for the whole traject, the choice stays with the reader). They
       are hiring requirements, so they are only true once the contracts say so.
-- [ ] **The two customer quotes belong to the seller.** `app/site-config.ts`,
-      `legacyQuotes`. Ger and Moya. Remove them or get written permission.
+- [x] **The two customer quotes.** Cleared on 2026-08-06. Ger and Moya, in
+      `app/site-config.ts`, `legacyQuotes`. The rights are bought, so they may
+      stay. The whole of `/ervaringen/` is open now too, see section 7.
 - [ ] **Cookie consent banner.** The Google map on a city page sets cookies. The
       iframe must not load before the visitor agrees. This applies to the whole
       site once the map is live.
@@ -49,8 +55,9 @@ cannot get them back later.
 - [ ] **WhatsApp number.** `app/site-config.ts`. Stand-in.
 - [ ] **E-mail address.** `hallo@studiekeuzeadvies.nl` must exist and must
       receive mail.
-- [ ] **The cities.** `app/cities.ts` holds three. Only name a city where a
-      coach really works.
+- [ ] **The cities.** `app/cities.ts` holds four: Amsterdam, Utrecht,
+      Amersfoort and Bergen op Zoom. Only Amsterdam has a coach who exists.
+      Only name a city where a coach really works.
 
 ## 2. Before the old site disappears
 
@@ -62,18 +69,30 @@ cannot get them back later.
 - [ ] **Export the full URL list.** All 522, with their traffic and positions,
       so the keep / redirect / drop decisions rest on data, not on judgement.
 
-## 3. Rights to confirm with the seller
+## 3. Rights. Settled
 
-- [ ] The 8,8 coach rating, the 92 percent number, and "meest gevraagde partij".
-- [ ] The coach biographies and photos in the archive (Mirjam, Janneke, Astrid,
-      Barbara, and the others). They worked for the seller, and portrait rights
-      stay with the people.
-- [ ] The customer stories on `/ervaringen/`.
-- [ ] The Qompas tests (Persoonstype, Competentie, Beroepen, Interesse) and the
-      TalentenTest with Tilburg University. These were the core of the old
-      product, and Qompas is the seller.
-- [ ] The old prices, €199 to €699, if the tests do not come with the sale.
-- [ ] A written licence for the 219 media files in the archive.
+**The rights to the whole archive are bought.** Confirmed on 2026-08-06. That
+closes this section: the 514 pages, the 219 media files, the coach biographies
+and photos, the customer stories and the numbers are all ours to use. This is
+the newest word on the subject. Where an older file still says "not confirmed",
+that file is out of date, not this line.
+
+Three questions survived the answer, and not one of them is about rights:
+
+- [ ] **A number must be true of us, not only ours to print.** The 8,8 rating,
+      the 92 percent and "meest gevraagde partij" were earned by the seller's
+      twelve coaches, and one of them is ours. Design Principle 5 of PRODUCT.md
+      is unchanged: a number goes on the site when we can prove it of ourselves.
+      Decide per number. The 8,8 is the one to leave off the longest.
+- [ ] **The Qompas tests are a product, not a page.** Owning the text that
+      describes the four tests and the TalentenTest does not put the tests in
+      our hands. The decision of 2026-08-04 stands: the site does not sell them.
+      The same goes for the old prices, €199 to €699, which paid for them.
+- [ ] **The meeting rooms are a lease, not content.** The seller rented every
+      room on the old `/locaties/` pages, Van Baerlestraat 13 in Amsterdam
+      included. Ask which ones come with the sale. Until one is ours, `meeting`
+      in `app/cities.ts` stays null and the city page says we agree a place
+      together.
 
 ## 4. SEO and migration
 
@@ -123,8 +142,14 @@ The code is ready for the fix. Every text block in `app/cities.ts` is an
 optional per-city field. Write a paragraph for one city and that city uses it;
 write nothing and it falls back to the shared text.
 
-- [ ] Write real local content for the cities with the most traffic first.
-      Use the Search Console data to decide the order.
+- [x] **Amsterdam is the worked example.** Done on 2026-08-06. It is the first
+      city with its own `intro`, `firstChoice` and `wrongChoice` in
+      `app/cities.ts`, so nothing on `/locaties/amsterdam` is the shared text
+      any more. What makes it local is the one thing the old Amsterdam page had
+      that no other city page had: the four institutions a reader here chooses
+      between (UvA, VU, HvA, Inholland). Copy that shape for the next city.
+- [ ] Write real local content for the other cities, the ones with the most
+      traffic first. Use the Search Console data to decide the order.
 
 ## 6. Google Maps
 
@@ -138,49 +163,43 @@ write nothing and it falls back to the shared text.
 
 ## 7. Build next
 
-### What is left, measured
+### Where the inventory lives
 
-**Read this before you trust a number in the crawl.** Two columns of
-`redirect-map.csv` look like signal and are not:
+Do not keep a second list in this file. `docs/url-map.csv` resolves all 522 old
+URLs, with a measured `real_words` column and a keep / redirect / drop / rebuild
+decision for each one, and `scripts/build-url-map.py` regenerates it. The build
+order is `docs/rebuild-review.md`, section 6. An earlier version of this section
+held a hand-made table of eighteen pages; it was a worse copy of both, and it is
+gone.
 
-- **`words` includes the footer and the menu.** The chrome is about 118 words.
-  `/vacatures/` is listed at 118 words and its body is completely empty. So
-  subtract about 118 from every count, and treat anything near 120 as a page
-  with nothing on it.
+**Lessons, recorded so nobody repeats them.** Four ways of measuring the old
+site give the wrong answer:
+
+- **`words` in the archive's `redirect-map.csv` includes the footer and the
+  menu**, about 118 words of it. Anything near 120 looks like a page and is not.
 - **`editorial_inbound` of 182 is the footer link**, which sits on every page.
-  Only two pages off the menu have real editorial links: `/eerste-studiekeuze/`
-  with 58 and `/verkeerde-studiekeuze/` with 54. Everything else off the menu
-  has 2 to 8.
+  Only two pages off the menu carry real editorial links: `/eerste-studiekeuze/`
+  with 58 and `/verkeerde-studiekeuze/` with 54. The rest have 2 to 8.
+- **Counting from `archive/markdown/` misses content that only survived in the
+  HTML.** On 2026-08-05 it produced one wrong call in this file:
+  `/over-ons/veelgestelde-vragen/` was written down as empty, and it holds five
+  real questions with full answers, 380 words.
+- **Do not hand-roll an HTML word count either.** This WordPress theme has no
+  `<nav>` and no `<footer>` element, so stripping those tags leaves the whole
+  menu in the total. That made `/vacatures/` look like 175 words on the same
+  day. It is 0: every word on it is chrome. Use `scripts/build-url-map.py`,
+  which strips this theme correctly, and read `real_words` from
+  `docs/url-map.csv`.
 
-The remaining pages, by real body length, measured 2026-08-05:
+**How to read the map.** `action=rebuild` means the URL stays and the page has
+to be written: nine URLs carry it today. `action=redirect` means the *address*
+moves, not that the page dies, so `/veelgestelde-vragen` and `/coach-worden`
+still have to be built even though their old URLs are marked `redirect`. To get
+the current build list:
 
-| Page | Real words | State |
-|---|---|---|
-| `/studiekeuzecoaches/` | 3341 | Twelve named people with photos. The most blocked page on the site, and it needs real coaches under contract before it can exist at all |
-| `/online-studiekeuzeadvies/` | 648 | 92%, 8,8, Keuzegids. Little survives the cleaning |
-| `/opnieuw-een-studiekeuze-maken/` | 646 | Written to decanen and mentoren, not to students. Carries a price and the Keuzegids |
-| `/studiekeuze-met-add-adhd/` | 566 | Blocked parts are small. The third user group of PRODUCT.md |
-| `/hbo-opleiding-kiezen/` | 447 | Blocked parts are small. A keyword page |
-| `/mbo-opleiding-kiezen/` | 413 | Blocked parts are small. A keyword page |
-| `/studiekeuzetest/` | 416 | The Qompas tests. You decided the site does not sell them |
-| `/vacatures/` | 0 | Empty. But two retired vacancy URLs redirect into it, see section 4 |
-| `/over-ons/veelgestelde-vragen/` | 380 | Five real questions with full answers, all in the HTML. Corrected 2026-08-05: the earlier "empty" note here was wrong. Cheapest real page left, once the price is known |
-| `/contact/` | ~45 | It was only a form. The site already has the form |
-| `/over-ons/` | ~300 | Partly blocked: "Unieke samenwerking" names Lyceo |
-| `/ervaringen/` | 777 | Customer stories. Rights not confirmed, see section 3 |
-| `/onze-methode/` | 696 | Blocked on the method-without-Qompas decision |
-| `/onze-diensten-en-producten/` | 673 | Blocked on the price decision |
-| `/tarieven/` | 627 | Blocked on the price decision |
-| `/janneke-van-den-brand/` | 1139 | Coach interview. Portrait and story rights stay with the person |
-| `/aart-smit/` | 625 | Coach interview. Same |
-| `/angelina-muller/` | 516 | Coach interview. Same |
-
-**The order this suggests.** First the plumbing in section 4, because it is the
-only work with a deadline. Then `/studiekeuze-met-add-adhd/`, because the
-template of the two situation pages takes it with no new code, and because the
-third door on the home page and on the traject page is plain text today for
-want of a page. Then the two keyword pages. `/vacatures/` is not a rebuild: it
-needs an answer first about what you offer a freelance coach.
+```sh
+awk -F, '$8=="rebuild" {print $1" -> "$7}' docs/url-map.csv
+```
 
 ### The pages themselves
 
@@ -261,13 +280,23 @@ needs an answer first about what you offer a freelance coach.
       the proof numbers, and none of it is coming back. These two pages are the
       ad landing pages and the link target of all 63 articles, so this is the
       one place where new copy has to be written rather than migrated.
-      `/studiekeuzecoaches` (−63%) and `/locaties` (−59%) lost more, but both
-      recover by themselves when real coaches and real cities arrive.
-- [ ] **A page for choosing with ADD, ADHD or autisme.** The third door on the
-      home page and on the traject page has no page behind it, so it is plain
-      text where the other two are links. The old `/studiekeuze/` is 679 words
-      and it is built on the TalentenTest and the Keuzegids, so it is a rewrite
-      and not a rebuild. It has 2 inbound links.
+      `/studiekeuzecoaches` and `/locaties` lost more, but both recover by
+      themselves when real coaches and real cities arrive. That is measurable
+      now: on 2026-08-06 one coach and one city moved them from −63% to −55%
+      and from −59% to −57%.
+      `/locaties/amsterdam` starts at −37%, which is worse than the other
+      cities only on paper: the old Amsterdam page printed its whole "Verkeerde
+      studiekeuze" section twice, so the number it is measured against counts
+      that text twice as well.
+- [ ] **`/studiekeuze-met-add-adhd`. The third door.** The third item on the
+      home page and on the traject page is plain text today, where the other two
+      are links, because it has no page behind it. `app/situations.ts` and
+      `app/components/situation-page.tsx` take it with no new code: one entry
+      and one route folder. The old page is 561 real words and `docs/url-map.csv`
+      marks it `rebuild`. Note the URL: `/studiekeuze/` is the old alias and it
+      already redirects, so `/studiekeuze-met-add-adhd` is the one to build.
+      What has to be rewritten is the part built on the TalentenTest and the
+      Keuzegids.
 - [ ] **Confirm that online trajecten are really on offer.** Both situation
       pages carry the old sentence about online meetings, and the traject page
       says the same under "Bij jou in de buurt". A coach must be able to do it.
@@ -294,15 +323,47 @@ needs an answer first about what you offer a freelance coach.
       preload only competed with the poster at the top. And `[id]` now carries
       `scroll-margin-top` in `app/globals.css`, so a jump link on any page lands
       with air above it instead of flush against the window edge.
-- [ ] **Five coaches, three cities.** `/studiekeuzecoaches` names five work
-      regions, `/locaties` names three cities. Only Hanneke and Bram have a city
-      page to link to. That is a choice, not a bug, but the two numbers must
-      grow together once real coaches sign.
+- [x] **Janneke and Amsterdam.** Done on 2026-08-06. The first real coach and
+      the first real city, both taken from the archive: `/janneke-van-den-brand/`
+      for her history and `/locaties/amsterdam/` for the city. She stands first
+      on `/studiekeuzecoaches`, Amsterdam stands first on `/locaties`, and
+      because the traject page features `citiesWithCoach[0]` she now carries
+      that page too. Her text is written in the third person of this site, not
+      copied from her own first-person interview. Left out on purpose: the
+      address Van Baerlestraat 13 (the seller rented that room, see section 3),
+      her full surname, and the interview itself.
+- [ ] **Ask Janneke for a newer photo.** Not a rights matter, a date matter:
+      `public/images/coach-janneke.jpg` is her 2019 archive photo, black and
+      white against a bare wall. It stands well on the paper, so this can wait.
+- [ ] **Six coaches, four cities.** `/studiekeuzecoaches` names six work
+      regions, `/locaties` names four cities. Only Janneke, Hanneke and Bram
+      have a city page to link to. That is a choice, not a bug, but the two
+      numbers must grow together once real coaches sign.
+- [ ] **`/studiekeuzecoaches/janneke-van-den-brand`.** `docs/url-map.csv` sends
+      the old interview URL there, and nothing is behind it: the roster only has
+      the anchor `#janneke`. Either build the page per coach, or point the
+      redirect at the anchor. 1129 words of the old page hang on this, and the
+      rights to all of them are ours.
+- [ ] **The home page still opens on a generated face.** `app/page.tsx` imports
+      `coach-placeholder.png` for the hero, with a generic alt text, while the
+      real coach is one click away on `/studiekeuzecoaches`. Decide whether the
+      hero shows Janneke or stays anonymous until more coaches sign.
+- [ ] **`/ervaringen`. The customer stories.** 757 words, and open since
+      2026-08-06: the rights are bought. It was on the blocked list for that one
+      reason and nothing else. `docs/url-map.csv` marks the URL `keep`, so it
+      needs a page. Read the archive first: a story from 2023 was written about a
+      coach who is not ours, so say when it happened, as `legacyQuotes` in
+      `app/site-config.ts` already does.
 - [ ] **A contact page.** `/contact/` on the old site was only a form, and every
       page already carries that form. Decide whether the URL needs a page at all
       or only a redirect.
-- [ ] A page for coaches who want to open a city. PRODUCT.md names the coach as
-      the third user, and today they get one line in a paragraph.
+- [ ] **`/coach-worden`. The page for coaches who want to open a city.**
+      PRODUCT.md names the coach as the third user, and today they get one line
+      in a paragraph. This is not a rebuild: `/vacatures/` on the old site has a
+      heading and no body, 0 real words, and `docs/url-map.csv` redirects it and
+      its two retired vacancy URLs here. It needs an answer before it needs
+      code: what do you offer a freelance coach? The rate, who finds the client,
+      and whether a city is theirs alone.
 - [x] **Link the city pages to the traject page.** Done on 2026-08-05. The
       `#traject` section of a city page, the home page and the main menu all
       point to `/studiekeuzetraject`.
@@ -332,23 +393,29 @@ Do not re-open these without a reason.
 | Home page and city pages are high fidelity, not production ready | 2026-08-04 |
 | Keep the old page structure and section order | 2026-08-04 |
 | No Qompas tests on the site. Coaching conversations only | 2026-08-04 |
-| Keep the old customer quotes for now, pending permission | 2026-08-04 |
+| Keep the old customer quotes for now, pending permission. **Settled on 2026-08-06:** the rights are bought, so they stay | 2026-08-04 |
 | City pages use one shared text with city facts on top | 2026-08-05 |
 | A meeting place per city, to be filled in later | 2026-08-05 |
 | The coach is the only local proof on a city page | 2026-08-05 |
 | Google Maps embed for the map, not OpenStreetMap | 2026-08-05 |
 | The traject page keeps the section order of the old page | 2026-08-05 |
 | The intake form stays at the end of every page. Mid-page the traject page carries an invitation to it, where the old page had the form | 2026-08-05 |
-| An article keeps its old root URL. The hub is at `/artikelen`. Zero redirects | 2026-08-05 |
+| An article keeps its old root URL. The hub is at `/artikelen`. Zero redirects. **Re-opened the same day** by `docs/url-map.csv`, which moves them to `/artikelen/<slug>`. See section 4 | 2026-08-05 |
 | Article text in MDX, article metadata in `app/articles.ts` | 2026-08-05 |
-| No image on an article. The archive images die with the seller's S3 bucket and the rights are not confirmed | 2026-08-05 |
+| No image on an article. The archive images die with the seller's S3 bucket and the rights are not confirmed. **Half of that reason fell away on 2026-08-06:** the rights are bought, and the 219 files are already on disk in the archive. Re-open if an article wants a picture | 2026-08-05 |
 | No author name and no portrait on an article. The date is the only signature | 2026-08-05 |
 | /eerste-studiekeuze and /verkeerde-studiekeuze are full standalone pages, not short pages that point at the traject page | 2026-08-05 |
 | The situation pages keep the sentences of the old pages, cleaned, not a rewrite | 2026-08-05 |
 | A coach is written once, in `app/coaches.ts`. A city points at a coach and takes its region from them | 2026-08-05 |
 | Coach texts are third person, not the first person of the old site. Twelve people who all open with "Hoi! Ik ben" read as one voice | 2026-08-05 |
-| The coaches page shows five coaches; `/locaties` keeps three cities | 2026-08-05 |
+| The coaches page shows five coaches; `/locaties` keeps three cities. **Re-opened on 2026-08-06:** six coaches and four cities | 2026-08-05 |
+| A real coach stands before every stand-in on `/studiekeuzecoaches`, and their city stands first on `/locaties`. The top of both pages then stays true if the stand-ins are pulled | 2026-08-06 |
+| `isPlaceholder` on a coach is required, not optional. Adding a person without an answer to "does this one exist" does not compile | 2026-08-06 |
+| A coach carries only their first name on the roster. The archive surname stays out until the coach asks for it | 2026-08-06 |
+| A real coach's own photo goes on the site as it is, even when it does not match the warm colour of the stand-ins. It is honest, and the stand-ins are the ones that leave | 2026-08-06 |
+| A city page names the coach's whole work region, so `/locaties` says "studiekeuzecoach voor ..." and not "ook voor ..." | 2026-08-06 |
 | The coaches page speaks only to the studiekiezer and the parent. Recruiting a coach waits for its own page | 2026-08-05 |
 | The face of a coach sits in the 20rem margin column, the column that holds a heading on every other page | 2026-08-05 |
 | Coach portraits are cropped 4:5, not square. Five squares in a column read as profile pictures, which is the team grid DESIGN.md sends us away from | 2026-08-05 |
 | A page title may drop one type step below `sm` when a long compound word does not fit. The step above stays the same as every sibling page | 2026-08-05 |
+| The rights to the whole old site are bought. Nothing in the archive is blocked by rights. A number still has to be true of us before it goes on a page | 2026-08-06 |

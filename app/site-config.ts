@@ -22,12 +22,13 @@ export const site = {
 } as const;
 
 /**
- * TODO: no coach is confirmed yet.
+ * TODO: the home page hero still opens on a face that does not exist.
  *
  * public/images/coach-placeholder.png and coach-placeholder-2.png are GENERATED
- * PLACEHOLDERS of people who do not exist. They must not go live. The portraits in
- * the old-site archive cannot be used either: those are identifiable people who
- * worked for the seller, and portrait rights stay with them, not with the domain.
+ * PLACEHOLDERS of people who do not exist. They must not go live. The portraits
+ * in the old-site archive may be used: the rights to the archive are bought.
+ * public/images/coach-janneke.jpg is one of them, and it is already on
+ * /studiekeuzecoaches and /locaties/amsterdam.
  */
 export const coach = {
   caption: "Je vaste coach, bij jou in de buurt",
@@ -37,9 +38,12 @@ export const coach = {
 /* The cities live in app/cities.ts, together with the page content per city. */
 
 /**
- * TODO: these two quotes come from the old site (/ervaringen/ and the old home page).
- * They belong to the seller and to the people who gave them. Keep them off the live
- * site until you have written permission, or replace them with new quotes.
+ * These two quotes come from the old site (/ervaringen/ and the old home page).
+ * They may stay: the rights to the archive are bought. The names stay first name
+ * and age, as the old site had them.
+ *
+ * The whole of /ervaringen/ is now open to us, 757 words of it, so two quotes on
+ * the home page is a floor, not a ceiling.
  */
 export const legacyQuotes = [
   {

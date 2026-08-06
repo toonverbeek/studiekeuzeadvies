@@ -3,6 +3,12 @@
 Written 2026-08-05, against `../studiekeuzeadvies archive/` (crawled 30 July 2026)
 and the site as it builds today.
 
+> **Update 2026-08-06. The rights to the whole archive are bought.** This review
+> was written when they were not, and it calls four pages blocked for that
+> reason: `/ervaringen/` and the three coach interviews. They are open. The rows
+> below say so. Everything else in this file stands: the pages that are still
+> blocked wait on the price decision, not on rights. See `todos.md`, section 3.
+
 The goal this review measures against: a faithful rebuild of the old site, in a
 new design and a new URL structure, reusing as much of the old copy as we can.
 Copy first, improvement later.
@@ -73,10 +79,11 @@ Worth saying plainly, because the rest of this file is about gaps.
   "meest gevraagde partij", Qompas, the four tests, the Keuzegids and the
   TalentenTest are gone from every page they were on, and each removal is
   documented in the file that made it. Nothing unprovable has leaked back in.
-- **Every stand-in is quarantined and labelled.** The invented coaches, the
-  placeholder telephone number and the seller's two customer quotes all sit in
-  named files with a warning at the top, and `todos.md` lists them as blockers.
-  Nothing fake is hidden inside a component.
+- **Every stand-in is quarantined and labelled.** The invented coaches and the
+  placeholder telephone number sit in named files with a warning at the top, and
+  `todos.md` lists them as blockers. Nothing fake is hidden inside a component.
+  (The two customer quotes were on this list until 2026-08-06. They are not
+  stand-ins any more; the rights to them are bought.)
 - **The design holds.** Ochre carries the surface, one sans at all sizes, flat
   surfaces, and the reading row (`app/shell.ts`) lines up the answer column from
   the home page to the last article. It does not read as any of the four
@@ -117,16 +124,16 @@ Ordered by the body length they had on the old site:
 
 | Old page | Real words | What it needs |
 |---|---:|---|
-| `/janneke-van-den-brand/` | 1129 | Coach interview. Portrait and story rights stay with the person |
-| `/ervaringen/` | 757 | Customer stories. Rights not confirmed |
+| `/janneke-van-den-brand/` | 1129 | **Unblocked 2026-08-06.** Coach interview. She is on `/studiekeuzecoaches` now; this URL still needs a page |
+| `/ervaringen/` | 757 | **Unblocked 2026-08-06.** Customer stories. The rights are bought |
 | `/onze-methode/` | 687 | Blocked: over half the page is Qompas and the Keuzegids |
 | `/onze-diensten-en-producten/` | 675 | Blocked on the price decision |
 | `/opnieuw-een-studiekeuze-maken/` | 636 | Written to decanen, not to students. Redirect into `/verkeerde-studiekeuze` |
 | `/online-studiekeuzeadvies/` | 624 | Little survives the cleaning. Redirect |
-| `/aart-smit/` | 619 | Coach interview. Same rights problem |
+| `/aart-smit/` | 619 | **Unblocked 2026-08-06.** Coach interview. Only worth a page if he is a coach of ours |
 | `/tarieven/` | 600 | Blocked on the price decision |
 | `/studiekeuze-met-add-adhd/` | 561 | **Not blocked.** The third user group of PRODUCT.md |
-| `/angelina-muller/` | 511 | Coach interview. Same rights problem |
+| `/angelina-muller/` | 511 | **Unblocked 2026-08-06.** Coach interview. Same condition as `/aart-smit/` |
 | `/hbo-opleiding-kiezen/` | 441 | **Not blocked.** Keyword page |
 | `/studiekeuzetest/` | 408 | The Qompas tests. Redirect |
 | `/mbo-opleiding-kiezen/` | 408 | **Not blocked.** Keyword page |
