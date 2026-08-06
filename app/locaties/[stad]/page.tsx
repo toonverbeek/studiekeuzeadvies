@@ -152,6 +152,19 @@ export default async function CityPage(props: PageProps<"/locaties/[stad]">) {
                     </dt>
                     <dd className="max-w-[46ch]">{city.region}</dd>
                   </dl>
+
+                  {/* Most readers land here from a search for their own city,
+                      not by way of /locaties, so this is the only place they
+                      meet the coach. Three sentences is a handshake, not a
+                      history, and the way to the rest of it belongs here. */}
+                  <p>
+                    <Link
+                      className={linkOnPaper}
+                      href={`/studiekeuzecoaches#${city.coach.slug}`}
+                    >
+                      Lees meer over {city.coach.name}
+                    </Link>
+                  </p>
                 </div>
               </div>
             ) : (

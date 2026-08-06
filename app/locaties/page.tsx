@@ -3,7 +3,7 @@ import Link from "next/link";
 import { cities, citiesWithCoach } from "@/app/cities";
 import { SiteFooter } from "@/app/components/site-footer";
 import { SiteHeader, type NavItem } from "@/app/components/site-header";
-import { shell } from "@/app/shell";
+import { linkOnPaper, shell } from "@/app/shell";
 import { site } from "@/app/site-config";
 
 export const metadata: Metadata = {
@@ -64,14 +64,22 @@ export default function LocationsPage() {
                       {city.name}
                     </Link>
                   </h2>
-                  {/* "voor", not "ook voor": a work region already contains the
+                  {/* Two links on one row, and they go to two different
+                      questions: the city name answers "where", the coach name
+                      answers "who". The name is the second link because a
+                      reader scans the headings first.
+
+                      "voor", not "ook voor": a work region already contains the
                       city itself, so "ook" made every line repeat its own
                       heading. It only became loud on a two-town region like
                       Amsterdam en Amstelveen. */}
                   <p className="text-ink-soft max-w-[62ch]">
-                    <span className="text-ink font-medium">
-                      {city.coach?.name}
-                    </span>
+                    <Link
+                      className={`${linkOnPaper} text-ink`}
+                      href={`/studiekeuzecoaches#${city.coach.slug}`}
+                    >
+                      {city.coach.name}
+                    </Link>
                     , studiekeuzecoach voor {city.region}.
                   </p>
                 </li>

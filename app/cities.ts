@@ -115,10 +115,15 @@ export function getCity(slug: string): City | undefined {
   return cities.find((city) => city.slug === slug);
 }
 
-/** The cities we may name on the home page and in the footer. */
-export const citiesWithCoach = cities.filter((city) => city.coach !== null);
+/** A city that has a coach. The narrowing is what makes `city.coach.slug` safe. */
+export type CityWithCoach = City & { coach: Coach };
 
-export function otherCitiesWithCoach(slug: string): City[] {
+/** The cities we may name on the home page and in the footer. */
+export const citiesWithCoach = cities.filter(
+  (city): city is CityWithCoach => city.coach !== null,
+);
+
+export function otherCitiesWithCoach(slug: string): CityWithCoach[] {
   return citiesWithCoach.filter((city) => city.slug !== slug);
 }
 

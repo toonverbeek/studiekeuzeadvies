@@ -421,6 +421,12 @@ freelance coach.
       copied from her own first-person interview. Left out on purpose: the
       address Van Baerlestraat 13 (the seller rented that room, see section 3),
       her full surname, and the interview itself.
+- [x] **The coach link runs both ways.** Done on 2026-08-06. `/locaties` makes
+      the coach's name a link, and a city page carries "Lees meer over
+      &lt;naam&gt;" under the werkgebied. Both land on `/studiekeuzecoaches#slug`,
+      where the long text is. The way back already existed. `citiesWithCoach` is
+      now typed `CityWithCoach[]`, so `city.coach.slug` needs no `?.` and cannot
+      build a link to `#undefined`.
 - [ ] **Ask Janneke for a newer photo.** Not a rights matter, a date matter:
       `public/images/coach-janneke.jpg` is her 2019 archive photo, black and
       white against a bare wall. It stands well on the paper, so this can wait.
@@ -503,6 +509,7 @@ Do not re-open these without a reason.
 | A coach carries only their first name on the roster. The archive surname stays out until the coach asks for it | 2026-08-06 |
 | A real coach's own photo goes on the site as it is, even when it does not match the warm colour of the stand-ins. It is honest, and the stand-ins are the ones that leave | 2026-08-06 |
 | A city page names the coach's whole work region, so `/locaties` says "studiekeuzecoach voor ..." and not "ook voor ..." | 2026-08-06 |
+| A coach and their city link to each other, both ways. The long text about a person lives once, on `/studiekeuzecoaches`, and a city page sends the reader there instead of repeating it | 2026-08-06 |
 | The coaches page speaks only to the studiekiezer and the parent. Recruiting a coach waits for its own page | 2026-08-05 |
 | The face of a coach sits in the 20rem margin column, the column that holds a heading on every other page | 2026-08-05 |
 | Coach portraits are cropped 4:5, not square. Five squares in a column read as profile pictures, which is the team grid DESIGN.md sends us away from | 2026-08-05 |
