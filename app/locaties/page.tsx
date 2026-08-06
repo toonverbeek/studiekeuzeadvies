@@ -64,11 +64,15 @@ export default function LocationsPage() {
                       {city.name}
                     </Link>
                   </h2>
+                  {/* "voor", not "ook voor": a work region already contains the
+                      city itself, so "ook" made every line repeat its own
+                      heading. It only became loud on a two-town region like
+                      Amsterdam en Amstelveen. */}
                   <p className="text-ink-soft max-w-[62ch]">
                     <span className="text-ink font-medium">
                       {city.coach?.name}
                     </span>
-                    , studiekeuzecoach. Ook voor {city.region}.
+                    , studiekeuzecoach voor {city.region}.
                   </p>
                 </li>
               ))}

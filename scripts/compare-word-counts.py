@@ -55,6 +55,7 @@ PAIRS = {
     "eerste-studiekeuze": "/eerste-studiekeuze/",
     "verkeerde-studiekeuze": "/verkeerde-studiekeuze/",
     "locaties": "/locaties/",
+    "locaties/amsterdam": "/locaties/amsterdam/",
     "locaties/utrecht": "/locaties/utrecht/",
     "locaties/amersfoort": "/locaties/amersfoort/",
     "locaties/bergen-op-zoom": "/bergen-op-zoom/",

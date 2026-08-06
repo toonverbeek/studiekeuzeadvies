@@ -3,14 +3,17 @@
  * file: /studiekeuzecoaches shows the whole roster, a city page shows the one
  * coach who works there, and the home page and the footer count them.
  *
- * WARNING: NOT ONE PERSON BELOW IS REAL. The names, the histories, the work
- * regions and the five portraits are stand-ins, so the pages can be judged at
- * full length before a single coach is under contract. The twelve coaches on
- * the old site worked for the seller, and portrait rights stay with the people,
- * so their names and photos could not be carried over. See PRODUCT.md, section
- * "Inherited Content and Open Questions", and todos.md, section 1.
+ * WARNING: READ `isPlaceholder` BEFORE YOU PUBLISH ANYTHING FROM THIS FILE.
  *
- * NONE OF THIS MAY GO LIVE.
+ * `isPlaceholder: true` means the person does not exist. The name, the history,
+ * the work region and the portrait are stand-ins, so the pages can be judged at
+ * full length before a coach is under contract. NONE OF THOSE MAY GO LIVE.
+ *
+ * `isPlaceholder: false` means a real coach. Janneke is the first one. Her
+ * facts and her photo come from the archive, `../studiekeuzeadvies archive/
+ * markdown/janneke-van-den-brand.md`, and the rights to that archive are bought,
+ * so they may go live. See PRODUCT.md, section "Inherited Content and Open
+ * Questions".
  *
  * VOICE. Every text here is in the third person. The old site let each coach
  * write their own introduction, and twelve people who all begin with "Hoi! Ik
@@ -20,6 +23,7 @@
  */
 
 import type { StaticImageData } from "next/image";
+import portraitJanneke from "@/public/images/coach-janneke.jpg";
 import portraitOne from "@/public/images/coach-placeholder.png";
 import portraitTwo from "@/public/images/coach-placeholder-2.png";
 import portraitThree from "@/public/images/coach-placeholder-3.png";
@@ -29,15 +33,20 @@ import portraitFive from "@/public/images/coach-placeholder-5.png";
 export type Coach = {
   /** Also the anchor on /studiekeuzecoaches. */
   slug: string;
-  /** TODO: invented. No coach is under contract. */
+  /**
+   * true means this person does not exist and may not go live. It is the one
+   * field that decides that, so it is required on every coach: adding someone
+   * without an answer to "is this a real person" must not compile.
+   */
+  isPlaceholder: boolean;
   name: string;
   /** The town they work from. It is the first word of `region`. */
   town: string;
   /** The whole work area, in the words a reader would use. */
   region: string;
   /**
-   * The city page to link to, or null when that city has no page. Five coaches
-   * and three cities is on purpose: a coach can start before their city page is
+   * The city page to link to, or null when that city has no page. More coaches
+   * than city pages is on purpose: a coach can start before their city page is
    * written, and a city page is only worth making where the traffic is.
    */
   citySlug: string | null;
@@ -47,7 +56,7 @@ export type Coach = {
   bio: string[];
   /**
    * Who this coach sees most. It helps a reader pick a person instead of a
-   * postcode, and between the five it names the three groups of PRODUCT.md.
+   * postcode, and over the whole roster it names the three groups of PRODUCT.md.
    */
   focus: string;
   /** A coach can start before they send a photo. Then this stays null. */
@@ -55,8 +64,42 @@ export type Coach = {
   portraitAlt: string;
 };
 
+/**
+ * The first real coach. Every fact below stands in the archive interview at
+ * `../studiekeuzeadvies archive/markdown/janneke-van-den-brand.md`, but not one
+ * sentence is copied from it: that text is her own, in the first person, in the
+ * voice of the old site. What is written here is the same history in the voice
+ * of this site. Nothing is added that she did not say herself.
+ *
+ * Her portrait is her own photo from the archive, so it is the only face on the
+ * site that belongs to a person. It is black and white against a bare wall,
+ * where the five stand-ins are warm colour at a table. That difference is real
+ * and it stays until she sends a photo she likes better. Ask her for one: the
+ * rights are not the reason, the photo is from 2019.
+ */
+export const janneke: Coach = {
+  slug: "janneke",
+  isPlaceholder: false,
+  name: "Janneke",
+  town: "Amsterdam",
+  region: "Amsterdam en Amstelveen",
+  citySlug: "amsterdam",
+  intro:
+    "Janneke is psycholoog en werkt sinds 2015 als studiekeuzecoach in Amsterdam. In haar praktijk zag ze volwassenen vastlopen in werk dat nooit bij ze paste, en bij bijna iedereen kwam dezelfde vraag boven: hoe was het gelopen als er iemand had meegedacht toen de keuze nog open lag. Daarom zit ze nu naast mensen van jouw leeftijd.",
+  bio: [
+    "Ze studeerde psychologie aan de UvA en werkte daarna met zware doelgroepen: eerst in een huis van bewaring, later bij een ggz-instelling. Het werk zelf was goed, de omstandigheden niet, en op een dag stopte ze zonder te weten wat er dan wel moest komen.",
+    "Ze liet zich toen zelf coachen om dat uit te zoeken. Dat hielp zo goed dat ze de opleiding ging doen, en zo kwam ze bij een jongere doelgroep terecht. Naast dit werk is ze nog steeds parttime psycholoog, met jongeren in de verslavingszorg. Dat merk je: ze schrikt niet van wat je vertelt, en ze gaat niet harder praten als je stil valt.",
+    "Vraag je haar wat ze belangrijk vindt in een traject, dan begint ze bij vertrouwen. Ze werkt veel met studiekiezers bij wie thuis al een richting klaarligt, en met studiekiezers die weinig van zichzelf verwachten. Ouders hebben haar weleens apart gevraagd om hun kind richting de universiteit te duwen. Dat doet ze niet. De keuze is van jou, ook als iemand anders betaalt.",
+  ],
+  focus: "Kiezen terwijl thuis iets anders wordt verwacht",
+  portrait: portraitJanneke,
+  portraitAlt:
+    "Janneke, studiekeuzecoach in Amsterdam, zwart-witportret tegen een lichte muur",
+};
+
 export const hanneke: Coach = {
   slug: "hanneke",
+  isPlaceholder: true,
   name: "Hanneke",
   town: "Utrecht",
   region: "Utrecht, Nieuwegein, Houten en Zeist",
@@ -76,6 +119,7 @@ export const hanneke: Coach = {
 
 export const bram: Coach = {
   slug: "bram",
+  isPlaceholder: true,
   name: "Bram",
   town: "Amersfoort",
   region: "Amersfoort, Leusden, Soest en Barneveld",
@@ -95,6 +139,7 @@ export const bram: Coach = {
 
 export const nadia: Coach = {
   slug: "nadia",
+  isPlaceholder: true,
   name: "Nadia",
   town: "Rotterdam",
   region: "Rotterdam, Schiedam en Capelle aan den IJssel",
@@ -114,6 +159,7 @@ export const nadia: Coach = {
 
 export const wietske: Coach = {
   slug: "wietske",
+  isPlaceholder: true,
   name: "Wietske",
   town: "Groningen",
   region: "Groningen, Assen en Leeuwarden",
@@ -133,6 +179,7 @@ export const wietske: Coach = {
 
 export const joris: Coach = {
   slug: "joris",
+  isPlaceholder: true,
   name: "Joris",
   town: "Eindhoven",
   region: "Eindhoven, Helmond en Veldhoven",
@@ -150,5 +197,10 @@ export const joris: Coach = {
     "Joris, studiekeuzecoach in Eindhoven, aan tafel in zijn werkkamer",
 };
 
-/** The order on /studiekeuzecoaches. It carries no ranking. */
-export const coaches: Coach[] = [hanneke, bram, nadia, wietske, joris];
+/**
+ * The order on /studiekeuzecoaches, and the order of the index in its hero.
+ * It carries no ranking, with one exception: the real coach stands first, and
+ * every stand-in follows. That keeps the top of the page true if the rest is
+ * pulled at short notice.
+ */
+export const coaches: Coach[] = [janneke, hanneke, bram, nadia, wietske, joris];
