@@ -9,12 +9,12 @@
  * that city uses it. Write nothing and the city uses the shared text. You can
  * improve the copy one city at a time, and no component has to change.
  *
- * WARNING: NO COACH NAMED HERE IS A REAL PERSON. The people live in
- * app/coaches.ts, and that file carries the full warning. None of it may go
- * live.
+ * WARNING: ONE COACH NAMED HERE IS A REAL PERSON AND THE OTHERS ARE NOT. The
+ * people live in app/coaches.ts, and the `isPlaceholder` field on each of them
+ * says which is which. A city whose coach is a stand-in may not go live.
  */
 
-import { bram, type Coach, hanneke } from "./coaches";
+import { bram, type Coach, hanneke, janneke } from "./coaches";
 
 export type MeetingPlace = {
   street: string;
@@ -36,9 +36,11 @@ export type City = {
   coach: Coach | null;
   /**
    * TODO: every meeting room on the old site was rented by the seller, so we
-   * have no confirmed address. Until a room is fixed, this stays null and the
-   * page says we agree a place together. Fill the object and the address block
-   * appears. Do not put a street here that nobody can walk into.
+   * have no confirmed address. This is the one thing the archive cannot give
+   * us. The rights to its content are bought, but a lease is not content: an
+   * address on an old page is not a room we can walk into. Until a room is
+   * fixed, this stays null and the page says we agree a place together. Fill
+   * the object and the address block appears.
    */
   meeting: MeetingPlace | null;
 
@@ -49,6 +51,38 @@ export type City = {
 };
 
 export const cities: City[] = [
+  {
+    // First, because it is the only city with a coach who exists. The old
+    // /locaties/amsterdam/ is also the one city URL that docs/url-map.csv marks
+    // `keep` on its own traffic, so the address does not change either.
+    //
+    // No address. The old page named Van Baerlestraat 13, but that room was
+    // rented by the seller, so it stays out until a room is ours. See the
+    // `meeting` field above.
+    slug: "amsterdam",
+    name: "Amsterdam",
+    region: janneke.region,
+    coach: janneke,
+    meeting: null,
+
+    // The first city to carry its own text instead of the shared one, so this
+    // is also the worked example for section 5 of todos.md. What makes it local
+    // is the one thing the old Amsterdam page had that no other city page had:
+    // the four institutions a reader here is actually choosing between. The
+    // shared text stays underneath for every city that has nothing to add.
+    intro:
+      "De UvA, de VU, de HvA en Inholland zitten allemaal in dezelfde stad. Meer keuze dus, maar niet meer overzicht. In Amsterdam en Amstelveen werkt een vaste coach die met je meeloopt tot je keuze rond is. Het eerste gesprek is gratis, en daarna beslis jij.",
+
+    firstChoice: [
+      "Woon je in Amsterdam, in Amstelveen of daar vlakbij, en moet je na je examen kiezen? Dan heb je al gemerkt hoeveel opleidingen er zijn. Alleen al in deze stad zijn het er honderden, en op de website klinken ze bijna allemaal goed. Daarom is kiezen zo moeilijk. Niet omdat je nog niet weet wat je wilt, maar omdat niemand honderden dingen kan overzien.",
+      "In vier gesprekken kijken we naar wie je bent, wat je goed kunt en wat je wilt. Tussen de gesprekken door zoek je zelf verder, en je gaat naar open dagen om te voelen of een opleiding klopt. Hier ben je daar weinig reistijd aan kwijt, dus doe er meer dan één. Aan het eind heb je geen lijst met honderd opties, maar één keuze waar je zelf achter staat. Of je nu mbo, hbo of wo gaat doen maakt voor onze aanpak niets uit.",
+    ],
+
+    wrongChoice: [
+      "Je begon vol goede moed aan een studie aan de UvA, de VU, de HvA of Inholland, en onderweg ging het mis. Je bent gestopt, of je denkt erover. Dat is balen, en het zegt niets over jou. Ongeveer de helft van de mensen die bij ons aanklopt is gestopt, of denkt erover om te stoppen. Je bent dus niet de enige, en je bent zeker niet de eerste.",
+      "Je weet nu iets wat je een jaar geleden nog niet wist: hoe studeren echt gaat, en wat er niet bij je past. Soms lag dat aan de opleiding zelf, soms aan alles eromheen: de reistijd, het wonen, of hoe groot en druk zo'n instelling is. We kijken naar allebei. Dat is bruikbare informatie, en daar beginnen we mee. Wachten tot september hoeft niet.",
+    ],
+  },
   {
     slug: "utrecht",
     name: "Utrecht",

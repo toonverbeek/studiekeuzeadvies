@@ -60,6 +60,7 @@ PAIRS = {
     "hbo-opleiding-kiezen": "/hbo-opleiding-kiezen/",
     "wo-opleiding-kiezen": "/wo-opleiding-kiezen/",
     "locaties": "/locaties/",
+    "locaties/amsterdam": "/locaties/amsterdam/",
     "locaties/utrecht": "/locaties/utrecht/",
     "locaties/amersfoort": "/locaties/amersfoort/",
     "locaties/bergen-op-zoom": "/bergen-op-zoom/",

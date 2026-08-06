@@ -80,17 +80,20 @@ Minimum:
 
 The archive at `../studiekeuzeadvies archive/` holds 514 pages, 219 media files, a redirect map, and the Yoast sitemaps.
 
+**The rights are bought.** Confirmed on 2026-08-06: the purchase includes permission to use all content of the old site. Nothing in the archive is blocked by rights. That covers the 514 pages, the 219 media files, the coach biographies and photos, the customer stories, and the numbers.
+
 **Content we can use:**
 - 63 articles, 2014 to 2026, of which 19 from 2025. They were orphaned on the old site: no `/blog/` hub, no navigation link, one inbound link each.
 - The 37 city pages, as a text base only. They are one template with the city name changed.
 - The description of the method, the four meetings, and the product structure.
-
-**Not confirmed, so not usable yet:**
-- The 8,8 coach rating, the 92 percent success number, and "meest gevraagde partij".
-- The coach biographies and photos (Mirjam, Janneke, Astrid, Barbara, and the others). They worked for the seller.
+- The coach biographies and photos (Mirjam, Janneke, Astrid, Barbara, and the others).
 - The customer stories on `/ervaringen/`.
-- The Qompas tests (Persoonstype, Competentie, Beroepen, Interesse) and the TalentenTest with Tilburg University. These are the core of the old product, and Qompas is the seller.
-- The old prices, €199 to €699, if the tests do not come with the sale.
+
+**Still open, but not because of rights:**
+- The 8,8 coach rating, the 92 percent success number, and "meest gevraagde partij". We may print these sentences. Whether they are true of the new company is a different question, and Design Principle 5 answers it: a number goes on the site when we can prove it of ourselves. Most of the coaches who earned the 8,8 are not ours.
+- The Qompas tests (Persoonstype, Competentie, Beroepen, Interesse) and the TalentenTest with Tilburg University. Owning the page that describes a test is not owning the test. The decision of 2026-08-04 is that the site does not sell them.
+- The old prices, €199 to €699. They belong to a product that included the tests.
+- The meeting rooms. The seller rented them, and a lease is not content. Confirm each address before it goes on a city page.
 
 **Decisions that need data, not judgement:**
 - Which of the 63 articles to keep. This needs Search Console, and access disappears with the seller's tenant.
