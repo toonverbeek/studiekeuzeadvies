@@ -1,14 +1,30 @@
 "use client";
 
+import Link from "next/link";
 import { useActionState, useId } from "react";
 import { requestIntake } from "../actions";
 import { intakeInitialState, situaties } from "../intake";
-import { site } from "../site-config";
 
 const fieldBase =
   "w-full border border-hairline bg-paper-shade px-4 py-3 text-body text-ink transition-colors duration-150 ease-out-quart placeholder:text-ink-soft hover:border-ink-soft";
 
-export function IntakeForm() {
+/**
+ * The form always knows where it sends to, because there is no central mailbox
+ * to fall back on (issue #7).
+ *
+ * `route` is the encoded destination of app/intake.ts and it travels in a
+ * hidden field. `coachName` is the same destination in words, for the reader.
+ * They are two props and not one, because the server may not believe the words
+ * and the reader cannot read the slug. `coachName` is required and nullable on
+ * purpose: a page that cannot name a reader has to say so out loud.
+ */
+export function IntakeForm({
+  coachName,
+  route,
+}: {
+  coachName: string | null;
+  route: string;
+}) {
   const [state, formAction, pending] = useActionState(
     requestIntake,
     intakeInitialState,
@@ -23,19 +39,14 @@ export function IntakeForm() {
       <div className="flex flex-col gap-6" aria-live="polite">
         <p className="text-lead font-medium">{state.message}</p>
         <p className="max-w-[60ch] text-ink-soft">
-          Wil je het liever nu bespreken? Bel{" "}
-          <a className="font-medium text-ink underline underline-offset-4" href={site.phone.href}>
-            {site.phone.display}
-          </a>{" "}
-          of stuur een bericht via{" "}
-          <a
+          Wil je vast lezen wat een traject kost en hoe lang het duurt? Dat
+          staat bij de{" "}
+          <Link
             className="font-medium text-ink underline underline-offset-4"
-            href={site.whatsapp.href}
-            rel="noreferrer noopener"
-            target="_blank"
+            href="/veelgestelde-vragen"
           >
-            WhatsApp
-          </a>
+            veelgestelde vragen
+          </Link>
           .
         </p>
       </div>
@@ -52,6 +63,23 @@ export function IntakeForm() {
           {state.message}
         </p>
       )}
+
+      {/* Who reads this. It is the first line of the form on purpose: a reader
+          may write something they have told nobody, so they must know who opens
+          it before they start typing. No promise about when an answer comes:
+          this file cannot keep one. */}
+      <input defaultValue={route} name="voor" type="hidden" />
+      <p className="max-w-[60ch]">
+        {coachName ? (
+          <>
+            <span className="font-medium">{coachName}</span> leest wat je hier
+            invult.
+          </>
+        ) : (
+          "Hier werkt nog geen vaste coach. We zoeken iemand bij jou in de buurt en je hoort van ons."
+        )}
+      </p>
+      {state.errors.voor && <p className="text-error">{state.errors.voor}</p>}
 
       <div className="grid gap-6 sm:grid-cols-2">
         <div className="flex flex-col gap-2">
@@ -180,7 +208,9 @@ export function IntakeForm() {
         />
       </div>
 
-      <div className="flex flex-wrap items-center gap-x-8 gap-y-4">
+      {/* One button, and nothing next to it. The WhatsApp link that stood here
+          went to one central number, and that number is gone. */}
+      <div>
         <button
           className="bg-ink px-8 py-4 text-eyebrow uppercase text-paper transition-colors duration-150 ease-out-quart hover:bg-ochre-deep disabled:cursor-not-allowed disabled:opacity-70"
           disabled={pending}
@@ -188,14 +218,6 @@ export function IntakeForm() {
         >
           {pending ? "Bezig met versturen" : "Vraag een gratis intake aan"}
         </button>
-        <a
-          className="font-medium underline underline-offset-4 decoration-ochre-line decoration-2 transition-colors duration-150 ease-out-quart hover:decoration-ink"
-          href={site.whatsapp.href}
-          rel="noreferrer noopener"
-          target="_blank"
-        >
-          Liever appen? Stuur een bericht
-        </a>
       </div>
 
       <p className="max-w-[60ch] text-ink-soft">

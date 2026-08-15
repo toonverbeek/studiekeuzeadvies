@@ -43,8 +43,9 @@
  * - The whole block "Inclusief TalentenTest en Keuzegids". The TalentenTest and
  *   the Keuzegids belong to the seller, and "de enige echt onafhankelijke" is a
  *   superlative we cannot prove either way.
- * - The 088 number, and the two "Vragen of advies nodig?" blocks around it.
- *   app/site-config.ts owns the number, and the form does this work now.
+ * - The 088 number, and the two "Vragen of advies nodig?" blocks around it. It
+ *   belonged to the seller, and since issue #7 this site prints no central
+ *   number at all. The route to a coach in your own city does this work now.
  * - "een enthousiaste en ervaren studiekeuze coach". No coach has signed, so
  *   nothing here says who the coaches are or what they have done before. For
  *   the same reason, no sentence on this page claims experience with ADD or

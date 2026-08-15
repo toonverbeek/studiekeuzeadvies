@@ -22,6 +22,10 @@ export function SiteHeader({
 }) {
   // The header carries its own ochre so it can live outside <main>. A <header>
   // inside <main> is not a banner landmark, and PRODUCT.md asks for real ones.
+  //
+  // No telephone number stands in this nav, and none may come back. There is no
+  // central number to print (issue #7): a reader picks a city, sees who works
+  // there, and writes to that person. "Locaties" is the contact link.
   return (
     <header className="bg-ochre text-ink">
       <div
@@ -46,14 +50,6 @@ export function SiteHeader({
                 </Link>
               </li>
             ))}
-            <li>
-              <a
-                className="font-medium underline decoration-ink/40 decoration-2 underline-offset-4 transition-colors duration-150 ease-out-quart hover:decoration-ink"
-                href={site.phone.href}
-              >
-                {site.phone.display}
-              </a>
-            </li>
           </ul>
         </nav>
       </div>

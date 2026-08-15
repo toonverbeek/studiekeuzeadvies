@@ -37,7 +37,8 @@
  *   professionals, and that they have years of experience with this age group.
  *   Those are hiring wishes, not facts we can stand behind today, and todos.md
  *   lists them as a blocker. What the traject does is described instead.
- * - The 088 number in the copy. app/site-config.ts owns the number.
+ * - The 088 number in the copy. It belonged to the seller, and since issue #7
+ *   this site prints no central number at all.
  * - The claims about ourselves in the old h2s and closing lines: "de
  *   professionals van nu voor de professionals van straks", "Bij
  *   StudieKeuzeAdvies ben je aan het juiste adres!", and "coaches die zich

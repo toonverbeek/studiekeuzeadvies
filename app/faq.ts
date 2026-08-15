@@ -47,8 +47,9 @@
  *   placeholder. See todos.md. One line of that old answer does survive, in the
  *   intake answer below: the intake is free because the click between you and
  *   your coach has to be right.
- * - The 088 number in the running text. app/site-config.ts owns the number, and
- *   the header, the footer and the contact section all show it.
+ * - The 088 number in the running text. It belonged to the seller, and since
+ *   issue #7 this site prints no central number at all: a reader picks a city
+ *   and writes to the coach who works there.
  *
  * NO FAQ STRUCTURED DATA. An FAQPage script is a separate decision and it sits
  * in todos.md. It is not added here.

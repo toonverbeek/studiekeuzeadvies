@@ -1,9 +1,46 @@
 "use server";
 
-import { intakeInitialState, situaties, type IntakeState } from "./intake";
-import { site } from "./site-config";
+import { getCity } from "./cities";
+import { type Coach, getCoach } from "./coaches";
+import {
+  decodeIntakeRoute,
+  intakeInitialState,
+  type IntakeRoute,
+  type IntakeState,
+  situaties,
+} from "./intake";
+import { unassignedIntakeInbox } from "./site-config";
 
 const isEmail = (value: string) => /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(value);
+
+/**
+ * Where one request goes, after the hidden field has been checked against real
+ * data. `coach` is null for a city that has no coach yet: that is a valid
+ * request, it only has a different destination.
+ */
+type IntakeDestination = {
+  coach: Coach | null;
+  /** The city the reader came from, when the route named one. */
+  cityName: string | null;
+};
+
+/**
+ * The form carries a slug through the browser, so it is a claim, not a fact.
+ * Everything here is looked up in app/coaches.ts and app/cities.ts, and an
+ * unknown slug returns null. Nothing is delivered on the word of a form field.
+ *
+ * A city route is resolved to the coach of that city, not to a stored name, so
+ * a request follows the roster instead of a copy of it.
+ */
+function resolveDestination(route: IntakeRoute): IntakeDestination | null {
+  if (route.kind === "coach") {
+    const coach = getCoach(route.slug);
+    return coach ? { coach, cityName: null } : null;
+  }
+
+  const city = getCity(route.slug);
+  return city ? { coach: city.coach, cityName: city.name } : null;
+}
 
 export async function requestIntake(
   _prev: IntakeState,
@@ -15,6 +52,7 @@ export async function requestIntake(
     telefoon: String(formData.get("telefoon") ?? "").trim(),
     situatie: String(formData.get("situatie") ?? "").trim(),
     bericht: String(formData.get("bericht") ?? "").trim(),
+    voor: String(formData.get("voor") ?? "").trim(),
   };
 
   const errors: IntakeState["errors"] = {};
@@ -33,7 +71,20 @@ export async function requestIntake(
     errors.situatie = "Kies wat het beste bij je past.";
   }
 
-  if (Object.keys(errors).length > 0) {
+  const route = decodeIntakeRoute(values.voor);
+  const destination = route ? resolveDestination(route) : null;
+
+  // A reader cannot repair this field, so the message sends them somewhere they
+  // can: the list of cities. Without a destination there is nobody to write to,
+  // so this stops the request instead of quietly sending it into the void.
+  if (!destination) {
+    errors.voor =
+      "We kunnen niet zien voor wie dit bericht is. Kies je stad bij Locaties en verstuur het daar opnieuw.";
+  }
+
+  // `!destination` is here for the type checker as much as for the reader: the
+  // error above already covers this case.
+  if (!destination || Object.keys(errors).length > 0) {
     return {
       status: "error",
       message: "Er ontbreekt nog iets. Kijk hieronder wat je moet aanvullen.",
@@ -42,18 +93,30 @@ export async function requestIntake(
     };
   }
 
-  // TODO: nothing is delivered yet. Wire this to the mailbox in site-config.ts
-  // (or to a form service) before the site goes live. Until then a real request
-  // would be lost, so this page must not be published.
+  /*
+   * The delivery route, and the whole of it: the coach of this city, or the
+   * inbox for a city where no coach works yet. Both are null today, so nothing
+   * arrives anywhere. That is one blocker in todos.md, not a bug in this file,
+   * and the site must not go live while it stands.
+   *
+   * The warning names the person the request was meant for. A log line that
+   * only says "not sent" hides which desk missed the request.
+   */
+  const inbox = destination.coach?.email ?? unassignedIntakeInbox;
+  const meantFor = destination.coach
+    ? destination.coach.name
+    : `nog geen coach in ${destination.cityName ?? "deze stad"}`;
+
   console.warn(
-    `[intake] Aanvraag ontvangen maar NIET verstuurd. Doel: ${site.email}`,
+    `[intake] Aanvraag ontvangen maar NIET verstuurd. Bedoeld voor: ${meantFor}. Adres: ${inbox ?? "nog niet bekend"}.`,
     values,
   );
 
   return {
     status: "success",
-    message:
-      "Je aanvraag staat genoteerd. We bellen of mailen je binnen één werkdag om een gratis intakegesprek in te plannen.",
+    message: destination.coach
+      ? `Je aanvraag staat genoteerd voor ${destination.coach.name}. Je hoort van ${destination.coach.name} per mail.`
+      : "Je aanvraag staat genoteerd. Hier werkt nog geen vaste coach, dus we zoeken iemand bij jou in de buurt. Je hoort van ons per mail.",
     errors: {},
     values: intakeInitialState.values,
   };
