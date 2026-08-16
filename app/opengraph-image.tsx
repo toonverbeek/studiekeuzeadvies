@@ -24,9 +24,10 @@ import { join } from "node:path";
  * a share image is the one place where an unprovable claim travels furthest.
  *
  * The proportions were chosen by looking at the result, not by taste in the
- * abstract. The ochre row is two thirds of the height. docs/art/mock-og.py
- * predicts this image pixel for pixel with the same fonts and the same
- * numbers, so the composition can be inspected without running a build.
+ * abstract. The ochre row is two thirds of the height. To see a change, build
+ * and open /opengraph-image: it is a static route, so what you get is what a
+ * chat app gets. Check it at thumbnail size too, because that is where it is
+ * read, and remember that some clients crop it to a square from the centre.
  */
 
 export const alt =
@@ -41,9 +42,14 @@ export const contentType = "image/png";
  * is generated at build time. A build must never depend on the network, so the
  * two weights live in app/fonts/ instead of being fetched from Google at
  * request time. They are subsets: next/og allows 500 KB for the whole route,
- * and the full family is 260 KB per weight. docs/art/build-og-fonts.py makes
- * them, and it keeps every letter a Dutch sentence can need, so a later change
- * to the copy cannot silently lose a glyph.
+ * and the full family is 260 KB per weight. They keep every letter, digit and
+ * mark a Dutch sentence can need, not only the letters of today's copy, so a
+ * later edit to the sentence cannot silently lose a glyph.
+ *
+ * To remake them, take the two weights from Google Fonts (the URL is in
+ * docs/art/mark.py) and run pyftsubset over each one, keeping the kern, liga
+ * and calt features so the shaping matches the browser, and --name-IDs=* so
+ * the licence travels with the file. app/fonts/OFL.txt is that licence.
  */
 const fontsDir = join(process.cwd(), "app", "fonts");
 const alegreyaBold = await readFile(

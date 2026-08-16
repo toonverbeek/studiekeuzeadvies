@@ -597,8 +597,8 @@ freelance coach.
 - [ ] **Check the real link preview once on a deployed URL.** `#8` again. A
       local build cannot prove what WhatsApp fetches, and WhatsApp caches a
       preview per URL. Watch for the square centre crop that some older clients
-      use: the wordmark runs 953 px wide, so such a crop cuts both ends.
-      `docs/art/mock-opengraph-square-crop.png` shows the worst case.
+      use: the wordmark runs 953 px wide on a 1200 px image, so a centre crop to
+      1:1 cuts the S and the s off both ends. That is the worst case to check.
 - [ ] **Re-read the labels that point at `#contact`.** About twenty buttons and
       footer links say "Plan een gratis intakegesprek" or "Gratis
       intakegesprek". On a page that knows a city they land on a form with a
@@ -637,7 +637,7 @@ Do not re-open these without a reason.
 | A generated image may show a scene, never a person we present as one of ours. The home page hero is such a scene; the five stand-in portraits still may not go live | 2026-08-13 |
 | No `lastModified`, `changeFrequency` or `priority` in the sitemap. We can prove none of the three, and a wrong one costs trust | 2026-08-15 |
 | Every customer story carries a date that can be proved. A story we cannot date does not go on `/ervaringen` at all | 2026-08-15 |
-| The wordmark, the icons and the share image are generated from one font file by `docs/art/build-marks.py`, so the vector and the raster cannot drift. They are placeholders for the designed logo that is waiting on the client's yes | 2026-08-15 |
+| The wordmark and the icons are generated from one font file by `docs/art/build-marks.py`, so the vector and the raster cannot drift. That font is fetched, not committed: the script says where from, and it stops with that line if you have not. They are placeholders for the designed logo that is waiting on the client's yes | 2026-08-15 |
 | An article keeps its old root URL. The hub is at `/artikelen`. Zero redirects. Re-opened the same day by `docs/url-map.csv`, which moved them to `/artikelen/<slug>`. **Settled on 2026-08-15 at the root**, as first decided: a post resolves to `/<slug>`, so its address does not change and the row is a keep, not a redirect | 2026-08-05 |
 | Article text in MDX, article metadata in `app/articles.ts` | 2026-08-05 |
 | No image on an article. The archive images die with the seller's S3 bucket and the rights are not confirmed. **Half of that reason fell away on 2026-08-06:** the rights are bought, and the 219 files are already on disk in the archive. Re-open if an article wants a picture | 2026-08-05 |

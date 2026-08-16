@@ -1,23 +1,33 @@
-"""Working file for issue #8. Writes public/wordmark.svg, app/icon.svg,
-app/favicon.ico and app/apple-icon.png from one source: Alegreya Sans Bold.
+"""Writes public/wordmark.svg, app/icon.svg, app/favicon.ico and
+app/apple-icon.png from one source: Alegreya Sans Bold.
 
-Re-run this file if the mark ever changes, so the vector and the raster can
-never disagree:  /tmp/skavenv/bin/python docs/art/build-marks.py
+Re-run it if the mark ever changes, so the vector and the raster can never
+disagree. It needs three packages and one font file that is not in this repo:
+
+  python3 -m venv .venv && .venv/bin/pip install fonttools uharfbuzz pillow
+  curl -L -o ~/AlegreyaSans-Bold.ttf \
+    https://github.com/google/fonts/raw/main/ofl/alegreyasans/AlegreyaSans-Bold.ttf
+  ALEGREYA_SANS_BOLD=~/AlegreyaSans-Bold.ttf .venv/bin/python docs/art/build-marks.py
+
+docs/art/mark.py says why the font is fetched instead of committed. After a
+run, LOOK at the four files before you trust them: `qlmanage -t -s 1200 -o .
+app/icon.svg public/wordmark.svg` renders the two vectors, and the .ico is
+worth opening at 16 pixels, which is the size that decides whether the mark
+works at all.
 """
 import os
 import sys
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
-from mark import INK, OCHRE, PAPER, TTF, bbox, num, path_for, upem  # noqa: E402
+from mark import INK, OCHRE, TTF, bbox, num, path_for, upem  # noqa: E402
 from PIL import Image, ImageDraw, ImageFont  # noqa: E402
 
-ROOT = "/Users/toon/Dev/studiekeuzeadvies.nl"
-ART = os.path.join(ROOT, "docs/art")
+ROOT = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 WORDMARK = "StudieKeuzeAdvies"
 INITIAL = "S"
 # The S must survive 16 pixels. 0.78 of the tile was the largest step that kept
-# both counters open in docs/art/specimen-icon-small.png.
+# both counters open when the 16 pixel frame was inspected on its own.
 ICON_FIT = 0.78
 
 
@@ -110,25 +120,3 @@ print("favicon.ico   sizes " + ", ".join(str(p) for p in ICO_SIZES))
 
 raster(180).save(os.path.join(ROOT, "app/apple-icon.png"), format="PNG")
 print("apple-icon.png 180x180")
-
-# ---------------------------------------------------------------- previews ---
-# Read the .ico back from disk, so what is inspected is the shipped file and
-# not the tiles that made it. Look at these with the Read tool before calling
-# the mark done. The vector twins are checked separately with
-#   qlmanage -t -s 1200 -o /tmp/qlout app/icon.svg public/wordmark.svg
-# which renders the real SVG, and the result is kept as
-# docs/art/render-icon-svg.png and docs/art/render-wordmark-svg.png.
-lab = ImageFont.truetype("/tmp/AlegreyaSans-Regular.ttf", 16)
-ico = Image.open(os.path.join(ROOT, "app/favicon.ico"))
-cell, gap = 224, 30
-sheet = Image.new("RGB", (gap + 3 * (cell + gap), 2 * (cell + gap + 26) + gap), PAPER)
-sd = ImageDraw.Draw(sheet)
-for i, p in enumerate(ICO_SIZES):
-    frame = ico.ico.getimage((p, p)).convert("RGB")
-    x = gap + (i % 3) * (cell + gap)
-    y = gap + (i // 3) * (cell + gap + 26)
-    sd.text((x, y), f"ico {p} px", font=lab, fill="#534c41")
-    sheet.paste(frame.resize((cell, cell), Image.NEAREST if p <= 64 else Image.LANCZOS),
-                (x, y + 24))
-sheet.save(os.path.join(ART, "render-favicon-ico.png"))
-print("preview      docs/art/render-favicon-ico.png")
