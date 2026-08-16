@@ -13,8 +13,8 @@ and what still has to happen before the old site can be switched off.
 | File | What it is |
 |---|---|
 | `docs/url-map.csv` | All 522 old URLs, each with a new URL and an action. Generated. |
-| `app/redirects.ts` | The 346 `action=redirect` rows, as a typed array. Generated. |
-| `next.config.ts` | Imports the array, makes every row permanent, and adds the canonical host rule. Written by hand. |
+| `app/redirects.ts` | Every row that must not 404, as a typed array: 439 of them. Generated. |
+| `next.config.ts` | Imports the array, turns `temporary` into 307 or 308, and adds the canonical host rule. Written by hand. |
 | `scripts/build-url-map.py` | Writes both generated files. Run it after any change. |
 
 ```sh
@@ -22,11 +22,12 @@ python3 scripts/build-url-map.py
 ```
 
 The table is data, so it does not live in `next.config.ts`. A config file that
-is 346 rows of data is a config file nobody reads.
+is 439 rows of data is a config file nobody reads.
 
 Counts today: 522 old URLs, of which 346 redirect, 101 keep, 66 drop and 9
-rebuild. Every redirect is permanent, so Next answers with a 308 and a search
-engine moves the ranking to the new address.
+rebuild. That produces 439 rows in `app/redirects.ts`: 259 permanent (308,
+the address has moved for good) and 180 parked (307, the page it wants is not
+written yet). Only the 66 `drop` rows answer 404, which is what `drop` means.
 
 ## Decision 1. The articles stay at the root
 
@@ -46,11 +47,19 @@ Two things follow from it.
   that case in general: any row whose new URL is its own old URL becomes a
   `keep`. One other row needed it, `/locaties/gouda/`, because the old site
   redirects it to `/gouda/` and we send `/gouda/` back to `/locaties/gouda`.
-- **A `keep` is still work.** 59 of the 63 articles are not imported into
-  `app/articles.ts` yet, so their URLs answer 404 today. See "What still answers
-  404" below. Do not paper over that with a redirect to `/artikelen`: the day
-  the article is imported, that redirect would shadow the live page and the
-  article would be invisible.
+- **A `keep` is still work.** 60 of the 63 articles are not imported into
+  `app/articles.ts` yet. Until they are, their URLs are parked on `/artikelen`
+  with a 307 rather than left to 404. See "308 for gone, 307 for parked".
+
+  This file used to warn against exactly that, on the grounds that the day an
+  article is imported the stale redirect would shadow the live page and the
+  article would be invisible. The risk is real and it is now caught: the ladder
+  reads the routes that exist on disk, so re-running the generator removes the
+  row by itself, and if somebody imports an article and forgets to re-run it,
+  **the build fails**. `app/sitemap.ts` refuses to prerender when a sitemap URL
+  is also a redirect source, and every article is in the sitemap. Proved on
+  2026-08-16 by putting a parked source into `staticPaths`: the build stopped
+  with `sitemap: /... is a redirect source in app/redirects.ts`.
 
 ## Decision 2. No redirect may land on a 404
 
@@ -80,30 +89,67 @@ The ladder line for an article reads `/artikelen/<slug>` in the ticket. Because
 of Decision 1 an article target is a root URL, so the script matches a target
 that is a known old article slug instead. Same rule, new address shape.
 
-**Every fallback is temporary.** Each one carries a `// waits for <target>`
-comment on its row in `app/redirects.ts`. Build the page, run the script again,
-and the fallback disappears by itself. Nothing has to be edited by hand.
+**A fallback carries a `// waits for <target>` comment** on its row in
+`app/redirects.ts`. Build the page, run the script again, and the fallback
+disappears by itself. Nothing has to be edited by hand.
+
+### A `keep` row with no page is a redirect too, until its page lands
+
+The ladder used to run on `action=redirect` rows only. That left every `keep`
+and `rebuild` row whose page was not written yet answering **404**: 93 URLs,
+carrying 5.898 inbound links and 57.348 words of archived text, and every one of
+them still ranking. Decision 1 made that worse rather than better, because it
+moved 62 article rows from `redirect` to `keep`, so they stopped falling down
+the ladder and started 404ing instead.
+
+So the ladder now runs on every row except a `drop`. A `keep` row whose page
+exists is skipped, because the address answers for itself. A `keep` row whose
+page does not exist yet is parked on the nearest real page until it does.
+
+### 308 for gone, 307 for parked
+
+Not every row is permanent, and the difference matters more than it looks.
+
+- **308, permanent.** The address is gone for good, so a search engine should
+  move the ranking to the destination and stop asking.
+- **307, temporary.** The destination is a stand-in for a page we intend to
+  write. A 308 here would hand away an address that still ranks and that we mean
+  to serve ourselves, so the crawler is asked to keep the old address and come
+  back.
+
+`settled` in `scripts/build-url-map.py` decides which, and **it is not the same
+as "did we need a fallback"**. A fallback can be the final answer:
+
+| Landing | Code | Why |
+|---|---|---|
+| The real target exists | 308 | The move is done |
+| `/contact` to `/locaties` | 308 | There is no central contact point, and there will not be one |
+| `/over-ons` to `/studiekeuzecoaches` | 308 | The company is the coaches. No about page is planned |
+| `/studiekeuzecoaches/<person>` to the roster | 308 | Those three people do not work here. That page is never coming |
+| An article to `/artikelen` | 307 | The text is in the archive and the rights are bought. Importing it is work, not a decision |
+| A city to `/locaties` | 307 | The page opens when a coach signs |
+| `/tarieven`, `/onze-methode`, `/coach-worden`, `/bedankt` | 307 | Planned, blocked on the client |
+| Anything unrecognised | 308 | Nothing is planned for it, so the front door is the honest final answer |
 
 ### Targets waiting for a page
 
-93 of the 346 redirects stand on a fallback today.
+180 of the 439 rows stand on a fallback today, and answer 307 rather than 308.
 
 | Waiting target | Rows | Lands on for now |
 |---|---:|---|
-| `/tarieven` | 41 | `/studiekeuzetraject` |
-| `/locaties/` for 15 cities: apeldoorn, arnhem, breda, bussum, deventer, enschede, gouda, groningen, leiden, maastricht, roosendaal, sittard, wassenaar, zutphen, zwolle | 28 | `/locaties` |
-| `/van-studie-wisselen` (an article, not imported) | 10 | `/artikelen` |
+| `/tarieven` | 42 | `/studiekeuzetraject` |
+| `/onze-methode` | 4 | `/studiekeuzetraject` |
 | `/coach-worden` | 4 | `/studiekeuzecoaches` |
-| `/onze-methode` | 3 | `/studiekeuzetraject` |
-| `/studiekeuzecoaches/aart-smit`, `/studiekeuzecoaches/angelina-muller`, `/studiekeuzecoaches/janneke-van-den-brand` | 3 | `/studiekeuzecoaches` |
 | `/bedankt` | 2 | `/` |
-| `/over-ons` | 1 | `/` |
-| `/wat-betekent-het-leenstelsel-concreet-voor-jou` (an article) | 1 | `/artikelen` |
+| `/locaties/` for 33 cities without a coach | 58 | `/locaties` |
+| 59 articles not imported into `app/articles.ts` | 70 | `/artikelen` |
 
-The three coach URLs are the open item in `todos.md` section 7: 1129 words of
-Janneke's interview hang on `/studiekeuzecoaches/janneke-van-den-brand`, and
-today the roster only has the anchor `#janneke`. Until there is a page per
-coach, the redirect lands on the roster.
+The three old coach interviews are not in that list any more: they are settled
+308s to the roster, because those people do not work here. One of them is worth
+a second look though. 1129 words of Janneke's interview hang on
+`/studiekeuzecoaches/janneke-van-den-brand`, she IS our coach, and today the
+roster only offers the anchor `#janneke`. A page per coach would turn that 308
+into a real destination. See `todos.md` section 7.
 
 ## The 22 legacy redirects
 
@@ -202,26 +248,32 @@ host. `app/layout.tsx` already sets `metadataBase` to the www host.
 
 ## What still answers 404
 
-The redirect table is complete and lands nowhere empty. The `keep` and `rebuild`
-rows are a different matter: they are URLs whose address does not change, and
-93 of them have no page in this checkout.
+Only the 66 `drop` rows, which is what `drop` means: a date archive, a tag page,
+an attachment, a page the old site already marked `noindex`. Letting those 404
+is the decision, not a gap in it.
 
-| Missing page | Rows |
-|---|---:|
-| An article that is not imported into `app/articles.ts` | 59 |
-| A city that is not in `app/cities.ts` | 30 |
-| `/contact`, `/onze-methode`, `/over-ons`, `/tarieven` | 4 |
+Everything else lands on a page that answers 200. Verified by walking all 522
+rows of `docs/url-map.csv` against a production build on 2026-08-16:
 
-None of these is a redirect problem, and none can be fixed by a redirect. Each
-one is a decision that is written down elsewhere: which of the 63 articles stay
-and which of the 37 city pages stay both need the Search Console export
-(`todos.md` sections 2 and 4), and the four pages wait on the price and on the
-method. The day a decision falls the other way, the row moves from `keep` to
-`redirect` in `docs/url-map.csv`, the script runs again, and the URL lands on
-`/artikelen` or `/locaties` instead of on a 404.
+| Intended action | Rows | Final answer |
+|---|---:|---|
+| `redirect` | 346 | 200 |
+| `keep` | 101 | 200 |
+| `rebuild` | 9 | 200 |
+| `drop` | 66 | 404, on purpose |
 
-This is the last thing that has to be resolved before the old site is switched
-off.
+**The 404s are gone, the work behind them is not.** 180 of those rows only reach
+200 because they are parked on a stand-in page. A reader who followed a Google
+result for "studiekeuze Eindhoven" now lands on `/locaties` instead of nothing,
+which is better, but it is not the page they searched for. The two decisions
+that actually close this are unchanged and are in `todos.md` sections 2 and 4:
+which of the 63 articles to import, and which of the 37 cities to open. The 307
+exists to keep those addresses ours until then.
+
+Importing the articles is the cheapest of the two by a distance. The text is
+already on disk in the archive, the rights are bought, and 70 parked rows point
+at articles. Search Console tells you which to do first. It does not gate
+whether you may.
 
 ## How to check the table
 
@@ -234,8 +286,9 @@ the real routes:
 3. Every target resolves to a route that exists.
 4. No duplicate sources.
 
-Result on 2026-08-15: 346 rows, 0 shadowed routes, 0 chains, 0 missing targets,
-0 duplicates, 93 rows on a fallback. Re-check after any change to `app/`:
+Result on 2026-08-16: 439 rows, 0 shadowed routes, 0 chains, 0 missing targets,
+0 duplicates, 0 self redirects, 0 empty sources, 259 permanent and 180 parked.
+Re-check after any change to `app/`:
 
 ```sh
 python3 - <<'PY'

@@ -252,12 +252,27 @@ DYNAMIC_SEGMENTS = {
 # map are pages nobody has written yet, so a target that does not exist falls
 # back to the nearest page that does. Every line here is temporary: when the
 # page appears, this script drops the fallback by itself on the next run.
+# Each entry is (destination, settled). `settled` says whether this landing is
+# the FINAL answer or only a parking space, and that is what decides 308 against
+# 307. Getting it wrong in either direction costs something: a 308 to a parking
+# space hands away an address we mean to serve, and a 307 on a settled answer
+# leaves a crawler checking a page that is never coming back.
 FALLBACKS = {
-    "/tarieven": "/studiekeuzetraject",       # the price is not decided yet
-    "/onze-methode": "/studiekeuzetraject",   # blocked, see todos.md section 7
-    "/coach-worden": "/studiekeuzecoaches",   # needs the answer for a freelance coach
-    "/vacatures": "/studiekeuzecoaches",
-    "/bedankt": "/",
+    # Not settled: these pages are planned, they are only blocked today.
+    "/tarieven": ("/studiekeuzetraject", False),      # the price is not decided yet
+    "/onze-methode": ("/studiekeuzetraject", False),  # blocked, see todos.md section 7
+    "/coach-worden": ("/studiekeuzecoaches", False),  # needs the freelance answer
+    "/vacatures": ("/studiekeuzecoaches", False),
+    "/bedankt": ("/", False),
+    # Settled. There is no central contact point any more and there will not be
+    # one: the client decided that a reader always writes to the coach of their
+    # own city (issue #7). So this is where /contact belongs for good, and it
+    # goes to /locaties rather than "/", which would drop the reader at the
+    # front door with the same question they arrived with.
+    "/contact": ("/locaties", True),
+    # Settled. There is no "about us" page planned, because the company is the
+    # coaches. PRODUCT.md principle 3: the proof is a named person.
+    "/over-ons": ("/studiekeuzecoaches", True),
 }
 
 
@@ -302,24 +317,41 @@ def app_routes() -> set[str]:
     return routes
 
 
-def landing(target: str, routes: set[str], article_slugs: set[str]) -> tuple[str, str]:
+def landing(
+    target: str, routes: set[str], article_slugs: set[str]
+) -> tuple[str, str, bool]:
     """
-    Where a redirect really lands, and the target it stands in for.
+    Where a URL really lands, what it stands in for, and whether that is final.
 
-    Returns (destination, waiting_for). `waiting_for` is empty when the target
-    exists, and holds the target itself when a fallback was needed.
+    Returns (destination, waiting_for, settled).
+
+    `waiting_for` is empty when the target exists, and holds the target itself
+    when a fallback was needed. `settled` is True when the destination is the
+    final answer, so the caller may make the redirect permanent. Read the note
+    on FALLBACKS for why that distinction is worth the extra return value.
     """
     if target in routes:
-        return target, ""
+        return target, "", True
     if target in FALLBACKS:
-        return FALLBACKS[target], target
+        destination, settled = FALLBACKS[target]
+        return destination, target, settled
     if target.startswith("/studiekeuzecoaches/"):
-        return "/studiekeuzecoaches", target  # no page per coach yet, only an anchor
+        # Settled. These are the three coach interviews of the old site, and
+        # those people do not work here. There will never be a page for them,
+        # so the roster is not a parking space, it is the answer.
+        return "/studiekeuzecoaches", target, True
     if target.startswith("/locaties/"):
-        return "/locaties", target            # a city without a coach has no page
+        # Not settled. A city has no page while it has no coach, and opening
+        # cities is the plan. The address goes back to work when one signs.
+        return "/locaties", target, False
     if target.startswith("/artikelen/") or target.strip("/") in article_slugs:
-        return "/artikelen", target           # the article is not imported yet
-    return "/", target
+        # Not settled. The article exists in the archive, the rights are bought,
+        # and importing it is work nobody has done yet. This is the biggest
+        # group by far, and every one of these URLs still ranks.
+        return "/artikelen", target, False
+    # Settled by default. If a URL is not a page we recognise and not something
+    # we plan to write, the front door is the honest final answer.
+    return "/", target, True
 
 
 HEADER = '''/**
@@ -328,9 +360,16 @@ HEADER = '''/**
  * GENERATED FILE. Do not edit it by hand: `python3 scripts/build-url-map.py`
  * writes it from `docs/url-map.csv`, which resolves all {total} old URLs of the
  * archive. Change a rule in the script, or a decision in the map, and run the
- * script again. `next.config.ts` imports this array and makes every row a
- * permanent redirect, so Next answers with a 308 and the search engines move
- * the ranking to the new address. The old site goes offline in September 2026.
+ * script again. `next.config.ts` imports this array. The old site goes offline
+ * in September 2026, and on that day every one of these addresses has to land
+ * somewhere correct or the rankings that were bought are lost.
+ *
+ * **Two kinds of row, and the difference is the status code.** A row without
+ * `temporary` is a 308: the old address is gone for good and a search engine
+ * should move the ranking to the destination. A row with `temporary: true` is a
+ * 307: the destination is only a stand-in, because the page this URL really
+ * wants does not exist yet. A 308 there would surrender an address we intend to
+ * serve ourselves, so it stays a 307 until the page lands.
  *
  * The table lives here and not in `next.config.ts` because it is {count} rows
  * long, and a config file that is mostly data is a config file nobody reads.
@@ -343,10 +382,11 @@ HEADER = '''/**
  * be reached. It costs the old URLs one extra hop, which is the price of the
  * normalisation and is the same on Vercel. See `docs/redirects.md`.
  *
- * **A row with a `waits for` comment is temporary.** The target in
- * `docs/url-map.csv` has no page yet, so the redirect lands on the nearest page
- * that does exist. Build the page, run the script again, and the fallback goes
- * away by itself. `docs/redirects.md` lists every target that is waiting.
+ * **A row with a `waits for` comment is parked, not moved.** The target in
+ * `docs/url-map.csv` has no page yet, so the row lands on the nearest page that
+ * does exist and says so. Build the page, run the script again, and the row
+ * disappears by itself, because the address now answers for itself.
+ * `docs/redirects.md` lists every target that is waiting.
  */
 
 export type LegacyRedirect = {{
@@ -354,6 +394,12 @@ export type LegacyRedirect = {{
   source: string;
   /** A path on this site that exists today. Never a 404. */
   destination: string;
+  /**
+   * true when `destination` is a stand-in for a page nobody has written yet.
+   * `next.config.ts` turns this into a 307 instead of a 308, so the crawler
+   * keeps the old address and comes back for it later.
+   */
+  temporary?: boolean;
 }};
 
 export const legacyRedirects: LegacyRedirect[] = [
@@ -363,25 +409,62 @@ export const legacyRedirects: LegacyRedirect[] = [
 def write_redirects(rows: list[dict]) -> None:
     routes = app_routes()
     article_slugs = {row["old"].strip("/") for row in rows if row["kind"] == "post"}
-    redirects = [row for row in rows if row["action"] == "redirect"]
+
+    # EVERY ROW THAT MUST NOT ANSWER 404, which is every row except a deliberate
+    # drop. A `drop` is the one action that means "let it 404", so it stays out.
+    #
+    # A `redirect` row is here because its address is gone for good. A `keep` or
+    # `rebuild` row is here only for as long as its page does not exist: the
+    # address stays ours, and until the page lands it would otherwise answer 404
+    # on a URL that still ranks. That was 93 URLs and 5.898 inbound links, and
+    # it is the exact thing the purchase was meant to protect. The moment the
+    # page appears, `app_routes()` sees it, `landing()` returns the address
+    # itself, and the row drops out of this table on the next run.
+    movable = [r for r in rows if r["action"] in ("redirect", "keep", "rebuild")]
 
     lines = []
     waiting = Counter()
-    for row in sorted(redirects, key=lambda r: r["old"]):
-        source = row["old"].rstrip("/")
-        destination, waits_for = landing(row["new"], routes, article_slugs)
-        comment = f" // waits for {waits_for}" if waits_for else ""
-        lines.append(f'  {{ source: "{source}", destination: "{destination}" }},{comment}')
-        if waits_for:
+    permanent_count = 0
+    for row in sorted(movable, key=lambda r: r["old"]):
+        # `or "/"` because the home page is the one URL that is only a slash,
+        # and rstrip would leave an empty source. An empty source is not a path,
+        # and it would have shipped as `{ source: "", ... }`.
+        source = row["old"].rstrip("/") or "/"
+        destination, waits_for, settled = landing(row["new"], routes, article_slugs)
+
+        # The page is live at its own address. Nothing to redirect, and emitting
+        # it would be a loop.
+        if destination == source:
+            continue
+
+        # PERMANENT ONLY WHEN THE ANSWER IS FINAL. A 308 tells a search engine to
+        # forget the old address and move the ranking to the destination. That is
+        # right when the address is gone for good, and wrong when we are parking
+        # a URL until its page is written: a 308 there hands away an address we
+        # intend to serve ourselves. Those get a 307, which asks the crawler to
+        # keep the old address on its list and come back for it.
+        #
+        # It is `settled` that decides this, not `waits_for`. A fallback can be
+        # the final answer: /contact is never coming back, and the three coach
+        # interviews of the old site are about people who do not work here.
+        temporary = not settled
+        flag = ", temporary: true" if temporary else ""
+        comment = f" // waits for {waits_for}" if temporary and waits_for else ""
+        lines.append(
+            f'  {{ source: "{source}", destination: "{destination}"{flag} }},{comment}'
+        )
+        if temporary:
             waiting[waits_for] += 1
+        else:
+            permanent_count += 1
 
     out = REPO / "app" / "redirects.ts"
-    header = HEADER.format(total=len(rows), count=len(redirects))
+    header = HEADER.format(total=len(rows), count=len(lines))
     out.write_text(header + "\n".join(lines) + "\n];\n")
 
-    print(f"\n{len(redirects)} redirects written to {out.relative_to(REPO)}")
-    print(f"  {len(redirects) - sum(waiting.values()):4d}  land on their own target")
-    print(f"  {sum(waiting.values()):4d}  land on a fallback:")
+    print(f"\n{len(lines)} redirects written to {out.relative_to(REPO)}")
+    print(f"  {permanent_count:4d}  permanent (308), landing on their real target")
+    print(f"  {sum(waiting.values()):4d}  temporary (307), landing on a fallback:")
     for target, count in sorted(waiting.items()):
         print(f"        {count:4d}  {target}")
 

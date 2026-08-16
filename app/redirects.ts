@@ -4,11 +4,18 @@
  * GENERATED FILE. Do not edit it by hand: `python3 scripts/build-url-map.py`
  * writes it from `docs/url-map.csv`, which resolves all 522 old URLs of the
  * archive. Change a rule in the script, or a decision in the map, and run the
- * script again. `next.config.ts` imports this array and makes every row a
- * permanent redirect, so Next answers with a 308 and the search engines move
- * the ranking to the new address. The old site goes offline in September 2026.
+ * script again. `next.config.ts` imports this array. The old site goes offline
+ * in September 2026, and on that day every one of these addresses has to land
+ * somewhere correct or the rankings that were bought are lost.
  *
- * The table lives here and not in `next.config.ts` because it is 346 rows
+ * **Two kinds of row, and the difference is the status code.** A row without
+ * `temporary` is a 308: the old address is gone for good and a search engine
+ * should move the ranking to the destination. A row with `temporary: true` is a
+ * 307: the destination is only a stand-in, because the page this URL really
+ * wants does not exist yet. A 308 there would surrender an address we intend to
+ * serve ourselves, so it stays a 307 until the page lands.
+ *
+ * The table lives here and not in `next.config.ts` because it is 439 rows
  * long, and a config file that is mostly data is a config file nobody reads.
  *
  * **A source carries no trailing slash, and it still matches one.** Every old
@@ -19,10 +26,11 @@
  * be reached. It costs the old URLs one extra hop, which is the price of the
  * normalisation and is the same on Vercel. See `docs/redirects.md`.
  *
- * **A row with a `waits for` comment is temporary.** The target in
- * `docs/url-map.csv` has no page yet, so the redirect lands on the nearest page
- * that does exist. Build the page, run the script again, and the fallback goes
- * away by itself. `docs/redirects.md` lists every target that is waiting.
+ * **A row with a `waits for` comment is parked, not moved.** The target in
+ * `docs/url-map.csv` has no page yet, so the row lands on the nearest page that
+ * does exist and says so. Build the page, run the script again, and the row
+ * disappears by itself, because the address now answers for itself.
+ * `docs/redirects.md` lists every target that is waiting.
  */
 
 export type LegacyRedirect = {
@@ -30,24 +38,39 @@ export type LegacyRedirect = {
   source: string;
   /** A path on this site that exists today. Never a 404. */
   destination: string;
+  /**
+   * true when `destination` is a stand-in for a page nobody has written yet.
+   * `next.config.ts` turns this into a 307 instead of a 308, so the crawler
+   * keeps the old address and comes back for it later.
+   */
+  temporary?: boolean;
 };
 
 export const legacyRedirects: LegacyRedirect[] = [
-  { source: "/aart-smit", destination: "/studiekeuzecoaches" }, // waits for /studiekeuzecoaches/aart-smit
-  { source: "/afrekenen", destination: "/studiekeuzetraject" }, // waits for /tarieven
+  { source: "/aart-smit", destination: "/studiekeuzecoaches" },
+  { source: "/afrekenen", destination: "/studiekeuzetraject", temporary: true }, // waits for /tarieven
   { source: "/amersfoort", destination: "/locaties/amersfoort" },
   { source: "/amsterdam", destination: "/locaties/amsterdam" },
-  { source: "/angelina-muller", destination: "/studiekeuzecoaches" }, // waits for /studiekeuzecoaches/angelina-muller
-  { source: "/bedankpagina-aanvraag-studiekeuzeadvies", destination: "/" }, // waits for /bedankt
-  { source: "/bedankpagina-vrijblijvend-intakegesprek-inplannen", destination: "/" }, // waits for /bedankt
+  { source: "/angelina-muller", destination: "/studiekeuzecoaches" },
+  { source: "/artikel-studentenleven", destination: "/artikelen", temporary: true }, // waits for /artikel-studentenleven
+  { source: "/bedankpagina-aanvraag-studiekeuzeadvies", destination: "/", temporary: true }, // waits for /bedankt
+  { source: "/bedankpagina-vrijblijvend-intakegesprek-inplannen", destination: "/", temporary: true }, // waits for /bedankt
   { source: "/bergen-op-zoom-2", destination: "/locaties/bergen-op-zoom" },
   { source: "/bergen-op-zoom", destination: "/locaties/bergen-op-zoom" },
-  { source: "/breda", destination: "/locaties" }, // waits for /locaties/breda
-  { source: "/bussum", destination: "/locaties" }, // waits for /locaties/bussum
+  { source: "/bindend-studieadvies", destination: "/artikelen", temporary: true }, // waits for /bindend-studieadvies
+  { source: "/breda", destination: "/locaties", temporary: true }, // waits for /locaties/breda
+  { source: "/bussum", destination: "/locaties", temporary: true }, // waits for /locaties/bussum
   { source: "/category", destination: "/artikelen" },
   { source: "/category/blog", destination: "/artikelen" },
   { source: "/category/nieuws", destination: "/artikelen" },
-  { source: "/deventer-2", destination: "/locaties" }, // waits for /locaties/deventer
+  { source: "/contact", destination: "/locaties" },
+  { source: "/de-voorbereiding-op-je-nieuwe-studie-begint-nu", destination: "/artikelen", temporary: true }, // waits for /de-voorbereiding-op-je-nieuwe-studie-begint-nu
+  { source: "/de-wereld-aan-je-voeten-waarom-een-tussenjaar-soms-de-beste-studiekeuze-is", destination: "/artikelen", temporary: true }, // waits for /de-wereld-aan-je-voeten-waarom-een-tussenjaar-soms-de-beste-studiekeuze-is
+  { source: "/deadline-decentrale-selectie-15-januari", destination: "/artikelen", temporary: true }, // waits for /deadline-decentrale-selectie-15-januari
+  { source: "/decentrale-selectie", destination: "/artikelen", temporary: true }, // waits for /decentrale-selectie
+  { source: "/deventer-2", destination: "/locaties", temporary: true }, // waits for /locaties/deventer
+  { source: "/dingen-die-ik-had-willen-weten-toen-ik-een-vervolgstudie-moest-kiezen", destination: "/artikelen", temporary: true }, // waits for /dingen-die-ik-had-willen-weten-toen-ik-een-vervolgstudie-moest-kiezen
+  { source: "/een-voltijd-deeltijd-of-een-duale-studie", destination: "/artikelen", temporary: true }, // waits for /een-voltijd-deeltijd-of-een-duale-studie
   { source: "/eerste-studiekeuze/covers", destination: "/eerste-studiekeuze" },
   { source: "/eerste-studiekeuze/covers2", destination: "/eerste-studiekeuze" },
   { source: "/eerste-studiekeuze/microsoftteams-image-2", destination: "/eerste-studiekeuze" },
@@ -55,10 +78,19 @@ export const legacyRedirects: LegacyRedirect[] = [
   { source: "/eerste-studiekeuze/orja091-aangepast-2", destination: "/eerste-studiekeuze" },
   { source: "/eerste-studiekeuze/qompas-logo-fc-blauw-rood-payoff", destination: "/eerste-studiekeuze" },
   { source: "/eerste-studiekeuze/qompas-logo-rgb-blauw-rood-payoff", destination: "/eerste-studiekeuze" },
-  { source: "/enschede", destination: "/locaties" }, // waits for /locaties/enschede
-  { source: "/gouda", destination: "/locaties" }, // waits for /locaties/gouda
+  { source: "/eerstejaarsstress-zo-leer-jij-je-opleiding-en-studentenstad-kennen", destination: "/artikelen", temporary: true }, // waits for /eerstejaarsstress-zo-leer-jij-je-opleiding-en-studentenstad-kennen
+  { source: "/enschede", destination: "/locaties", temporary: true }, // waits for /locaties/enschede
+  { source: "/februari-starten-met-een-studie-voordelen-en-nadelen", destination: "/artikelen", temporary: true }, // waits for /februari-starten-met-een-studie-voordelen-en-nadelen
+  { source: "/gekozen-voor-een-studie-maar-nu-slaat-de-twijfel-toe", destination: "/artikelen", temporary: true }, // waits for /gekozen-voor-een-studie-maar-nu-slaat-de-twijfel-toe
+  { source: "/geld-lenen-de-regering-wil-de-rente-op-de-studieschuld-verhogen", destination: "/artikelen", temporary: true }, // waits for /geld-lenen-de-regering-wil-de-rente-op-de-studieschuld-verhogen
+  { source: "/geslaagd-maar-nog-geen-studie-gekozen-tussenjaar-of", destination: "/artikelen", temporary: true }, // waits for /geslaagd-maar-nog-geen-studie-gekozen-tussenjaar-of
+  { source: "/gestopt-met-studie", destination: "/artikelen", temporary: true }, // waits for /gestopt-met-studie
+  { source: "/gouda", destination: "/locaties", temporary: true }, // waits for /locaties/gouda
   { source: "/gratis-studiekeuzetraject", destination: "/studiekeuzetraject" },
-  { source: "/groningen", destination: "/locaties" }, // waits for /locaties/groningen
+  { source: "/groningen", destination: "/locaties", temporary: true }, // waits for /locaties/groningen
+  { source: "/halvering-collegegeld", destination: "/artikelen", temporary: true }, // waits for /halvering-collegegeld
+  { source: "/het-studentenleven-hoe-leef-je-dat", destination: "/artikelen", temporary: true }, // waits for /het-studentenleven-hoe-leef-je-dat
+  { source: "/hoe-selecteren-opleidingen-hun-studenten", destination: "/artikelen", temporary: true }, // waits for /hoe-selecteren-opleidingen-hun-studenten
   { source: "/home", destination: "/" },
   { source: "/home/banner", destination: "/" },
   { source: "/home/boekenblauwblur", destination: "/" },
@@ -86,85 +118,142 @@ export const legacyRedirects: LegacyRedirect[] = [
   { source: "/home/studiekeuzeadvies1", destination: "/" },
   { source: "/home/thinking-woman-in-front-of-blackboard-with-question-marks", destination: "/" },
   { source: "/home/two-students-learning-helping-each-other", destination: "/" },
-  { source: "/janneke-van-den-brand", destination: "/studiekeuzecoaches" }, // waits for /studiekeuzecoaches/janneke-van-den-brand
+  { source: "/introductieweek-wat-kunnen-studenten-verwachten", destination: "/artikelen", temporary: true }, // waits for /introductieweek-wat-kunnen-studenten-verwachten
+  { source: "/its-not-a-match-nieuwe-studiekeuze-na-de-studiekeuzecheck", destination: "/artikelen", temporary: true }, // waits for /its-not-a-match-nieuwe-studiekeuze-na-de-studiekeuzecheck
+  { source: "/janneke-van-den-brand", destination: "/studiekeuzecoaches" },
   { source: "/keuzegids", destination: "/studiekeuzetraject" },
   { source: "/keuzegids/home-keuzegids", destination: "/studiekeuzetraject" },
-  { source: "/leiden", destination: "/locaties" }, // waits for /locaties/leiden
+  { source: "/kosten-verkeerde-studiekeuze", destination: "/artikelen", temporary: true }, // waits for /kosten-verkeerde-studiekeuze
+  { source: "/leiden", destination: "/locaties", temporary: true }, // waits for /locaties/leiden
+  { source: "/locaties/almere", destination: "/locaties", temporary: true }, // waits for /locaties/almere
   { source: "/locaties/amersfoort/mirjam-260x300", destination: "/locaties/amersfoort" },
+  { source: "/locaties/amstelveen", destination: "/locaties", temporary: true }, // waits for /locaties/amstelveen
   { source: "/locaties/amsterdam/amsterdam", destination: "/locaties/amsterdam" },
   { source: "/locaties/amsterdam/img_0943", destination: "/locaties/amsterdam" },
-  { source: "/locaties/arnhem-2", destination: "/locaties" }, // waits for /locaties/arnhem
-  { source: "/locaties/breda/angelina-en-renata", destination: "/locaties" }, // waits for /locaties/breda
-  { source: "/locaties/bussum/img_2795", destination: "/locaties" }, // waits for /locaties/bussum
+  { source: "/locaties/arnhem-2", destination: "/locaties", temporary: true }, // waits for /locaties/arnhem
+  { source: "/locaties/arnhem", destination: "/locaties", temporary: true }, // waits for /locaties/arnhem
+  { source: "/locaties/breda", destination: "/locaties", temporary: true }, // waits for /locaties/breda
+  { source: "/locaties/breda/angelina-en-renata", destination: "/locaties", temporary: true }, // waits for /locaties/breda
+  { source: "/locaties/breukelen", destination: "/locaties", temporary: true }, // waits for /locaties/breukelen
+  { source: "/locaties/bussum", destination: "/locaties", temporary: true }, // waits for /locaties/bussum
+  { source: "/locaties/bussum/img_2795", destination: "/locaties", temporary: true }, // waits for /locaties/bussum
   { source: "/locaties/de-melkfabriek-bruinevisstraat-32-4611hj-bergen-op-zoom", destination: "/locaties" },
-  { source: "/locaties/enschede/monique-kock", destination: "/locaties" }, // waits for /locaties/enschede
-  { source: "/locaties/enschede/schermafbeelding-2022-02-08-om-09-30-07", destination: "/locaties" }, // waits for /locaties/enschede
-  { source: "/locaties/groningen/pieter-jpg", destination: "/locaties" }, // waits for /locaties/groningen
-  { source: "/locaties/leiden/silvia", destination: "/locaties" }, // waits for /locaties/leiden
+  { source: "/locaties/den-bosch", destination: "/locaties", temporary: true }, // waits for /locaties/den-bosch
+  { source: "/locaties/den-haag", destination: "/locaties", temporary: true }, // waits for /locaties/den-haag
+  { source: "/locaties/dordrecht", destination: "/locaties", temporary: true }, // waits for /locaties/dordrecht
+  { source: "/locaties/eindhoven", destination: "/locaties", temporary: true }, // waits for /locaties/eindhoven
+  { source: "/locaties/enschede", destination: "/locaties", temporary: true }, // waits for /locaties/enschede
+  { source: "/locaties/enschede/monique-kock", destination: "/locaties", temporary: true }, // waits for /locaties/enschede
+  { source: "/locaties/enschede/schermafbeelding-2022-02-08-om-09-30-07", destination: "/locaties", temporary: true }, // waits for /locaties/enschede
+  { source: "/locaties/gouda", destination: "/locaties", temporary: true }, // waits for /locaties/gouda
+  { source: "/locaties/groningen", destination: "/locaties", temporary: true }, // waits for /locaties/groningen
+  { source: "/locaties/groningen/pieter-jpg", destination: "/locaties", temporary: true }, // waits for /locaties/groningen
+  { source: "/locaties/haarlem", destination: "/locaties", temporary: true }, // waits for /locaties/haarlem
+  { source: "/locaties/hengelo", destination: "/locaties", temporary: true }, // waits for /locaties/hengelo
+  { source: "/locaties/hilversum", destination: "/locaties", temporary: true }, // waits for /locaties/hilversum
+  { source: "/locaties/leeuwarden", destination: "/locaties", temporary: true }, // waits for /locaties/leeuwarden
+  { source: "/locaties/leiden", destination: "/locaties", temporary: true }, // waits for /locaties/leiden
+  { source: "/locaties/leiden/silvia", destination: "/locaties", temporary: true }, // waits for /locaties/leiden
   { source: "/locaties/logo-2", destination: "/locaties" },
-  { source: "/locaties/maastricht/schermafbeelding-2021-10-28-om-12-04-32", destination: "/locaties" }, // waits for /locaties/maastricht
+  { source: "/locaties/maarssen", destination: "/locaties", temporary: true }, // waits for /locaties/maarssen
+  { source: "/locaties/maastricht", destination: "/locaties", temporary: true }, // waits for /locaties/maastricht
+  { source: "/locaties/maastricht/schermafbeelding-2021-10-28-om-12-04-32", destination: "/locaties", temporary: true }, // waits for /locaties/maastricht
+  { source: "/locaties/nijmegen", destination: "/locaties", temporary: true }, // waits for /locaties/nijmegen
+  { source: "/locaties/oldenzaal", destination: "/locaties", temporary: true }, // waits for /locaties/oldenzaal
   { source: "/locaties/p-j-oudweg-4-1314-ch-almere", destination: "/locaties" },
-  { source: "/locaties/roosendaal/angelina-muller-1", destination: "/locaties" }, // waits for /locaties/roosendaal
+  { source: "/locaties/roermond", destination: "/locaties", temporary: true }, // waits for /locaties/roermond
+  { source: "/locaties/roosendaal", destination: "/locaties", temporary: true }, // waits for /locaties/roosendaal
+  { source: "/locaties/roosendaal/angelina-muller-1", destination: "/locaties", temporary: true }, // waits for /locaties/roosendaal
+  { source: "/locaties/rotterdam", destination: "/locaties", temporary: true }, // waits for /locaties/rotterdam
   { source: "/locaties/singel-331-3311-hl-dordrecht", destination: "/locaties" },
-  { source: "/locaties/sittard/lisa-2", destination: "/locaties" }, // waits for /locaties/sittard
+  { source: "/locaties/sittard", destination: "/locaties", temporary: true }, // waits for /locaties/sittard
+  { source: "/locaties/sittard/lisa-2", destination: "/locaties", temporary: true }, // waits for /locaties/sittard
   { source: "/locaties/student-getting-help-from-tutor-in-library", destination: "/locaties" },
-  { source: "/locaties/studiekeuzeadvies-apeldoorn", destination: "/locaties" }, // waits for /locaties/apeldoorn
+  { source: "/locaties/studiekeuzeadvies-apeldoorn", destination: "/locaties", temporary: true }, // waits for /locaties/apeldoorn
+  { source: "/locaties/tilburg", destination: "/locaties", temporary: true }, // waits for /locaties/tilburg
   { source: "/locaties/utrecht/b-m", destination: "/locaties/utrecht" },
   { source: "/locaties/utrechtseweg-7-3811-na-amersfoort", destination: "/locaties" },
   { source: "/locaties/van-baerlestraat-13-1071-al-amsterdam", destination: "/locaties" },
-  { source: "/locaties/wassenaar/download-14", destination: "/locaties" }, // waits for /locaties/wassenaar
-  { source: "/locaties/wassenaar/silvia-200x300", destination: "/locaties" }, // waits for /locaties/wassenaar
-  { source: "/locaties/zwolle/ilse-froukje", destination: "/locaties" }, // waits for /locaties/zwolle
-  { source: "/locaties/zwolle/ilse-van-den-belt", destination: "/locaties" }, // waits for /locaties/zwolle
-  { source: "/maastricht", destination: "/locaties" }, // waits for /locaties/maastricht
-  { source: "/merk/keuzegids", destination: "/studiekeuzetraject" }, // waits for /tarieven
-  { source: "/merk/qompas", destination: "/studiekeuzetraject" }, // waits for /tarieven
-  { source: "/merk/studiekeuzeadvies", destination: "/studiekeuzetraject" }, // waits for /tarieven
-  { source: "/mijn-account", destination: "/studiekeuzetraject" }, // waits for /tarieven
-  { source: "/mijn-account/lost-password", destination: "/studiekeuzetraject" }, // waits for /tarieven
+  { source: "/locaties/vught", destination: "/locaties", temporary: true }, // waits for /locaties/vught
+  { source: "/locaties/wassenaar", destination: "/locaties", temporary: true }, // waits for /locaties/wassenaar
+  { source: "/locaties/wassenaar/download-14", destination: "/locaties", temporary: true }, // waits for /locaties/wassenaar
+  { source: "/locaties/wassenaar/silvia-200x300", destination: "/locaties", temporary: true }, // waits for /locaties/wassenaar
+  { source: "/locaties/zwolle", destination: "/locaties", temporary: true }, // waits for /locaties/zwolle
+  { source: "/locaties/zwolle/ilse-froukje", destination: "/locaties", temporary: true }, // waits for /locaties/zwolle
+  { source: "/locaties/zwolle/ilse-van-den-belt", destination: "/locaties", temporary: true }, // waits for /locaties/zwolle
+  { source: "/maastricht", destination: "/locaties", temporary: true }, // waits for /locaties/maastricht
+  { source: "/matching-wat-moet-je-weten", destination: "/artikelen", temporary: true }, // waits for /matching-wat-moet-je-weten
+  { source: "/mbo-hbo-of-wo-je-kunt-alle-kanten-op", destination: "/artikelen", temporary: true }, // waits for /mbo-hbo-of-wo-je-kunt-alle-kanten-op
+  { source: "/mbo-opleidingen-beperkt-aantal-plaatsen", destination: "/artikelen", temporary: true }, // waits for /mbo-opleidingen-beperkt-aantal-plaatsen
+  { source: "/merk/keuzegids", destination: "/studiekeuzetraject", temporary: true }, // waits for /tarieven
+  { source: "/merk/qompas", destination: "/studiekeuzetraject", temporary: true }, // waits for /tarieven
+  { source: "/merk/studiekeuzeadvies", destination: "/studiekeuzetraject", temporary: true }, // waits for /tarieven
+  { source: "/mijn-account", destination: "/studiekeuzetraject", temporary: true }, // waits for /tarieven
+  { source: "/mijn-account/lost-password", destination: "/studiekeuzetraject", temporary: true }, // waits for /tarieven
+  { source: "/mijn-studie-is-niet-leuk-wat-nu", destination: "/artikelen", temporary: true }, // waits for /mijn-studie-is-niet-leuk-wat-nu
+  { source: "/mijn-studie-is-te-moeilijk-voor-mij", destination: "/artikelen", temporary: true }, // waits for /mijn-studie-is-te-moeilijk-voor-mij
+  { source: "/numerus-fixus-in-het-mbo", destination: "/artikelen", temporary: true }, // waits for /numerus-fixus-in-het-mbo
   { source: "/online-studiekeuzeadvies", destination: "/studiekeuzetraject" },
   { source: "/online-studiekeuzeadvies/orja091-2-1", destination: "/studiekeuzetraject" },
   { source: "/online-studiekeuzeadvies/orja091-2-2", destination: "/studiekeuzetraject" },
   { source: "/online-studiekeuzeadvies/orja091-2", destination: "/studiekeuzetraject" },
   { source: "/online-studiekeuzeadvies/orja091-klein", destination: "/studiekeuzetraject" },
-  { source: "/onze-diensten-en-producten", destination: "/studiekeuzetraject" }, // waits for /tarieven
-  { source: "/onze-diensten-en-producten/meisje-krullen-270x767", destination: "/studiekeuzetraject" }, // waits for /tarieven
-  { source: "/onze-diensten-en-producten/meisje-schrijft-met-potlood-in-schrift", destination: "/studiekeuzetraject" }, // waits for /tarieven
-  { source: "/onze-diensten-en-producten/shutterstock_1498298075-1", destination: "/studiekeuzetraject" }, // waits for /tarieven
-  { source: "/onze-methode/pattern-2", destination: "/studiekeuzetraject" }, // waits for /onze-methode
-  { source: "/onze-methode/scholieren-kijken-elkaar-aan-c", destination: "/studiekeuzetraject" }, // waits for /onze-methode
-  { source: "/onze-methode/talentfocus-keuzegids", destination: "/studiekeuzetraject" }, // waits for /onze-methode
+  { source: "/onze-diensten-en-producten", destination: "/studiekeuzetraject", temporary: true }, // waits for /tarieven
+  { source: "/onze-diensten-en-producten/meisje-krullen-270x767", destination: "/studiekeuzetraject", temporary: true }, // waits for /tarieven
+  { source: "/onze-diensten-en-producten/meisje-schrijft-met-potlood-in-schrift", destination: "/studiekeuzetraject", temporary: true }, // waits for /tarieven
+  { source: "/onze-diensten-en-producten/shutterstock_1498298075-1", destination: "/studiekeuzetraject", temporary: true }, // waits for /tarieven
+  { source: "/onze-methode", destination: "/studiekeuzetraject", temporary: true }, // waits for /onze-methode
+  { source: "/onze-methode/pattern-2", destination: "/studiekeuzetraject", temporary: true }, // waits for /onze-methode
+  { source: "/onze-methode/scholieren-kijken-elkaar-aan-c", destination: "/studiekeuzetraject", temporary: true }, // waits for /onze-methode
+  { source: "/onze-methode/talentfocus-keuzegids", destination: "/studiekeuzetraject", temporary: true }, // waits for /onze-methode
+  { source: "/op-kamers-gaan-of-niet", destination: "/artikelen", temporary: true }, // waits for /op-kamers-gaan-of-niet
   { source: "/opnieuw-een-studiekeuze-maken", destination: "/verkeerde-studiekeuze" },
   { source: "/opnieuw-een-studiekeuze-maken/meisje-met-koptelefoon-en-rugzak", destination: "/verkeerde-studiekeuze" },
-  { source: "/over-ons/two-students-doing-homework-at-home-2", destination: "/" }, // waits for /over-ons
+  { source: "/oudergids-hoe-begeleid-je-als-ouder-de-studiekeuze-van-je-kind", destination: "/artikelen", temporary: true }, // waits for /oudergids-hoe-begeleid-je-als-ouder-de-studiekeuze-van-je-kind
+  { source: "/over-ons", destination: "/studiekeuzecoaches" },
+  { source: "/over-ons/two-students-doing-homework-at-home-2", destination: "/studiekeuzecoaches" },
   { source: "/over-ons/veelgestelde-vragen", destination: "/veelgestelde-vragen" },
-  { source: "/product-categorie", destination: "/studiekeuzetraject" }, // waits for /tarieven
-  { source: "/product-categorie/hbo-wo", destination: "/studiekeuzetraject" }, // waits for /tarieven
-  { source: "/product-categorie/mbo", destination: "/studiekeuzetraject" }, // waits for /tarieven
-  { source: "/product-categorie/testen-met-gesprek", destination: "/studiekeuzetraject" }, // waits for /tarieven
-  { source: "/product-categorie/testen-zonder-gesprek", destination: "/studiekeuzetraject" }, // waits for /tarieven
-  { source: "/product-categorie/traject-zonder-gesprekken", destination: "/studiekeuzetraject" }, // waits for /tarieven
-  { source: "/product-tag", destination: "/studiekeuzetraject" }, // waits for /tarieven
-  { source: "/product-tag/hbo-wo", destination: "/studiekeuzetraject" }, // waits for /tarieven
-  { source: "/product-tag/mbo", destination: "/studiekeuzetraject" }, // waits for /tarieven
-  { source: "/product-tag/testen-met-gesprek", destination: "/studiekeuzetraject" }, // waits for /tarieven
-  { source: "/product-tag/testen-zonder-gesprek", destination: "/studiekeuzetraject" }, // waits for /tarieven
-  { source: "/product-tag/traject-zonder-gesprekken", destination: "/studiekeuzetraject" }, // waits for /tarieven
-  { source: "/product", destination: "/studiekeuzetraject" }, // waits for /tarieven
-  { source: "/product/studiekeuzeadvies-keuzecheck-hbo-wo-met-gesprek", destination: "/studiekeuzetraject" }, // waits for /tarieven
-  { source: "/product/studiekeuzeadvies-keuzecheck-hbo-wo-zonder-gesprek", destination: "/studiekeuzetraject" }, // waits for /tarieven
-  { source: "/product/studiekeuzeadvies-keuzecheck-mbo-met-gesprek", destination: "/studiekeuzetraject" }, // waits for /tarieven
-  { source: "/product/studiekeuzeadvies-keuzecheck-mbo-zonder-gesprek", destination: "/studiekeuzetraject" }, // waits for /tarieven
-  { source: "/product/studiekeuzeadvies-traject-hbo-wo-zonder-gesprekken-opnieuw-kiezer", destination: "/studiekeuzetraject" }, // waits for /tarieven
-  { source: "/product/studiekeuzeadvies-traject-hbo-wo-zonder-gesprekken", destination: "/studiekeuzetraject" }, // waits for /tarieven
-  { source: "/product/studiekeuzeadvies-traject-mbo-zonder-gesprekken-opnieuw-kiezer", destination: "/studiekeuzetraject" }, // waits for /tarieven
-  { source: "/product/studiekeuzeadvies-traject-mbo-zonder-gesprekken", destination: "/studiekeuzetraject" }, // waits for /tarieven
-  { source: "/roosendaal", destination: "/locaties" }, // waits for /locaties/roosendaal
-  { source: "/sittard", destination: "/locaties" }, // waits for /locaties/sittard
+  { source: "/product-categorie", destination: "/studiekeuzetraject", temporary: true }, // waits for /tarieven
+  { source: "/product-categorie/hbo-wo", destination: "/studiekeuzetraject", temporary: true }, // waits for /tarieven
+  { source: "/product-categorie/mbo", destination: "/studiekeuzetraject", temporary: true }, // waits for /tarieven
+  { source: "/product-categorie/testen-met-gesprek", destination: "/studiekeuzetraject", temporary: true }, // waits for /tarieven
+  { source: "/product-categorie/testen-zonder-gesprek", destination: "/studiekeuzetraject", temporary: true }, // waits for /tarieven
+  { source: "/product-categorie/traject-zonder-gesprekken", destination: "/studiekeuzetraject", temporary: true }, // waits for /tarieven
+  { source: "/product-tag", destination: "/studiekeuzetraject", temporary: true }, // waits for /tarieven
+  { source: "/product-tag/hbo-wo", destination: "/studiekeuzetraject", temporary: true }, // waits for /tarieven
+  { source: "/product-tag/mbo", destination: "/studiekeuzetraject", temporary: true }, // waits for /tarieven
+  { source: "/product-tag/testen-met-gesprek", destination: "/studiekeuzetraject", temporary: true }, // waits for /tarieven
+  { source: "/product-tag/testen-zonder-gesprek", destination: "/studiekeuzetraject", temporary: true }, // waits for /tarieven
+  { source: "/product-tag/traject-zonder-gesprekken", destination: "/studiekeuzetraject", temporary: true }, // waits for /tarieven
+  { source: "/product", destination: "/studiekeuzetraject", temporary: true }, // waits for /tarieven
+  { source: "/product/studiekeuzeadvies-keuzecheck-hbo-wo-met-gesprek", destination: "/studiekeuzetraject", temporary: true }, // waits for /tarieven
+  { source: "/product/studiekeuzeadvies-keuzecheck-hbo-wo-zonder-gesprek", destination: "/studiekeuzetraject", temporary: true }, // waits for /tarieven
+  { source: "/product/studiekeuzeadvies-keuzecheck-mbo-met-gesprek", destination: "/studiekeuzetraject", temporary: true }, // waits for /tarieven
+  { source: "/product/studiekeuzeadvies-keuzecheck-mbo-zonder-gesprek", destination: "/studiekeuzetraject", temporary: true }, // waits for /tarieven
+  { source: "/product/studiekeuzeadvies-traject-hbo-wo-zonder-gesprekken-opnieuw-kiezer", destination: "/studiekeuzetraject", temporary: true }, // waits for /tarieven
+  { source: "/product/studiekeuzeadvies-traject-hbo-wo-zonder-gesprekken", destination: "/studiekeuzetraject", temporary: true }, // waits for /tarieven
+  { source: "/product/studiekeuzeadvies-traject-mbo-zonder-gesprekken-opnieuw-kiezer", destination: "/studiekeuzetraject", temporary: true }, // waits for /tarieven
+  { source: "/product/studiekeuzeadvies-traject-mbo-zonder-gesprekken", destination: "/studiekeuzetraject", temporary: true }, // waits for /tarieven
+  { source: "/roosendaal", destination: "/locaties", temporary: true }, // waits for /locaties/roosendaal
+  { source: "/sittard", destination: "/locaties", temporary: true }, // waits for /locaties/sittard
+  { source: "/spoedcursus-studeren-1-wat-je-moet-weten-voor-je-gaat-studeren", destination: "/artikelen", temporary: true }, // waits for /spoedcursus-studeren-1-wat-je-moet-weten-voor-je-gaat-studeren
+  { source: "/spoedcursus-studeren-2-voorbereiden-op-je-studie", destination: "/artikelen", temporary: true }, // waits for /spoedcursus-studeren-2-voorbereiden-op-je-studie
+  { source: "/spoedcursus-studeren-3-hoe-zit-een-studie-in-elkaar", destination: "/artikelen", temporary: true }, // waits for /spoedcursus-studeren-3-hoe-zit-een-studie-in-elkaar
+  { source: "/spoedcursus-studeren-4-eigen-verantwoordelijkheid", destination: "/artikelen", temporary: true }, // waits for /spoedcursus-studeren-4-eigen-verantwoordelijkheid
+  { source: "/stoppen-met-studeren-wat-moet-je-regelen", destination: "/artikelen", temporary: true }, // waits for /stoppen-met-studeren-wat-moet-je-regelen
+  { source: "/stoppen-voor-1-februari-studieschuld", destination: "/artikelen", temporary: true }, // waits for /stoppen-voor-1-februari-studieschuld
+  { source: "/studeren-in-belgie", destination: "/artikelen", temporary: true }, // waits for /studeren-in-belgie
+  { source: "/studeren-in-het-buitenland", destination: "/artikelen", temporary: true }, // waits for /studeren-in-het-buitenland
+  { source: "/studeren-tegenvallers-twijfels-doorzettingsvermogen", destination: "/artikelen", temporary: true }, // waits for /studeren-tegenvallers-twijfels-doorzettingsvermogen
+  { source: "/studie-baankansen-startsalaris", destination: "/artikelen", temporary: true }, // waits for /studie-baankansen-startsalaris
+  { source: "/studie-kiezen-ga-je-voor-leuk-of-nuttig", destination: "/artikelen", temporary: true }, // waits for /studie-kiezen-ga-je-voor-leuk-of-nuttig
+  { source: "/studiefinanciering-in-het-leenstelsel-hoe-zit-het", destination: "/artikelen", temporary: true }, // waits for /studiefinanciering-in-het-leenstelsel-hoe-zit-het
   { source: "/studiekeuze-met-add-adhd/studiekeuze-add-adhd", destination: "/studiekeuze-met-add-adhd" },
-  { source: "/studiekeuze-tarieven-2", destination: "/studiekeuzetraject" }, // waits for /tarieven
+  { source: "/studiekeuze-tarieven-2", destination: "/studiekeuzetraject", temporary: true }, // waits for /tarieven
   { source: "/studiekeuze-traject", destination: "/studiekeuzetraject" },
+  { source: "/studiekeuze-wacht-niet-te-lang-met-de-voorbereiding", destination: "/artikelen", temporary: true }, // waits for /studiekeuze-wacht-niet-te-lang-met-de-voorbereiding
   { source: "/studiekeuze", destination: "/studiekeuze-met-add-adhd" },
+  { source: "/studiekeuzecheck-is-motivatie", destination: "/artikelen", temporary: true }, // waits for /studiekeuzecheck-is-motivatie
   { source: "/studiekeuzecoaches/171024-004-2", destination: "/studiekeuzecoaches" },
   { source: "/studiekeuzecoaches/afbeelding1", destination: "/studiekeuzecoaches" },
   { source: "/studiekeuzecoaches/alicia-2-2", destination: "/studiekeuzecoaches" },
@@ -275,6 +364,8 @@ export const legacyRedirects: LegacyRedirect[] = [
   { source: "/studiekeuzetraject/rsz_neonbrand-618320-unsplash-2", destination: "/studiekeuzetraject" },
   { source: "/studiekeuzetraject/stressed-schoolgirl-studying-in-classroom", destination: "/studiekeuzetraject" },
   { source: "/studiekeuzetraject/tim-gouw-68319-unsplash", destination: "/studiekeuzetraject" },
+  { source: "/studies-en-baankansen", destination: "/artikelen", temporary: true }, // waits for /studies-en-baankansen
+  { source: "/switchen-van-studie", destination: "/artikelen", temporary: true }, // waits for /switchen-van-studie
   { source: "/tag", destination: "/artikelen" },
   { source: "/tag/1-mei", destination: "/artikelen" },
   { source: "/tag/afweging", destination: "/artikelen" },
@@ -349,34 +440,50 @@ export const legacyRedirects: LegacyRedirect[] = [
   { source: "/tag/voorbereiden", destination: "/artikelen" },
   { source: "/tag/voorbereiding", destination: "/artikelen" },
   { source: "/tag/wat-nu", destination: "/artikelen" },
-  { source: "/tarieven/schermafbeelding-2014-12-29-om-09-51-07", destination: "/studiekeuzetraject" }, // waits for /tarieven
-  { source: "/tarieven/schermafbeelding-2014-12-29-om-09-53-53", destination: "/studiekeuzetraject" }, // waits for /tarieven
-  { source: "/tarieven/schermafbeelding-2014-12-29-om-11-38-38", destination: "/studiekeuzetraject" }, // waits for /tarieven
-  { source: "/tarieven/tarievenska", destination: "/studiekeuzetraject" }, // waits for /tarieven
-  { source: "/tarieven/unnamed-1", destination: "/studiekeuzetraject" }, // waits for /tarieven
-  { source: "/tarieven/unnamed-2", destination: "/studiekeuzetraject" }, // waits for /tarieven
-  { source: "/tarieven/unnamed", destination: "/studiekeuzetraject" }, // waits for /tarieven
+  { source: "/tarieven", destination: "/studiekeuzetraject", temporary: true }, // waits for /tarieven
+  { source: "/tarieven/schermafbeelding-2014-12-29-om-09-51-07", destination: "/studiekeuzetraject", temporary: true }, // waits for /tarieven
+  { source: "/tarieven/schermafbeelding-2014-12-29-om-09-53-53", destination: "/studiekeuzetraject", temporary: true }, // waits for /tarieven
+  { source: "/tarieven/schermafbeelding-2014-12-29-om-11-38-38", destination: "/studiekeuzetraject", temporary: true }, // waits for /tarieven
+  { source: "/tarieven/tarievenska", destination: "/studiekeuzetraject", temporary: true }, // waits for /tarieven
+  { source: "/tarieven/unnamed-1", destination: "/studiekeuzetraject", temporary: true }, // waits for /tarieven
+  { source: "/tarieven/unnamed-2", destination: "/studiekeuzetraject", temporary: true }, // waits for /tarieven
+  { source: "/tarieven/unnamed", destination: "/studiekeuzetraject", temporary: true }, // waits for /tarieven
+  { source: "/thuis-studeren-als-een-pro", destination: "/artikelen", temporary: true }, // waits for /thuis-studeren-als-een-pro
+  { source: "/uitgeloot-voor-je-studie-wat-nu", destination: "/artikelen", temporary: true }, // waits for /uitgeloot-voor-je-studie-wat-nu
+  { source: "/uitschrijven-bij-je-studie-voor-1-februari", destination: "/artikelen", temporary: true }, // waits for /uitschrijven-bij-je-studie-voor-1-februari
   { source: "/utrecht", destination: "/locaties/utrecht" },
-  { source: "/vacature-keuzecoach-dordrecht", destination: "/studiekeuzecoaches" }, // waits for /coach-worden
-  { source: "/vacature-keuzecoach-zwolle", destination: "/studiekeuzecoaches" }, // waits for /coach-worden
-  { source: "/vacature-keuzecoach", destination: "/studiekeuzecoaches" }, // waits for /coach-worden
-  { source: "/vacatures", destination: "/studiekeuzecoaches" }, // waits for /coach-worden
-  { source: "/van-studie-wisselen/foto1-2", destination: "/artikelen" }, // waits for /van-studie-wisselen
-  { source: "/van-studie-wisselen/foto1", destination: "/artikelen" }, // waits for /van-studie-wisselen
-  { source: "/van-studie-wisselen/foto2-2", destination: "/artikelen" }, // waits for /van-studie-wisselen
-  { source: "/van-studie-wisselen/foto2", destination: "/artikelen" }, // waits for /van-studie-wisselen
-  { source: "/van-studie-wisselen/foto3-2", destination: "/artikelen" }, // waits for /van-studie-wisselen
-  { source: "/van-studie-wisselen/foto3", destination: "/artikelen" }, // waits for /van-studie-wisselen
-  { source: "/van-studie-wisselen/foto4-2", destination: "/artikelen" }, // waits for /van-studie-wisselen
-  { source: "/van-studie-wisselen/foto4", destination: "/artikelen" }, // waits for /van-studie-wisselen
-  { source: "/van-studie-wisselen/foto5-2", destination: "/artikelen" }, // waits for /van-studie-wisselen
-  { source: "/van-studie-wisselen/foto5", destination: "/artikelen" }, // waits for /van-studie-wisselen
+  { source: "/vacature-keuzecoach-dordrecht", destination: "/studiekeuzecoaches", temporary: true }, // waits for /coach-worden
+  { source: "/vacature-keuzecoach-zwolle", destination: "/studiekeuzecoaches", temporary: true }, // waits for /coach-worden
+  { source: "/vacature-keuzecoach", destination: "/studiekeuzecoaches", temporary: true }, // waits for /coach-worden
+  { source: "/vacatures", destination: "/studiekeuzecoaches", temporary: true }, // waits for /coach-worden
+  { source: "/van-havo-naar-de-universiteit", destination: "/artikelen", temporary: true }, // waits for /van-havo-naar-de-universiteit
+  { source: "/van-studie-wisselen", destination: "/artikelen", temporary: true }, // waits for /van-studie-wisselen
+  { source: "/van-studie-wisselen/foto1-2", destination: "/artikelen", temporary: true }, // waits for /van-studie-wisselen
+  { source: "/van-studie-wisselen/foto1", destination: "/artikelen", temporary: true }, // waits for /van-studie-wisselen
+  { source: "/van-studie-wisselen/foto2-2", destination: "/artikelen", temporary: true }, // waits for /van-studie-wisselen
+  { source: "/van-studie-wisselen/foto2", destination: "/artikelen", temporary: true }, // waits for /van-studie-wisselen
+  { source: "/van-studie-wisselen/foto3-2", destination: "/artikelen", temporary: true }, // waits for /van-studie-wisselen
+  { source: "/van-studie-wisselen/foto3", destination: "/artikelen", temporary: true }, // waits for /van-studie-wisselen
+  { source: "/van-studie-wisselen/foto4-2", destination: "/artikelen", temporary: true }, // waits for /van-studie-wisselen
+  { source: "/van-studie-wisselen/foto4", destination: "/artikelen", temporary: true }, // waits for /van-studie-wisselen
+  { source: "/van-studie-wisselen/foto5-2", destination: "/artikelen", temporary: true }, // waits for /van-studie-wisselen
+  { source: "/van-studie-wisselen/foto5", destination: "/artikelen", temporary: true }, // waits for /van-studie-wisselen
+  { source: "/van-vmbo-naar-mbo", destination: "/artikelen", temporary: true }, // waits for /van-vmbo-naar-mbo
+  { source: "/van-wisselende-vakken-tot-studiepunten-sprokkelen-scholier-versus-student-deel-2", destination: "/artikelen", temporary: true }, // waits for /van-wisselende-vakken-tot-studiepunten-sprokkelen-scholier-versus-student-deel-2
+  { source: "/van-wisselende-vakken-tot-studiepunten-sprokkelen-scholier-vs-student", destination: "/artikelen", temporary: true }, // waits for /van-wisselende-vakken-tot-studiepunten-sprokkelen-scholier-vs-student
   { source: "/verkeerde-studiekeuze/pattern", destination: "/verkeerde-studiekeuze" },
+  { source: "/verschillen-tussen-een-reguliere-en-particuliere-opleiding", destination: "/artikelen", temporary: true }, // waits for /verschillen-tussen-een-reguliere-en-particuliere-opleiding
+  { source: "/vervolgstudie-geen-goede-match-nu", destination: "/artikelen", temporary: true }, // waits for /vervolgstudie-geen-goede-match-nu
+  { source: "/vijf-tips-voor-een-vliegende-studiestart", destination: "/artikelen", temporary: true }, // waits for /vijf-tips-voor-een-vliegende-studiestart
   { source: "/voor-1-mei-inschrijven", destination: "/artikel-aanmelden-studies" },
-  { source: "/wassenaar", destination: "/locaties" }, // waits for /locaties/wassenaar
-  { source: "/wat-betekent-het-leenstelsel-concreet-voor-jou/olympus-digital-camera", destination: "/artikelen" }, // waits for /wat-betekent-het-leenstelsel-concreet-voor-jou
-  { source: "/winkel", destination: "/studiekeuzetraject" }, // waits for /tarieven
-  { source: "/winkelwagen", destination: "/studiekeuzetraject" }, // waits for /tarieven
-  { source: "/zutphen", destination: "/locaties" }, // waits for /locaties/zutphen
-  { source: "/zwolle", destination: "/locaties" }, // waits for /locaties/zwolle
+  { source: "/wassenaar", destination: "/locaties", temporary: true }, // waits for /locaties/wassenaar
+  { source: "/wat-betekent-het-leenstelsel-concreet-voor-jou", destination: "/artikelen", temporary: true }, // waits for /wat-betekent-het-leenstelsel-concreet-voor-jou
+  { source: "/wat-betekent-het-leenstelsel-concreet-voor-jou/olympus-digital-camera", destination: "/artikelen", temporary: true }, // waits for /wat-betekent-het-leenstelsel-concreet-voor-jou
+  { source: "/wat-betekent-het-leenstelsel-voor-mij", destination: "/artikelen", temporary: true }, // waits for /wat-betekent-het-leenstelsel-voor-mij
+  { source: "/winkel", destination: "/studiekeuzetraject", temporary: true }, // waits for /tarieven
+  { source: "/winkelwagen", destination: "/studiekeuzetraject", temporary: true }, // waits for /tarieven
+  { source: "/zo-bewaar-jij-de-balans-tussen-productiviteit-en-vrije-tijd", destination: "/artikelen", temporary: true }, // waits for /zo-bewaar-jij-de-balans-tussen-productiviteit-en-vrije-tijd
+  { source: "/zo-maak-jij-een-planning-waar-je-je-aan-kunt-houden", destination: "/artikelen", temporary: true }, // waits for /zo-maak-jij-een-planning-waar-je-je-aan-kunt-houden
+  { source: "/zutphen", destination: "/locaties", temporary: true }, // waits for /locaties/zutphen
+  { source: "/zwolle", destination: "/locaties", temporary: true }, // waits for /locaties/zwolle
 ];
