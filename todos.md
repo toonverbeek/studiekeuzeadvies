@@ -61,7 +61,19 @@ cannot get them back later.
       fields, and both are `null` today: `email` on each coach in
       `app/coaches.ts`, and `unassignedIntakeInbox` in `app/site-config.ts` for
       a city where no coach works. Fill them, connect them to a mailbox or a
-      form service, and add spam protection at the same time.
+      form service, and add spam protection at the same time. The research for
+      that sits under *Email, and the DNS it waits on* below.
+- [ ] **`isPlaceholder` is enforced by nothing, and issue `#13` says it is.**
+      `#13`, "Make the build refuse a coach with `isPlaceholder: true`", is
+      CLOSED as completed on 2026-08-15. The guard does not exist. Nothing in
+      `app/` or `scripts/` reads the field: `citiesWithCoach` filters on
+      `city.coach !== null`, and `/studiekeuzecoaches` maps the whole roster. So
+      `npm run build` happily ships Hanneke, Bram, Nadia, Wietske and Joris with
+      their generated faces, and since issue `#7` a city page also tells a reader
+      "Hanneke leest wat je hier invult" about somebody who does not exist.
+      Found by the Codex review of PR `#14` on 2026-08-16. **Reopen `#13`.** It
+      is the single thing most likely to put an invented person in front of a
+      real customer.
 - [ ] **Five of the six coaches are invented people.** `app/coaches.ts` holds
       six. Janneke is real and stands first; Hanneke, Bram, Nadia, Wietske and
       Joris are not. Invented names, invented histories, invented work regions,
@@ -122,6 +134,67 @@ cannot get them back later.
       three rebrands ago. They must survive the move.
 - [ ] **Export the full URL list.** All 522, with their traffic and positions,
       so the keep / redirect / drop decisions rest on data, not on judgement.
+- [ ] **Take the DNS off the seller.** Measured on 2026-08-16:
+
+      NS     ns0.leaseweb.nl (and three more)
+      MX     studiekeuzeadvies-nl.mail.protection.outlook.com
+      SPF    include: mimecast, mandrillapp, outlook, spotler.email  -all
+      DMARC  v=DMARC1; p=none      (no reporting address)
+      A      3.69.98.86            (AWS eu-central-1, the old WordPress)
+
+      Every one of those is the seller's. The MX points at the seller's
+      Microsoft 365 tenant, so **the day that tenant goes, nothing can receive
+      mail at `@studiekeuzeadvies.nl`**: no coach recruitment address, no bounce
+      address, no DMARC report. This is on the same September deadline as the
+      site and it is not a code task. Find out who can change the Leaseweb
+      nameservers, and move them.
+
+## Email, and the DNS it waits on
+
+Researched on 2026-08-16. Nothing is decided and nothing is installed.
+
+**Settled:** the client gets a real mailbox, Microsoft 365 or Google Workspace,
+rather than free forwarding. So the apex MX goes there, and Cloudflare Email
+Routing is out.
+
+**Open: who sends the intake notification.** Two candidates, and the deciding
+constraint is not technical. The site is hosted for the client on Toon's own
+Pro Vercel account, so a Vercel Marketplace integration is the wrong shape: it
+bills to Toon and provisions into his account. **Whichever vendor wins, the
+client owns the account and we hold the key in a Vercel env var.** That way
+nothing has to be migrated when the engagement ends.
+
+- **Resend.** GA. Free tier very likely covers this volume. No extra plan to
+  buy. Confirm EU data residency before signing.
+- **Cloudflare Email Sending.** Still **beta**, and needs the Workers Paid plan
+  at $5 per month, which nothing else in this project uses. Then 3.000 mails a
+  month included, $0.35 per 1.000 after. Requires the domain to be a zone in
+  the Cloudflare account. Bounce MX lands on a `cf-bounce` subdomain, so it does
+  **not** fight the apex MX of the real mailbox. Real bounce handling,
+  suppression lists and feedback loops.
+- **Third option, no new vendor:** send through the mailbox we are buying
+  anyway. Costs nothing. No bounce webhooks, no suppression, credentials in
+  env, and Microsoft is retiring basic-auth SMTP submission, so check that
+  first. Google Workspace's relay is the safer of the two.
+
+**Move the DNS to Cloudflare either way.** We have to leave Leaseweb, the SPF
+record has to be rebuilt from the seller's four senders, DMARC needs a real
+policy and a reporting address, and Cloudflare DNS is free. It is independent
+of who sends, it unblocks DKIM for any of the three, and it keeps the
+Cloudflare option open.
+
+- [ ] **A lost request is worse than a late one.** Whatever sends the mail, a
+      bare send-and-forget loses the request when the provider 500s or the
+      coach's address bounces. A lead here is worth about €699. Cheapest fix
+      that is not a database: send to the coach and copy an archive address, so
+      no request exists in only one place.
+- [ ] **The `situatie` field is special category data.** One of its four options
+      is "Ik heb ADD, ADHD of autisme", and most of the people filling it in are
+      16 to 22. Mailing that, attached to a named minor, to a freelancer's
+      personal mailbox is processing health data under GDPR article 9. Decide
+      the basis before the plumbing: at minimum keep it out of the subject line,
+      and each freelance coach probably needs a processor agreement. The server
+      no longer writes the submission to the runtime log, for the same reason.
 
 ## 3. Rights. Settled
 
