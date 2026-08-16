@@ -61,8 +61,9 @@ export default function FaqPage() {
                   pagina: je hoeft nergens op te klikken en niets uit te vouwen.
                 </p>
                 <p className="max-w-[58ch]">
-                  Staat je vraag er niet bij? Stel hem gerust. Bellen mag, appen
-                  mag, en het formulier onderaan deze pagina mag ook.
+                  Staat je vraag er niet bij? Stel hem gerust. Kies onderaan deze
+                  pagina je stad, dan zie je wie daar werkt, en je vraagt het aan
+                  die coach zelf.
                 </p>
 
                 <div className="mt-2 flex flex-wrap items-center gap-x-8 gap-y-4">

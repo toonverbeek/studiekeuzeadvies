@@ -101,6 +101,13 @@ export async function requestIntake(
    *
    * The warning names the person the request was meant for. A log line that
    * only says "not sent" hides which desk missed the request.
+   *
+   * IT DOES NOT LOG THE SUBMISSION. The form asks for a name, an e-mail, a
+   * telephone number and what the person is struggling with, and one of the
+   * four situations is "ik heb ADD, ADHD of autisme". Most of the people who
+   * fill this in are between 16 and 22. Writing that to the runtime log copies
+   * personal data, some of it health data, to a third place that nobody reads
+   * and nobody empties. The route is enough to tell which desk missed it.
    */
   const inbox = destination.coach?.email ?? unassignedIntakeInbox;
   const meantFor = destination.coach
@@ -108,15 +115,23 @@ export async function requestIntake(
     : `nog geen coach in ${destination.cityName ?? "deze stad"}`;
 
   console.warn(
-    `[intake] Aanvraag ontvangen maar NIET verstuurd. Bedoeld voor: ${meantFor}. Adres: ${inbox ?? "nog niet bekend"}.`,
-    values,
+    `[intake] Aanvraag ontvangen maar NIET verstuurd. Bedoeld voor: ${meantFor}. ` +
+      `Adres: ${inbox ?? "nog niet bekend"}. De inhoud staat bewust niet in dit log.`,
   );
 
+  /*
+   * WHAT THIS MESSAGE MAY SAY. Nothing is delivered, so it may not promise an
+   * answer, a channel or a moment. It says what is true: the form was filled in
+   * correctly, and it is not on its way yet. The day `Coach.email` holds an
+   * address, this text becomes a promise we can keep and it should be rewritten
+   * to make it, because "we cannot send it yet" is a bad thing to read once it
+   * is no longer true.
+   */
   return {
     status: "success",
     message: destination.coach
-      ? `Je aanvraag staat genoteerd voor ${destination.coach.name}. Je hoort van ${destination.coach.name} per mail.`
-      : "Je aanvraag staat genoteerd. Hier werkt nog geen vaste coach, dus we zoeken iemand bij jou in de buurt. Je hoort van ons per mail.",
+      ? `Bedankt. Je aanvraag is voor ${destination.coach.name}, maar we kunnen hem nog niet versturen: de site is nog niet open. Probeer het opnieuw zodra hij live staat.`
+      : "Bedankt. Hier werkt nog geen vaste coach, en we kunnen je aanvraag nog niet versturen: de site is nog niet open. Probeer het opnieuw zodra hij live staat.",
     errors: {},
     values: intakeInitialState.values,
   };

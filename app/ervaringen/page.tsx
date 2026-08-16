@@ -69,6 +69,10 @@ export default function StoriesPage() {
                   Hieronder staat wat studiekiezers zelf opschreven over hun
                   traject. We hebben er niets bij verzonnen en niets mooier
                   gemaakt. Dit zijn hun eigen woorden, met hun eigen fouten erin.
+                  Eén ding hebben we wel veranderd: waar iemand de naam van hun
+                  coach noemde, staat nu &ldquo;mijn coach&rdquo;. Die coaches
+                  werken hier niet meer, en dan hoort hun naam hier ook niet
+                  meer.
                 </p>
                 <p className="max-w-[58ch]">
                   Bij elk verhaal staat een jaartal. Sommige zijn van jaren

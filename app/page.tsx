@@ -168,8 +168,8 @@ export default function Home() {
                 </ul>
                 <p className="max-w-[62ch]">
                   We noemen alleen steden waar echt een coach werkt. Staat jouw
-                  stad er nog niet bij? Bel of app ons, dan kijken we samen wat
-                  er mogelijk is. Kijk anders bij{" "}
+                  stad er nog niet bij? Een coach in de buurt werkt vaak ook in
+                  de steden eromheen, dus kijk bij{" "}
                   <Link
                     className="font-medium underline decoration-ink/40 decoration-2 underline-offset-4 transition-colors duration-150 ease-out-quart hover:decoration-ink"
                     href="/locaties"
