@@ -243,23 +243,35 @@ trailing slash rule. Everything below is what the file cannot decide by itself.
       written down in the script and in `docs/redirects.md`.
 - [ ] **Verify every action against Search Console** once the export exists.
       Every action in the map is a heuristic until then.
-- [x] **Generate the redirect table.** Done on 2026-08-15, issue #4.
-      `app/redirects.ts` holds 346 typed rows and `next.config.ts` imports it.
-      Checked on the production build: all 346 sources answer 308, every target
-      answers 200, no source shadows a real route, and no target is itself a
-      source. It is live now, so it is ready the day the old site goes down.
+- [x] **Generate the redirect table.** Done on 2026-08-15, corrected on
+      2026-08-16 after the Codex review, issue #4. `app/redirects.ts` holds 439
+      typed rows and `next.config.ts` imports them. Checked by walking all 522
+      mapped URLs against a production build: `redirect` 346, `keep` 101 and
+      `rebuild` 9 all end on a 200, and only the 66 `drop` rows answer 404,
+      which is what `drop` means. No chains, no duplicates, no self redirects,
+      no source shadowing a live route.
+- [x] **The 404 hole is closed.** It was 93 URLs, 5.898 inbound links and
+      57.348 words of archived text answering 404: `keep` and `rebuild` rows
+      whose page nobody had written. The fallback ladder now runs on every row
+      except a `drop`, so those addresses are parked on the nearest real page
+      instead of lost.
+- [ ] **180 rows are parked, which is not the same as solved.** They answer 307
+      and not 308 on purpose: the page they want does not exist yet, and a 308
+      would hand away an address that still ranks. 70 rows for 59 articles not
+      imported, 58 rows for 33 cities without a coach, 46 for `/tarieven`,
+      `/onze-methode`, `/coach-worden` and `/bedankt`. A reader who searched
+      "studiekeuze Eindhoven" lands on `/locaties`: better than a 404, and not
+      the page they wanted. **Importing the articles is the cheapest win by a
+      distance.** The text is on disk in the archive, the rights are bought, and
+      Search Console only says which to do first, not whether we may.
 - [ ] **Re-run the generator after every new page.** `python3
-      scripts/build-url-map.py`. 93 of the rows land on a fallback because their
-      real target has no page yet, each marked `// waits for <target>`. Add a
-      city to `app/cities.ts` or an article to `app/articles.ts` and forget the
-      re-run, and a fallback redirect stands in front of the new page. A CI step
-      would catch it; `docs/redirects.md` holds the check to run by hand.
-- [ ] **Build the 93 pages the fallbacks wait for.** 59 articles not yet in
-      `app/articles.ts`, 30 cities not yet in `app/cities.ts`, and `/contact`,
-      `/onze-methode`, `/over-ons` and `/tarieven`. These are the rankings that
-      currently land on a near-enough page instead of their own. This is the
-      last hole before the old site can go offline, and it needs the Search
-      Console decisions below first.
+      scripts/build-url-map.py`. Add a city to `app/cities.ts` or an article to
+      `app/articles.ts` and forget the re-run, and a parked redirect stands in
+      front of the new page. **The build catches this**, so it is a nuisance and
+      not a risk: `app/sitemap.ts` refuses to prerender when a sitemap URL is
+      also a redirect source, and every article and city is in the sitemap.
+      Proved on 2026-08-16. A CI step would still turn a failed build into a
+      clearer message.
 - [ ] **Decide which of the 37 city pages stay.** The rule is: a city page only
       where a coach works. Every city you drop loses its ranking, so measure
       first.
