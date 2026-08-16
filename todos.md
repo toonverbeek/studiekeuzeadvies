@@ -63,17 +63,6 @@ cannot get them back later.
       a city where no coach works. Fill them, connect them to a mailbox or a
       form service, and add spam protection at the same time. The research for
       that sits under *Email, and the DNS it waits on* below.
-- [ ] **`isPlaceholder` is enforced by nothing, and issue `#13` says it is.**
-      `#13`, "Make the build refuse a coach with `isPlaceholder: true`", is
-      CLOSED as completed on 2026-08-15. The guard does not exist. Nothing in
-      `app/` or `scripts/` reads the field: `citiesWithCoach` filters on
-      `city.coach !== null`, and `/studiekeuzecoaches` maps the whole roster. So
-      `npm run build` happily ships Hanneke, Bram, Nadia, Wietske and Joris with
-      their generated faces, and since issue `#7` a city page also tells a reader
-      "Hanneke leest wat je hier invult" about somebody who does not exist.
-      Found by the Codex review of PR `#14` on 2026-08-16. **Reopen `#13`.** It
-      is the single thing most likely to put an invented person in front of a
-      real customer.
 - [ ] **Five of the six coaches are invented people.** `app/coaches.ts` holds
       six. Janneke is real and stands first; Hanneke, Bram, Nadia, Wietske and
       Joris are not. Invented names, invented histories, invented work regions,
@@ -82,6 +71,12 @@ cannot get them back later.
       it is the only thing that does. Replace the five with real coaches under
       contract, with their written permission for name and photo. Delete every
       portrait file that no real coach replaces.
+
+      **This is checked at the domain switch, not by the build.** See the
+      decision of 2026-08-16 in the table at the bottom. `isPlaceholder` is a
+      label for a human to read before the flip, not a gate in the pipeline.
+      Nothing enforces it and nothing should: we merge to production all day,
+      and production is a Vercel URL that no customer can reach.
 - [x] **Janneke's name, story and photo.** Cleared on 2026-08-06. The rights to
       the archive are bought, so her interview at `/janneke-van-den-brand/` and
       her photo are ours to use. Not a blocker any more. One nice-to-have stays
@@ -707,6 +702,7 @@ Do not re-open these without a reason.
 | The canonical host is `www.studiekeuzeadvies.nl`. Measured over the whole archive, not chosen | 2026-08-15 |
 | The cookie answer lives in `localStorage`, not in a cookie. A cookie would need `cookies()`, which makes every prerendered page dynamic, and the prerendered pages are what the purchase paid for | 2026-08-15 |
 | One question about cookies and no more. Two answers of equal weight, a bar and never a modal, and a no is never asked again | 2026-08-15 |
+| **The launch gate is the domain switch, not the build.** We are in rapid development: we merge to production all day, and production is a Vercel URL. `studiekeuzeadvies.nl` still points at the old WordPress on AWS, so nothing we ship is reachable by a customer until we flip the domain. Therefore no build guard on `isPlaceholder`, and issue `#13` stays closed. A guard would only block our own merges to protect a URL nobody visits. The five invented coaches are checked by a person before the flip. A future review will find this and call it a defect: it is not, it is this row | 2026-08-16 |
 | A generated image may show a scene, never a person we present as one of ours. The home page hero is such a scene; the five stand-in portraits still may not go live | 2026-08-13 |
 | No `lastModified`, `changeFrequency` or `priority` in the sitemap. We can prove none of the three, and a wrong one costs trust | 2026-08-15 |
 | Every customer story carries a date that can be proved. A story we cannot date does not go on `/ervaringen` at all | 2026-08-15 |
