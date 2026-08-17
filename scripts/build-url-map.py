@@ -18,7 +18,7 @@ Two files come out, and the second is built from the first:
    docs/redirects.md.
 
 Every rule here is a starting point, not a decision. The keep / redirect / drop
-column needs Search Console data before it is final. See todos.md, section 2.
+column needs Search Console data before it is final. See issues #22 and #27.
 """
 
 import csv
@@ -171,8 +171,8 @@ def resolve(path: str, record: dict, records: dict) -> tuple[str, str, str]:
     target = record.get("redirects_to")
     if target and target != path and target in records:
         # PAGE_MAP is where a decision is written down by hand, so it beats the
-        # hop the old site happens to make. One row needs this, and todos.md
-        # section 4 asks for it by name: /vacature-keuzecoach-dordrecht/ lands on
+        # hop the old site happens to make. One row needs this, and issue #4
+        # asked for it by name: /vacature-keuzecoach-dordrecht/ lands on
         # / on the old site, which is what WordPress does with a deleted vacancy,
         # not a choice. Its two sisters both go to /vacatures/. The reader on
         # that URL is a coach who looks for work, and the home page speaks to a
@@ -260,7 +260,7 @@ DYNAMIC_SEGMENTS = {
 FALLBACKS = {
     # Not settled: these pages are planned, they are only blocked today.
     "/tarieven": ("/studiekeuzetraject", False),      # the price is not decided yet
-    "/onze-methode": ("/studiekeuzetraject", False),  # blocked, see todos.md section 7
+    "/onze-methode": ("/studiekeuzetraject", False),  # blocked, see issue #37
     "/coach-worden": ("/studiekeuzecoaches", False),  # needs the freelance answer
     "/vacatures": ("/studiekeuzecoaches", False),
     "/bedankt": ("/", False),

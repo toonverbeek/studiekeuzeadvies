@@ -31,7 +31,7 @@ const situations = [
     // The page behind this door is about ADD and ADHD only, because that is
     // where the archived copy is. The door still names autism, because the
     // group is named in PRODUCT.md and a coach can answer it in the intake.
-    // See todos.md: the page must gain an autism section, or this door must
+    // See issue #40: the page must gain an autism section, or this door must
     // lose the word.
     number: "03",
     href: "/studiekeuze-met-add-adhd",

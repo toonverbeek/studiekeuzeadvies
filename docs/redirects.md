@@ -149,7 +149,7 @@ The three old coach interviews are not in that list any more: they are settled
 a second look though. 1129 words of Janneke's interview hang on
 `/studiekeuzecoaches/janneke-van-den-brand`, she IS our coach, and today the
 roster only offers the anchor `#janneke`. A page per coach would turn that 308
-into a real destination. See `todos.md` section 7.
+into a real destination. See issue #46.
 
 ## The 22 legacy redirects
 
@@ -180,7 +180,7 @@ which 29 are the shop itself: 9 product pages, 5 shop pages (`/winkel/`,
 15 product taxonomies. That holds only if the shop does not come back. It is not
 decided, so they follow the ladder to `/studiekeuzetraject` for now. Two things
 to know when the price decision lands: the old products are the Qompas tests,
-which this site does not sell (`todos.md` section 3), so most of those URLs
+which this site does not sell (see issue #43), so most of those URLs
 describe something we do not offer. Sending them to a price page we do have is
 still better than a 404.
 
@@ -200,7 +200,7 @@ The price is one extra hop for every old URL: 308 to strip the slash, 308 to the
 new address. Both are permanent and a search engine follows them, so the ranking
 arrives. Vercel behaves the same way, and the alternative
 (`skipTrailingSlashRedirect`) is worse: it would serve the same page on two
-addresses and make the duplicate content problem of `todos.md` section 5 bigger.
+addresses and make the duplicate content problem of issue #35 bigger.
 
 Measured against Next's own matcher, with the config of this repo:
 
@@ -266,8 +266,8 @@ rows of `docs/url-map.csv` against a production build on 2026-08-16:
 200 because they are parked on a stand-in page. A reader who followed a Google
 result for "studiekeuze Eindhoven" now lands on `/locaties` instead of nothing,
 which is better, but it is not the page they searched for. The two decisions
-that actually close this are unchanged and are in `todos.md` sections 2 and 4:
-which of the 63 articles to import, and which of the 37 cities to open. The 307
+that actually close this are unchanged, and both are tracked: which articles to
+import (#15) and which of the 37 cities to open (#29). The 307
 exists to keep those addresses ours until then.
 
 Importing the articles is the cheapest of the two by a distance. The text is

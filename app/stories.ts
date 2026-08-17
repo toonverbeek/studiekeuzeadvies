@@ -69,7 +69,7 @@
  * LEFT IN, AND WORTH A SECOND OPINION. Maura writes that the traject arranged a
  * day of walking along with a student. That was true of her traject in or before
  * 2016. It is her account and not our promise, and the date under her name says
- * so, but /studiekeuzetraject does not offer it today. See todos.md.
+ * so, but /studiekeuzetraject does not offer it today. See issue #47.
  */
 
 import { legacyQuotes } from "./site-config";

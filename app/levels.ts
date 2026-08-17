@@ -35,8 +35,8 @@
  *   Every sentence in it is a claim about the people who worked for the seller:
  *   that they all finished a university degree, that they are young
  *   professionals, and that they have years of experience with this age group.
- *   Those are hiring wishes, not facts we can stand behind today, and todos.md
- *   lists them as a blocker. What the traject does is described instead.
+ *   Those are hiring wishes, not facts we can stand behind today. Issue #19
+ *   holds that claim. What the traject does is described instead.
  * - The 088 number in the copy. It belonged to the seller, and since issue #7
  *   this site prints no central number at all.
  * - The claims about ourselves in the old h2s and closing lines: "de

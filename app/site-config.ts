@@ -36,7 +36,8 @@ export const unassignedIntakeInbox: string | null = null;
  * got a bounce. null now, and every caller hides its own block while it is null:
  * no invitation is better than an invitation to nowhere. Fill it, and the block
  * on a city page without a coach comes back by itself. The page that this really
- * needs is `/coach-worden`, which is blocked on the client. See todos.md.
+ * needs is `/coach-worden`, which is blocked on the client. See issues #20
+ * and #44.
  */
 export const coachRecruitmentInbox: string | null = null;
 
