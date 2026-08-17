@@ -162,7 +162,7 @@ export default async function ArticlePage(props: PageProps<"/[artikel]">) {
                 </p>
                 <div className="flex flex-wrap items-center gap-x-8 gap-y-4">
                   <a className={button} href="#contact">
-                    Plan een gratis intakegesprek
+                    Begin met een gesprek
                   </a>
                   <Link className={linkOnOchre} href="/studiekeuzetraject">
                     Eerst lezen hoe het traject werkt
@@ -186,7 +186,7 @@ export default async function ArticlePage(props: PageProps<"/[artikel]">) {
           ...sections
             .slice(0, 4)
             .map((section) => ({ href: `#${section.id}`, label: section.label })),
-          { href: "#contact", label: "Gratis intakegesprek" },
+          { href: "#contact", label: "Begin met een gesprek" },
         ]}
       />
     </>

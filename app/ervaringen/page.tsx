@@ -29,7 +29,7 @@ const nav: NavItem[] = [
 const jumps: NavItem[] = [
   { href: "#over-deze-verhalen", label: "Over deze verhalen" },
   { href: "#verhalen", label: "Wat studiekiezers schreven" },
-  { href: "#contact", label: "Gratis intakegesprek" },
+  { href: "#contact", label: "Begin met een gesprek" },
 ];
 
 /**
@@ -82,7 +82,7 @@ export default function StoriesPage() {
 
                 <div className="mt-2 flex flex-wrap items-center gap-x-8 gap-y-4">
                   <a className={button} href="#contact">
-                    Plan een gratis intakegesprek
+                    Begin met een gesprek
                   </a>
                   <Link className={linkOnOchre} href="/studiekeuzetraject">
                     Lees hoe het traject werkt
@@ -210,7 +210,7 @@ export default function StoriesPage() {
                   daarna gewoon nee als het niet klopt.
                 </p>
                 <a className={button} href="#contact">
-                  Plan een gratis intakegesprek
+                  Begin met een gesprek
                 </a>
               </div>
             </div>
@@ -225,7 +225,7 @@ export default function StoriesPage() {
           { href: "#over-deze-verhalen", label: "Over deze verhalen" },
           { href: "#verhalen", label: "Wat studiekiezers schreven" },
           { href: "/studiekeuzetraject", label: "Hoe het traject werkt" },
-          { href: "#contact", label: "Gratis intakegesprek" },
+          { href: "#contact", label: "Begin met een gesprek" },
         ]}
       />
     </>

@@ -7,7 +7,7 @@ import type { NavItem } from "./site-header";
 const homeLinks: NavItem[] = [
   { href: "#aanpak", label: "Waar sta jij nu?" },
   { href: "#coaches", label: "Je coach" },
-  { href: "#contact", label: "Gratis intakegesprek" },
+  { href: "#contact", label: "Begin met een gesprek" },
 ];
 
 export function SiteFooter({ pageLinks = homeLinks }: { pageLinks?: NavItem[] }) {

@@ -40,7 +40,7 @@ export function LevelPage({ level }: { level: Level }) {
     { href: "#ander-niveau", label: "Past een ander niveau beter?" },
     { href: "#gesprekken", label: "Hoe het traject werkt" },
     { href: "#situaties", label: "Waar sta jij nu?" },
-    { href: "#contact", label: "Gratis intakegesprek" },
+    { href: "#contact", label: "Begin met een gesprek" },
   ];
 
   return (
@@ -75,7 +75,7 @@ export function LevelPage({ level }: { level: Level }) {
 
                 <div className="mt-2 flex flex-wrap items-center gap-x-8 gap-y-4">
                   <a className={button} href="#contact">
-                    Plan een gratis intakegesprek
+                    Begin met een gesprek
                   </a>
                   <a className={linkOnOchre} href="#situaties">
                     Eerst lezen waar je staat
@@ -227,7 +227,7 @@ export function LevelPage({ level }: { level: Level }) {
                 <p className="text-lead max-w-[52ch]">{level.invitation}</p>
                 <div className="flex flex-wrap items-center gap-x-8 gap-y-4">
                   <a className={button} href="#contact">
-                    Plan een gratis intakegesprek
+                    Begin met een gesprek
                   </a>
                   <Link className={linkOnOchre} href="/locaties">
                     Kies een locatie bij jou in de buurt

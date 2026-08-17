@@ -37,7 +37,7 @@ export function SituationPage({ situation }: { situation: Situation }) {
       label: section.title,
     })),
     { href: "#gesprekken", label: "De vier gesprekken" },
-    { href: "#contact", label: "Gratis intakegesprek" },
+    { href: "#contact", label: "Begin met een gesprek" },
   ];
 
   return (
@@ -63,7 +63,7 @@ export function SituationPage({ situation }: { situation: Situation }) {
 
                 <div className="mt-2 flex flex-wrap items-center gap-x-8 gap-y-4">
                   <a className={button} href="#contact">
-                    Plan een gratis intakegesprek
+                    Begin met een gesprek
                   </a>
                   <Link className={linkOnOchre} href={situation.crossLink.href}>
                     {situation.crossLink.label}
@@ -176,7 +176,7 @@ export function SituationPage({ situation }: { situation: Situation }) {
                 </p>
                 <div className="flex flex-wrap items-center gap-x-8 gap-y-4">
                   <a className={button} href="#contact">
-                    Plan een gratis intakegesprek
+                    Begin met een gesprek
                   </a>
                   <Link className={linkOnOchre} href="/locaties">
                     Kies een locatie bij jou in de buurt
@@ -199,7 +199,7 @@ export function SituationPage({ situation }: { situation: Situation }) {
             label: section.title,
           })),
           { href: "#gesprekken", label: "De vier gesprekken" },
-          { href: "#contact", label: "Gratis intakegesprek" },
+          { href: "#contact", label: "Begin met een gesprek" },
         ]}
       />
     </>

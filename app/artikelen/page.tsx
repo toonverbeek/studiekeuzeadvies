@@ -118,7 +118,7 @@ export default function ArtikelenPage() {
       <SiteFooter
         pageLinks={[
           ...years.map((year) => ({ href: `#jaar-${year}`, label: year })),
-          { href: "#contact", label: "Gratis intakegesprek" },
+          { href: "#contact", label: "Begin met een gesprek" },
         ]}
       />
     </>
