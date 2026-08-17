@@ -45,3 +45,8 @@ next-env.d.ts
 # worktree is a full copy of the repo, so this line also keeps hundreds of
 # megabytes out of the history.
 /.claude
+
+# python
+# docs/art/build-marks.py imports docs/art/mark.py, so a run leaves bytecode.
+__pycache__/
+*.pyc

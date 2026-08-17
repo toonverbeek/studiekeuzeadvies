@@ -2,10 +2,14 @@
 
 The working list for studiekeuzeadvies.nl. Claude keeps this file up to date.
 
-**Last update:** 2026-08-06 (Janneke is the first real coach on
-`/studiekeuzecoaches`, and Amsterdam is the first real city on `/locaties`.
-The day before: the five unblocked pages, the ADD/ADHD page, the FAQ and the
-three level pages)
+**Last update:** 2026-08-15 (issues `#4` and `#6` to `#11` landed together on the
+branch `alle-open-tickets`: the redirect table, the canonical host, the sitemap
+and robots, the central contact point removed, the marks and the share image,
+the cookie consent bar, the hero image, and `/ervaringen`. Before that, on
+2026-08-13: the client's first feedback arrived. On 2026-08-06: Janneke is the
+first real coach on `/studiekeuzecoaches`, and Amsterdam is the first real city
+on `/locaties`. The day before: the five unblocked pages, the ADD/ADHD page, the
+FAQ and the three level pages)
 
 **Read first:** `docs/rebuild-review.md` measures the whole rebuild against the
 archive: what is covered, what is missing, how much body text each page lost in
@@ -14,6 +18,29 @@ the cleaning, and a proposed new URL structure. `docs/url-map.csv` resolves all
 `scripts/`, so re-run them after you change a rule or re-crawl.
 `docs/five-pages-brief.md` is the design brief of the batch of 2026-08-05, and
 its removal rules apply to every page built after it.
+
+**Client feedback, round 1, arrived 2026-08-12.** Eleven points from Janneke.
+Eight of them are questions that need an answer, two of them reverse decisions
+in the table at the bottom of this file (the tests, and the central contact
+point), and four are new build items. The plan that answers it is
+`~/grill-client-feedback-round-1-plan.html`, and it holds the email in full.
+
+**Where the work lives now.** Two places, and they do different jobs.
+
+- **GitHub issues hold the open work.** Ten issues, `#4` to `#13`, all under the
+  milestone *Live 28 augustus 2026*. They are the ten items that need nobody's
+  answer, so they can start today. Run `gh issue list --milestone "Live 28
+  augustus 2026"`.
+- **This file holds the decisions and the blocked items,** with the reason each
+  one is blocked. It stays the place that explains *why*. Do not copy an issue
+  back into this file; link to it.
+
+**Still blocked on the client, so not an issue yet:** the tests section and
+`/onze-methode` (needs to know what may be named), `/coach-worden` (needs the
+rate, who finds the client, and whether a city is exclusive), the map (needs
+more cities), new coaches and city pages (needs their content, due 21 August),
+the €500 logo (needs their yes), the article imports (needs Search Console),
+and every price page (needs the price, which nobody has asked about yet).
 
 ---
 
@@ -28,9 +55,14 @@ cannot get them back later.
 
 ## 1. Blockers. Nothing may go live until these are done
 
-- [ ] **The intake form delivers nothing.** `app/actions.ts` validates, then
-      writes a warning to the console. A real request is lost. Connect it to a
-      mailbox or a form service, and add spam protection at the same time.
+- [ ] **The intake form delivers nothing.** `app/actions.ts` validates, resolves
+      the request to a real coach or city, then writes a warning to the console.
+      A real request is lost. Since issue #7 the whole delivery route is two
+      fields, and both are `null` today: `email` on each coach in
+      `app/coaches.ts`, and `unassignedIntakeInbox` in `app/site-config.ts` for
+      a city where no coach works. Fill them, connect them to a mailbox or a
+      form service, and add spam protection at the same time. The research for
+      that sits under *Email, and the DNS it waits on* below.
 - [ ] **Five of the six coaches are invented people.** `app/coaches.ts` holds
       six. Janneke is real and stands first; Hanneke, Bram, Nadia, Wietske and
       Joris are not. Invented names, invented histories, invented work regions,
@@ -39,6 +71,12 @@ cannot get them back later.
       it is the only thing that does. Replace the five with real coaches under
       contract, with their written permission for name and photo. Delete every
       portrait file that no real coach replaces.
+
+      **This is checked at the domain switch, not by the build.** See the
+      decision of 2026-08-16 in the table at the bottom. `isPlaceholder` is a
+      label for a human to read before the flip, not a gate in the pipeline.
+      Nothing enforces it and nothing should: we merge to production all day,
+      and production is a Vercel URL that no customer can reach.
 - [x] **Janneke's name, story and photo.** Cleared on 2026-08-06. The rights to
       the archive are bought, so her interview at `/janneke-van-den-brand/` and
       her photo are ours to use. Not a blocker any more. One nice-to-have stays
@@ -59,14 +97,25 @@ cannot get them back later.
 - [x] **The two customer quotes.** Cleared on 2026-08-06. Ger and Moya, in
       `app/site-config.ts`, `legacyQuotes`. The rights are bought, so they may
       stay. The whole of `/ervaringen/` is open now too, see section 7.
-- [ ] **Cookie consent banner.** The Google map on a city page sets cookies. The
-      iframe must not load before the visitor agrees. This applies to the whole
-      site once the map is live.
-- [ ] **Telephone number.** `app/site-config.ts`. The 088 number on the old site
-      belongs to Qompas / Lyceo. Get your own.
-- [ ] **WhatsApp number.** `app/site-config.ts`. Stand-in.
-- [ ] **E-mail address.** `hallo@studiekeuzeadvies.nl` must exist and must
-      receive mail.
+- [x] **Cookie consent banner.** Done on 2026-08-15, issue #10. `app/consent.ts`
+      holds the answer in `localStorage` (not in a cookie, because `cookies()`
+      would make every prerendered page dynamic), and `ConsentGate` in
+      `app/components/cookie-consent.tsx` keeps the map out of the DOM until the
+      visitor says yes. Verified on the production build: no `<iframe>` and no
+      request to Google in the HTML of `/locaties/amsterdam` before an answer.
+- [x] **Telephone number, WhatsApp number and the central mailbox.** Changed,
+      not obtained. Decided in issue #7: there is no central contact point. The
+      088 number, the WhatsApp link and `hallo@studiekeuzeadvies.nl` are gone
+      from the header, the footer, the form and `/locaties`. A reader picks a
+      city, sees who works there, and writes to that coach. What replaces them
+      is the intake blocker above, and the coach inbox below.
+- [ ] **Nowhere for a coach to write.** `coachRecruitmentInbox` in
+      `app/site-config.ts` is `null`, so the invitation on a city page without a
+      coach ("Werk je zelf als studiekeuzecoach in ...?") does not render at
+      all. It pointed at `hallo@studiekeuzeadvies.nl`, which is cancelled, so a
+      coach who wrote there got a bounce. PRODUCT.md names the coach as the
+      third user and today that user has no door. Fill the address, or build
+      `/coach-worden` in section 7, which four redirect rows already wait for.
 - [ ] **The cities.** `app/cities.ts` holds four: Amsterdam, Utrecht,
       Amersfoort and Bergen op Zoom. Only Amsterdam has a coach who exists.
       Only name a city where a coach really works.
@@ -80,6 +129,67 @@ cannot get them back later.
       three rebrands ago. They must survive the move.
 - [ ] **Export the full URL list.** All 522, with their traffic and positions,
       so the keep / redirect / drop decisions rest on data, not on judgement.
+- [ ] **Take the DNS off the seller.** Measured on 2026-08-16:
+
+      NS     ns0.leaseweb.nl (and three more)
+      MX     studiekeuzeadvies-nl.mail.protection.outlook.com
+      SPF    include: mimecast, mandrillapp, outlook, spotler.email  -all
+      DMARC  v=DMARC1; p=none      (no reporting address)
+      A      3.69.98.86            (AWS eu-central-1, the old WordPress)
+
+      Every one of those is the seller's. The MX points at the seller's
+      Microsoft 365 tenant, so **the day that tenant goes, nothing can receive
+      mail at `@studiekeuzeadvies.nl`**: no coach recruitment address, no bounce
+      address, no DMARC report. This is on the same September deadline as the
+      site and it is not a code task. Find out who can change the Leaseweb
+      nameservers, and move them.
+
+## Email, and the DNS it waits on
+
+Researched on 2026-08-16. Nothing is decided and nothing is installed.
+
+**Settled:** the client gets a real mailbox, Microsoft 365 or Google Workspace,
+rather than free forwarding. So the apex MX goes there, and Cloudflare Email
+Routing is out.
+
+**Open: who sends the intake notification.** Two candidates, and the deciding
+constraint is not technical. The site is hosted for the client on Toon's own
+Pro Vercel account, so a Vercel Marketplace integration is the wrong shape: it
+bills to Toon and provisions into his account. **Whichever vendor wins, the
+client owns the account and we hold the key in a Vercel env var.** That way
+nothing has to be migrated when the engagement ends.
+
+- **Resend.** GA. Free tier very likely covers this volume. No extra plan to
+  buy. Confirm EU data residency before signing.
+- **Cloudflare Email Sending.** Still **beta**, and needs the Workers Paid plan
+  at $5 per month, which nothing else in this project uses. Then 3.000 mails a
+  month included, $0.35 per 1.000 after. Requires the domain to be a zone in
+  the Cloudflare account. Bounce MX lands on a `cf-bounce` subdomain, so it does
+  **not** fight the apex MX of the real mailbox. Real bounce handling,
+  suppression lists and feedback loops.
+- **Third option, no new vendor:** send through the mailbox we are buying
+  anyway. Costs nothing. No bounce webhooks, no suppression, credentials in
+  env, and Microsoft is retiring basic-auth SMTP submission, so check that
+  first. Google Workspace's relay is the safer of the two.
+
+**Move the DNS to Cloudflare either way.** We have to leave Leaseweb, the SPF
+record has to be rebuilt from the seller's four senders, DMARC needs a real
+policy and a reporting address, and Cloudflare DNS is free. It is independent
+of who sends, it unblocks DKIM for any of the three, and it keeps the
+Cloudflare option open.
+
+- [ ] **A lost request is worse than a late one.** Whatever sends the mail, a
+      bare send-and-forget loses the request when the provider 500s or the
+      coach's address bounces. A lead here is worth about €699. Cheapest fix
+      that is not a database: send to the coach and copy an archive address, so
+      no request exists in only one place.
+- [ ] **The `situatie` field is special category data.** One of its four options
+      is "Ik heb ADD, ADHD of autisme", and most of the people filling it in are
+      16 to 22. Mailing that, attached to a named minor, to a freelancer's
+      personal mailbox is processing health data under GDPR article 9. Decide
+      the basis before the plumbing: at minimum keep it out of the subject line,
+      and each freelance coach probably needs a processor agreement. The server
+      no longer writes the submission to the runtime log, for the same reason.
 
 ## 3. Rights. Settled
 
@@ -108,38 +218,98 @@ Three questions survived the answer, and not one of them is about rights:
 
 ## 4. SEO and migration
 
-**A first pass at all of this now exists.** `docs/url-map.csv` gives every one
-of the 522 URLs a proposed new URL and an action: 409 redirect, 66 drop, 38
-keep, 9 rebuild. The odd city URLs and the 22 legacy redirects are already
-resolved in it. Everything below is what the file cannot decide by itself.
+**The table is built and it is live in the code.** `docs/url-map.csv` gives
+every one of the 522 URLs a new URL and an action: 346 redirect, 101 keep, 66
+drop, 9 rebuild. `scripts/build-url-map.py` writes both the map and
+`app/redirects.ts`, and `next.config.ts` turns every row into a 308.
+`docs/redirects.md` explains the two decisions, the fallback ladder and the
+trailing slash rule. Everything below is what the file cannot decide by itself.
 
-- [ ] **Decide the article namespace.** `docs/rebuild-review.md`, section 5,
-      proposes moving the 63 articles from the root to `/artikelen/<slug>`. That
-      reverses the decision of 2026-08-05 in the table below, and it is the one
-      URL change that costs redirect hops on pages that rank. Choose, then
-      regenerate the map. Keeping the root URLs needs one line changed in
-      `scripts/build-url-map.py`.
+- [x] **Decide the article namespace.** Settled on 2026-08-15, issue #4: an
+      article keeps its old root URL, `/<slug>`, and `/artikelen` stays the
+      index. That is the decision of 2026-08-05 confirmed, not reversed, and it
+      costs zero redirect hops on the pages that rank. The row in the table at
+      the bottom of this file is re-settled at the root.
 - [ ] **Confirm the rest of the proposed structure.** Three coach interviews
       move under `/studiekeuzecoaches/`, `/vacatures/` becomes `/coach-worden`,
       the two thank-you pages become `/bedankt`, and the four stray city pages
       normalise into `/locaties/`. None of these carry the article risk.
-- [ ] **Check the two rows the generator cannot judge.**
-      `/vacature-keuzecoach-dordrecht/` lands on `/` because that is where the
-      old site sends it; `/coach-worden` is probably better. All 32 shop URLs
-      point at `/tarieven`, which holds only if the shop does not come back.
+- [x] **Check the two rows the generator cannot judge.** Both decided on
+      2026-08-15, issue #4. `/vacature-keuzecoach-dordrecht/` goes to
+      `/coach-worden`, not to `/`, because its two sister URLs both go to
+      `/vacatures/` and the reader there is a coach looking for work; it is a
+      hand written rule that beats the old site's own hop. The shop URLs stay on
+      `/tarieven`, 41 rows of which 29 are the shop itself. Both reasons are
+      written down in the script and in `docs/redirects.md`.
 - [ ] **Verify every action against Search Console** once the export exists.
       Every action in the map is a heuristic until then.
-- [ ] **Generate the redirect table** from the finished map, and have it live on
-      the day the old site goes down.
+- [x] **Generate the redirect table.** Done on 2026-08-15, corrected on
+      2026-08-16 after the Codex review, issue #4. `app/redirects.ts` holds 439
+      typed rows and `next.config.ts` imports them. Checked by walking all 522
+      mapped URLs against a production build: `redirect` 346, `keep` 101 and
+      `rebuild` 9 all end on a 200, and only the 66 `drop` rows answer 404,
+      which is what `drop` means. No chains, no duplicates, no self redirects,
+      no source shadowing a live route.
+- [x] **The 404 hole is closed.** It was 93 URLs, 5.898 inbound links and
+      57.348 words of archived text answering 404: `keep` and `rebuild` rows
+      whose page nobody had written. The fallback ladder now runs on every row
+      except a `drop`, so those addresses are parked on the nearest real page
+      instead of lost.
+- [ ] **180 rows are parked, which is not the same as solved.** They answer 307
+      and not 308 on purpose: the page they want does not exist yet, and a 308
+      would hand away an address that still ranks. 70 rows for 59 articles not
+      imported, 58 rows for 33 cities without a coach, 46 for `/tarieven`,
+      `/onze-methode`, `/coach-worden` and `/bedankt`. A reader who searched
+      "studiekeuze Eindhoven" lands on `/locaties`: better than a 404, and not
+      the page they wanted. **Importing the articles is the cheapest win by a
+      distance.** The text is on disk in the archive, the rights are bought, and
+      Search Console only says which to do first, not whether we may. Tracked
+      as issue `#15`.
+- [ ] **Re-run the generator after every new page.** `python3
+      scripts/build-url-map.py`. Add a city to `app/cities.ts` or an article to
+      `app/articles.ts` and forget the re-run, and a parked redirect stands in
+      front of the new page. **The build catches this**, so it is a nuisance and
+      not a risk: `app/sitemap.ts` refuses to prerender when a sitemap URL is
+      also a redirect source, and every article and city is in the sitemap.
+      Proved on 2026-08-16. A CI step would still turn a failed build into a
+      clearer message.
 - [ ] **Decide which of the 37 city pages stay.** The rule is: a city page only
       where a coach works. Every city you drop loses its ranking, so measure
       first.
-- [ ] **Decide which of the 63 articles stay.** They were orphaned on the old
-      site: no hub, no navigation link, one inbound link each.
-- [ ] **`sitemap.ts` and `robots.ts`.** Neither exists yet.
-- [ ] **Confirm the canonical host.** `app/layout.tsx` sets `metadataBase` to
-      `https://www.studiekeuzeadvies.nl`. Confirm www against non-www and match
-      the server redirect to it.
+- [x] **Decide which of the 63 articles stay.** Re-framed on 2026-08-17: this
+      was filed as a decision that waits on Search Console, and that hid the
+      work inside it. Search Console says which article to import *first*. It
+      does not decide whether we may: the rights are settled and all 59 files
+      are on disk. The import is now issue `#15`, and it needs nobody's answer.
+      What genuinely waits on Search Console is which articles to *drop* later,
+      and dropping one is cheap once it is imported.
+- [x] **`sitemap.ts` and `robots.ts`.** Done on 2026-08-15, issue #11.
+      `app/sitemap.ts` emits 20 URLs, built from the same lists
+      `generateStaticParams` reads, and it throws at build time if a sitemap URL
+      is also a redirect source or is claimed twice. No `lastModified`, no
+      `changeFrequency`, no `priority`: we can prove none of the three.
+      `app/robots.ts` allows everything and points at the sitemap. AI crawlers
+      are deliberately not blocked; the reason is in the file header.
+- [ ] **A new static route needs a line in `app/sitemap.ts`.** `staticPaths` is
+      a hand list, because Next 16 exposes no API that enumerates its own
+      routes. Cities and articles add themselves; a new folder under `app/` does
+      not.
+- [x] **Confirm the canonical host.** Settled on 2026-08-15, issues #4 and #6:
+      **www**. Counted over the whole archive (html, markdown and meta): 146356
+      links write `https://www.studiekeuzeadvies.nl`, 18 write the `http` www
+      form, and not one writes the bare host. `next.config.ts` redirects the
+      bare host to www, and `app/layout.tsx`, `app/sitemap.ts` and
+      `next.config.ts` all print the same value.
+- [ ] **Set the same host rule on the Vercel domain configuration.** Both hosts
+      have to be attached to the project anyway, and Vercel answers before the
+      app runs, so it costs no function call and it also covers the requests the
+      app never sees. The rule in `next.config.ts` is the safety net that
+      travels with the code, not the one that counts in production.
+- [ ] **The canonical origin is written in three files.** `metadataBase` in
+      `app/layout.tsx`, `CANONICAL_HOST` in `next.config.ts`, and
+      `canonicalOrigin` in `app/sitemap.ts`. The value is settled, so this is
+      tidiness, not a bug: export it once from `app/site-config.ts` and let the
+      three read it.
 - [ ] **Structured data.** `LocalBusiness` markup for a city page, but only
       after a real address exists. Today it would assert a place we do not have.
 - [ ] **Analytics.** Nothing is installed.
@@ -168,7 +338,12 @@ write nothing and it falls back to the shared text.
 - [ ] **Get an API key** and restrict it to the studiekeuzeadvies.nl domain.
       Put it in `NEXT_PUBLIC_GOOGLE_MAPS_EMBED_KEY`, see `.env.example`.
       Until then the map uses an old keyless endpoint that Google does not
-      document or support.
+      document or support. This is the last open item on the map; the cookie
+      question in front of it is answered, see section 1.
+- [ ] **Widen the consent bar text if a map ever lands on the home page.** The
+      bar says "Op een locatiepagina staat een kaart van Google". `ConsentGate`
+      in `app/components/cookie-consent.tsx` is already written generic, so the
+      second map needs no new code, only that one sentence.
 - [ ] **Fill the meeting places.** `app/cities.ts`, the `meeting` field. When it
       holds an address, the map moves to that address and zooms in, and the
       address block appears. No code change is needed.
@@ -439,24 +614,37 @@ freelance coach.
       the anchor `#janneke`. Either build the page per coach, or point the
       redirect at the anchor. 1129 words of the old page hang on this, and the
       rights to all of them are ours.
-- [ ] **The home page still opens on a generated face.** `app/page.tsx` imports
-      `coach-placeholder.png` for the hero, with a generic alt text, while the
-      real coach is one click away on `/studiekeuzecoaches`. Decide whether the
-      hero shows Janneke or stays anonymous until more coaches sign.
-- [ ] **`/ervaringen`. The customer stories.** 757 words, and open since
-      2026-08-06: the rights are bought. It was on the blocked list for that one
-      reason and nothing else. `docs/url-map.csv` marks the URL `keep`, so it
-      needs a page. Read the archive first: a story from 2023 was written about a
-      coach who is not ours, so say when it happened, as `legacyQuotes` in
-      `app/site-config.ts` already does.
+- [x] **The home page no longer opens on a generated face.** Done on
+      2026-08-15, issue #9. The hero is `public/images/hero-gesprek.jpg`, a
+      generated scene of three people at a table, and it names nobody. The rule
+      that allows it stands in PRODUCT.md under Principle 5 and in
+      `app/site-config.ts` next to `heroImage`. Still open, but not a blocker:
+      whether the hero later shows Janneke instead.
+- [x] **`/ervaringen`. The customer stories.** Done on 2026-08-15, issue #12.
+      All 8 archive stories plus the 2 dated quotes from `legacyQuotes`, in
+      `app/stories.ts`. Every story carries a date that can be proved: the two
+      quotes have a real completion date, and the 8 carry the year they stood on
+      the old site, read from the Internet Archive captures listed in the file
+      header. Left off: the 92 percent lead, the 96 percent meta description and
+      the old h1 "Honderden leerlingen en studenten gingen je voor!". One coach
+      name inside a story was replaced by "mijn coach", because he does not work
+      here and a named coach is our proof. The home page and the footer both
+      link to the page.
+- [ ] **Second opinion on one line in `app/stories.ts`.** Maura Peters writes
+      that her traject arranged a day of walking along with a student. That was
+      her traject in or before 2016, the date under her name says so, and it is
+      her account and not our promise, but `/studiekeuzetraject` does not offer
+      it today. Decide whether to keep the sentence.
 - [ ] **A contact page.** `/contact/` on the old site was only a form, and every
       page already carries that form. Decide whether the URL needs a page at all
       or only a redirect.
 - [ ] **`/coach-worden`. The page for coaches who want to open a city.**
-      PRODUCT.md names the coach as the third user, and today they get one line
-      in a paragraph. This is not a rebuild: `/vacatures/` on the old site has a
-      heading and no body, 0 real words, and `docs/url-map.csv` redirects it and
-      its two retired vacancy URLs here. It needs an answer before it needs
+      PRODUCT.md names the coach as the third user, and since 2026-08-15 they
+      get nothing at all: the one line they had on `/locaties` and on a city
+      page both ended at a mailbox that no longer exists, so both are hidden.
+      Four redirect rows already wait for this page (`/vacatures/` and the three
+      vacancy URLs). It is not a rebuild: `/vacatures/` on the old site has a
+      heading and no body, 0 real words. It needs an answer before it needs
       code: what do you offer a freelance coach? The rate, who finds the client,
       and whether a city is theirs alone.
 - [x] **Link the city pages to the traject page.** Done on 2026-08-05. The
@@ -476,6 +664,39 @@ freelance coach.
       `<!-- SEED -->`. It has no real values, because there was no code when it
       was written. There is now: tokens in `app/globals.css`, and components in
       `app/components/`.
+- [ ] **The button hover state fails the contrast floor.** `button` in
+      `app/shell.ts` goes from `text-paper` on `bg-ink` (15.63:1) to
+      `text-paper` on `bg-ochre-deep` on hover, and that measures **3.96:1**
+      against the 4.5:1 minimum in PRODUCT.md. Measured from the OKLCH tokens
+      with `docs/art/oklch.py` on 2026-08-15. It is on every button on every
+      page and it predates all of this work, so it was not fixed here: the fix
+      is either a darker `--color-ochre-deep` or `text-ink` on hover, and both
+      change the look of the whole site. Note that `oklch(58% 0.125 74)` is
+      already slightly outside sRGB and clips to `#a56d00`, so a darker step has
+      to be chosen, not just typed.
+- [ ] **The wordmark and the header treat the name differently.** `issue #8`
+      shipped `public/wordmark.svg` and the share image with the name in
+      Alegreya Sans Bold camel case. `app/components/site-header.tsx` sets the
+      same name as an uppercase 0.10em eyebrow, which DESIGN.md assigns to dates
+      and categories. A visitor who sees the share image and then lands on the
+      site sees two treatments of one name. Pick one.
+- [ ] **Check the real link preview once on a deployed URL.** `#8` again. A
+      local build cannot prove what WhatsApp fetches, and WhatsApp caches a
+      preview per URL. Watch for the square centre crop that some older clients
+      use: the wordmark runs 953 px wide on a 1200 px image, so a centre crop to
+      1:1 cuts the S and the s off both ends. That is the worst case to check.
+- [ ] **Re-read the labels that point at `#contact`.** About twenty buttons and
+      footer links say "Plan een gratis intakegesprek" or "Gratis
+      intakegesprek". On a page that knows a city they land on a form with a
+      named coach. On every other page they now land on the "kies je stad"
+      section, which is the first step and not the form. The labels still read
+      true, but somebody who owns the copy should decide whether they say the
+      right thing on those pages. Not changed here, because twenty pieces of
+      public copy is a product decision.
+- [ ] **Replace `priority` with `preload` on every `next/image`.**
+      `app/page.tsx` and `app/locaties/[stad]/page.tsx` both use `priority`, and
+      Next 16 deprecates it (`node_modules/next/dist/docs/01-app/03-api-reference/02-components/image.md`).
+      Do it in one pass, so the two files do not disagree.
 
 ---
 
@@ -494,8 +715,17 @@ Do not re-open these without a reason.
 | The coach is the only local proof on a city page | 2026-08-05 |
 | Google Maps embed for the map, not OpenStreetMap | 2026-08-05 |
 | The traject page keeps the section order of the old page | 2026-08-05 |
-| The intake form stays at the end of every page. Mid-page the traject page carries an invitation to it, where the old page had the form | 2026-08-05 |
-| An article keeps its old root URL. The hub is at `/artikelen`. Zero redirects. **Re-opened the same day** by `docs/url-map.csv`, which moves them to `/artikelen/<slug>`. See section 4 | 2026-08-05 |
+| The intake form stays at the end of every page. Mid-page the traject page carries an invitation to it, where the old page had the form. **Reversed on 2026-08-15 by issue #7:** there is no central sign-up point, so only a page that can name the person who reads the request shows a form. Every other page shows the route to one instead | 2026-08-05 |
+| No central telephone number, no WhatsApp number and no central mailbox anywhere on the site. The contact point is a named coach in a named city | 2026-08-15 |
+| The canonical host is `www.studiekeuzeadvies.nl`. Measured over the whole archive, not chosen | 2026-08-15 |
+| The cookie answer lives in `localStorage`, not in a cookie. A cookie would need `cookies()`, which makes every prerendered page dynamic, and the prerendered pages are what the purchase paid for | 2026-08-15 |
+| One question about cookies and no more. Two answers of equal weight, a bar and never a modal, and a no is never asked again | 2026-08-15 |
+| **The launch gate is the domain switch, not the build.** We are in rapid development: we merge to production all day, and production is a Vercel URL. `studiekeuzeadvies.nl` still points at the old WordPress on AWS, so nothing we ship is reachable by a customer until we flip the domain. Therefore no build guard on `isPlaceholder`, and issue `#13` stays closed. A guard would only block our own merges to protect a URL nobody visits. The five invented coaches are checked by a person before the flip. A future review will find this and call it a defect: it is not, it is this row | 2026-08-16 |
+| A generated image may show a scene, never a person we present as one of ours. The home page hero is such a scene; the five stand-in portraits still may not go live | 2026-08-13 |
+| No `lastModified`, `changeFrequency` or `priority` in the sitemap. We can prove none of the three, and a wrong one costs trust | 2026-08-15 |
+| Every customer story carries a date that can be proved. A story we cannot date does not go on `/ervaringen` at all | 2026-08-15 |
+| The wordmark and the icons are generated from one font file by `docs/art/build-marks.py`, so the vector and the raster cannot drift. That font is fetched, not committed: the script says where from, and it stops with that line if you have not. They are placeholders for the designed logo that is waiting on the client's yes | 2026-08-15 |
+| An article keeps its old root URL. The hub is at `/artikelen`. Zero redirects. Re-opened the same day by `docs/url-map.csv`, which moved them to `/artikelen/<slug>`. **Settled on 2026-08-15 at the root**, as first decided: a post resolves to `/<slug>`, so its address does not change and the row is a keep, not a redirect | 2026-08-05 |
 | Article text in MDX, article metadata in `app/articles.ts` | 2026-08-05 |
 | No image on an article. The archive images die with the seller's S3 bucket and the rights are not confirmed. **Half of that reason fell away on 2026-08-06:** the rights are bought, and the 219 files are already on disk in the archive. Re-open if an article wants a picture | 2026-08-05 |
 | No author name and no portrait on an article. The date is the only signature | 2026-08-05 |

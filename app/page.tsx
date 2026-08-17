@@ -1,13 +1,13 @@
 import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
-import coachPhoto from "@/public/images/coach-placeholder.png";
+import heroPhoto from "@/public/images/hero-gesprek.jpg";
 import { citiesWithCoach } from "./cities";
 import { ContactSection } from "./components/contact-section";
 import { SiteFooter } from "./components/site-footer";
 import { SiteHeader } from "./components/site-header";
-import { shell } from "./shell";
-import { coach, legacyQuotes } from "./site-config";
+import { linkOnPaper, shell } from "./shell";
+import { heroImage, legacyQuotes } from "./site-config";
 
 export const metadata: Metadata = {
   alternates: { canonical: "/" },
@@ -81,17 +81,31 @@ export default function Home() {
                 </div>
               </div>
 
+              {/*
+                A generated scene, not a generated person. The hero used to be a
+                generated face under "Je vaste coach, bij jou in de buurt", and
+                the caption is what made it a claim about somebody who does not
+                exist. Nobody here is named, and the caption is about the traject,
+                so the picture promises only what we can keep. The rule and its
+                limits stand in app/site-config.ts, next to the text itself.
+
+                `sizes` follows the slot in three steps: 400px from lg up, where
+                the grid column caps it; 420px in the single column above the
+                telephone, where max-w-[420px] caps it; and the gutter width of
+                the shell below that. Without those steps a telephone downloads
+                a file made for a laptop, and this is the LCP image.
+              */}
               <figure className="flex w-full max-w-[420px] flex-col gap-3 lg:max-w-none">
                 <Image
-                  alt="Een studiekeuzecoach aan tafel in haar werkkamer"
+                  alt={heroImage.alt}
                   className="w-full"
                   placeholder="blur"
                   priority
-                  sizes="(max-width: 768px) 100vw, 400px"
-                  src={coachPhoto}
+                  sizes="(min-width: 1024px) 400px, (min-width: 480px) 420px, 100vw"
+                  src={heroPhoto}
                 />
                 <figcaption className="text-eyebrow uppercase">
-                  {coach.caption}
+                  {heroImage.caption}
                 </figcaption>
               </figure>
             </div>
@@ -154,8 +168,8 @@ export default function Home() {
                 </ul>
                 <p className="max-w-[62ch]">
                   We noemen alleen steden waar echt een coach werkt. Staat jouw
-                  stad er nog niet bij? Bel of app ons, dan kijken we samen wat
-                  er mogelijk is. Kijk anders bij{" "}
+                  stad er nog niet bij? Een coach in de buurt werkt vaak ook in
+                  de steden eromheen, dus kijk bij{" "}
                   <Link
                     className="font-medium underline decoration-ink/40 decoration-2 underline-offset-4 transition-colors duration-150 ease-out-quart hover:decoration-ink"
                     href="/locaties"
@@ -235,9 +249,12 @@ export default function Home() {
         </section>
 
         {/*
-          TODO: these two quotes come from the old site and belong to the seller.
-          They are here because the structure needs this section, not because the
-          right to use them is settled. Remove or replace before launch.
+          These two quotes come from the old site, and the right to use them is
+          settled: the rights to the whole archive are bought (2026-08-06, see
+          PRODUCT.md). The TODO that stood here said the opposite and was out of
+          date. They are the two with a real completion date, which is why the
+          home page shows these two and not the other eight. All ten stand on
+          /ervaringen, and they are written down once, in app/site-config.ts.
         */}
         <section className="bg-paper-shade">
           <div className={`${shell} py-20 md:py-28`}>
@@ -260,6 +277,11 @@ export default function Home() {
                 </figure>
               ))}
             </div>
+            <p className="mt-10">
+              <Link className={linkOnPaper} href="/ervaringen">
+                Lees alle ervaringen van studiekiezers
+              </Link>
+            </p>
           </div>
         </section>
 

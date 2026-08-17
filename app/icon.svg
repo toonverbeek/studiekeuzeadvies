@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="StudieKeuzeAdvies">
+  <title>StudieKeuzeAdvies</title>
+  <!-- A full wordmark turns to mud at 16 pixels, so the tab mark is the
+       initial alone: ink on ochre, both from app/globals.css. The ochre runs
+       edge to edge and the corners stay square, because every platform masks
+       the shape it wants and a rounded corner would be masked twice. The S is
+       Alegreya Sans Bold as paths at 78 percent of the tile, the largest step
+       that keeps both counters open at 16 pixels. -->
+  <rect width="64" height="64" fill="#e5ad33"/>
+  <path fill="#1f1a0f" d="M47.14 9.53 45.48 18.37 43.97 18.97Q41.4 17.16 38.65 16.1Q35.89 15.05 33.62 15.05Q30.6 15.05 28.79 16.67Q26.98 18.29 26.98 20.41Q26.98 22.6 28.98 24.11Q30.98 25.62 35.29 27.66Q39.44 29.55 42.04 31.17Q44.65 32.79 46.5 35.44Q48.35 38.08 48.35 41.93Q48.35 46.08 46.08 49.52Q43.82 52.96 39.67 54.96Q35.51 56.96 30.07 56.96Q22.9 56.96 15.65 53.86L17.08 44.35L18.22 43.74Q21.24 46.39 24.83 47.78Q28.41 49.18 31.21 49.18Q34.53 49.18 36.38 47.56Q38.23 45.93 38.23 43.67Q38.23 41.25 36.23 39.74Q34.23 38.23 29.77 36.12Q25.69 34.3 23.13 32.72Q20.56 31.13 18.75 28.49Q16.93 25.84 16.93 22.07Q16.93 17.84 19.2 14.4Q21.46 10.97 25.54 9Q29.62 7.04 34.83 7.04Q41.02 7.04 47.14 9.53Z"/>
+</svg>

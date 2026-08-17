@@ -8,6 +8,7 @@ import { ContactSection } from "@/app/components/contact-section";
 import { SiteFooter } from "@/app/components/site-footer";
 import { SiteHeader, type NavItem } from "@/app/components/site-header";
 import { button, linkOnOchre, linkOnPaper, shell } from "@/app/shell";
+import { coachRecruitmentInbox } from "@/app/site-config";
 
 /** Every city is known at build time, so an unknown city is a real 404. */
 export const dynamicParams = false;
@@ -193,14 +194,24 @@ export default async function CityPage(props: PageProps<"/locaties/[stad]">) {
                       ))}
                     </ul>
                   )}
-                  <p className="max-w-[58ch] border-t border-hairline pt-6">
-                    Werk je zelf als studiekeuzecoach in {city.region}? Dan horen
-                    we graag van je. Mail naar{" "}
-                    <a className={linkOnPaper} href="mailto:hallo@studiekeuzeadvies.nl">
-                      hallo@studiekeuzeadvies.nl
-                    </a>
-                    .
-                  </p>
+                  {/* The invitation to a coach only stands here while there is
+                      an address behind it. It named hallo@studiekeuzeadvies.nl,
+                      and that mailbox is cancelled (issue #7), so it sent a
+                      coach to a bounce. Fill `coachRecruitmentInbox` in
+                      app/site-config.ts and this block comes back as it was. */}
+                  {coachRecruitmentInbox && (
+                    <p className="max-w-[58ch] border-t border-hairline pt-6">
+                      Werk je zelf als studiekeuzecoach in {city.region}? Dan
+                      horen we graag van je. Mail naar{" "}
+                      <a
+                        className={linkOnPaper}
+                        href={`mailto:${coachRecruitmentInbox}`}
+                      >
+                        {coachRecruitmentInbox}
+                      </a>
+                      .
+                    </p>
+                  )}
                 </div>
               </div>
             )}

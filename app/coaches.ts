@@ -50,6 +50,16 @@ export type Coach = {
    * written, and a city page is only worth making where the traffic is.
    */
   citySlug: string | null;
+  /**
+   * The address that receives an intake request for this coach.
+   * TODO: null for everybody until a real address is confirmed per coach.
+   *
+   * There is no central mailbox any more (issue #7), so this field is the whole
+   * delivery route of a request. It is required, not optional, for the same
+   * reason as `isPlaceholder`: adding a coach without an answer to "where does
+   * their post go" must not compile.
+   */
+  email: string | null;
   /** Two or three sentences. A city page shows this and nothing else. */
   intro: string;
   /** The long text. Only /studiekeuzecoaches shows it. */
@@ -84,6 +94,9 @@ export const janneke: Coach = {
   town: "Amsterdam",
   region: "Amsterdam en Amstelveen",
   citySlug: "amsterdam",
+  // Janneke exists, so this one can be filled the day she says which address
+  // she wants. It is null because nobody asked her yet.
+  email: null,
   intro:
     "Janneke is psycholoog en werkt sinds 2015 als studiekeuzecoach in Amsterdam. In haar praktijk zag ze volwassenen vastlopen in werk dat nooit bij ze paste, en bij bijna iedereen kwam dezelfde vraag boven: hoe was het gelopen als er iemand had meegedacht toen de keuze nog open lag. Daarom zit ze nu naast mensen van jouw leeftijd.",
   bio: [
@@ -104,6 +117,8 @@ export const hanneke: Coach = {
   town: "Utrecht",
   region: "Utrecht, Nieuwegein, Houten en Zeist",
   citySlug: "utrecht",
+  // No address: this person does not exist.
+  email: null,
   intro:
     "Hanneke werkt sinds 2016 met studiekiezers. Ze begon als decaan op een middelbare school, en daar merkte ze dat de gesprekken die echt hielpen nooit over roosters gingen. Ze werkt graag met mensen die twijfelen. Twijfel is meestal het begin van een goede keuze.",
   bio: [
@@ -124,6 +139,8 @@ export const bram: Coach = {
   town: "Amersfoort",
   region: "Amersfoort, Leusden, Soest en Barneveld",
   citySlug: "amersfoort",
+  // No address: this person does not exist.
+  email: null,
   intro:
     "Bram is zelf twee keer gestopt met een studie voordat hij vond wat wel klopte. Hij weet dus hoe het voelt om een jaar over te doen, en hoe weinig je eraan hebt als iemand zegt dat het vanzelf goed komt. Hij werkt vooral met studiestoppers.",
   bio: [
@@ -144,6 +161,8 @@ export const nadia: Coach = {
   town: "Rotterdam",
   region: "Rotterdam, Schiedam en Capelle aan den IJssel",
   citySlug: null,
+  // No address: this person does not exist.
+  email: null,
   intro:
     "Nadia werkte twaalf jaar in personeelszaken voordat ze studiekiezers ging begeleiden. Ze was zelf de eerste in haar familie die ging studeren, en ze weet hoeveel je dan alleen moet uitzoeken.",
   bio: [
@@ -164,6 +183,8 @@ export const wietske: Coach = {
   town: "Groningen",
   region: "Groningen, Assen en Leeuwarden",
   citySlug: null,
+  // No address: this person does not exist.
+  email: null,
   intro:
     "Wietske gaf achttien jaar les en was daarnaast zorgcoördinator op een school in Groningen. Ze is opgeleid als autismecoach en werkt veel met studiekiezers die meer aan overzicht hebben dan aan opties.",
   bio: [
@@ -184,6 +205,8 @@ export const joris: Coach = {
   town: "Eindhoven",
   region: "Eindhoven, Helmond en Veldhoven",
   citySlug: null,
+  // No address: this person does not exist.
+  email: null,
   intro:
     "Joris studeerde natuurkunde en werkte zes jaar in de techniek. Hij werkt vooral met studiekiezers die te veel leuk vinden, en daardoor niet kunnen kiezen.",
   bio: [
@@ -204,3 +227,12 @@ export const joris: Coach = {
  * pulled at short notice.
  */
 export const coaches: Coach[] = [janneke, hanneke, bram, nadia, wietske, joris];
+
+/**
+ * One coach by slug, or undefined. The intake form carries a slug through the
+ * browser, so the server must be able to turn that string back into a person
+ * before it believes it. It mirrors `getCity` in app/cities.ts.
+ */
+export function getCoach(slug: string): Coach | undefined {
+  return coaches.find((coach) => coach.slug === slug);
+}

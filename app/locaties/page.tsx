@@ -4,12 +4,11 @@ import { cities, citiesWithCoach } from "@/app/cities";
 import { SiteFooter } from "@/app/components/site-footer";
 import { SiteHeader, type NavItem } from "@/app/components/site-header";
 import { linkOnPaper, shell } from "@/app/shell";
-import { site } from "@/app/site-config";
 
 export const metadata: Metadata = {
   title: "Locaties | StudieKeuzeAdvies",
   description:
-    "De steden waar een studiekeuzecoach werkt. Staat jouw stad er niet bij? Bel of app ons, dan kijken we samen wat er mogelijk is.",
+    "De steden waar een studiekeuzecoach werkt. Staat jouw stad er niet bij? Kijk wie er in de buurt werkt, en vraag het gesprek bij die coach aan.",
   alternates: { canonical: "/locaties" },
 };
 
@@ -122,38 +121,39 @@ export default function LocationsPage() {
               <h2 className="text-section font-extrabold">
                 Staat jouw stad er niet bij?
               </h2>
+              {/* This block used to end at a central telephone number, and
+                  next to it a button to the form on the home page. Both are
+                  gone (issue #7). A request ends at a person, so this ends at
+                  the coaches: you read who works closest to you and you ask
+                  that person yourself. */}
               <div className="flex flex-col items-start gap-8">
                 <p className="text-lead max-w-[58ch]">
-                  Bel of app ons, dan kijken we samen wat er mogelijk is. Vaak
-                  werkt een coach uit een buurstad, en anders doen we het
-                  online. Ben je zelf coach en wil je een stad openen? Dan horen
-                  we dat ook graag.
+                  Kijk dan wie er het dichtst bij jou werkt. Vaak zit er een
+                  coach in een buurstad, en anders doen we het online. Je vraagt
+                  het gesprek aan bij die coach zelf, dus je weet meteen wie je
+                  straks spreekt.
                 </p>
-                <div className="flex flex-wrap items-center gap-x-8 gap-y-4">
-                  <Link
-                    className="bg-ink text-eyebrow text-paper px-8 py-4 uppercase transition-colors duration-150 ease-out-quart hover:bg-ochre-deep"
-                    href="/#contact"
-                  >
-                    Stel je vraag
-                  </Link>
-                  <a
-                    className="font-medium underline decoration-ink/40 decoration-2 underline-offset-4 transition-colors duration-150 ease-out-quart hover:decoration-ink"
-                    href={site.phone.href}
-                  >
-                    {site.phone.display}
-                  </a>
-                </div>
+                <Link
+                  className="bg-ink text-eyebrow text-paper px-8 py-4 uppercase transition-colors duration-150 ease-out-quart hover:bg-ochre-deep"
+                  href="/studiekeuzecoaches"
+                >
+                  Bekijk de coaches
+                </Link>
               </div>
             </div>
           </div>
         </section>
       </main>
 
+      {/* The third link used to be "Gratis intakegesprek" to /#contact. That
+          section now sends a reader to /locaties to pick a city, so from this
+          page it was a link that walked away and came straight back. It points
+          at this page's own last section instead, under its own heading. */}
       <SiteFooter
         pageLinks={[
           { href: "/#aanpak", label: "Waar sta jij nu?" },
           { href: "/studiekeuzecoaches", label: "De coaches" },
-          { href: "/#contact", label: "Gratis intakegesprek" },
+          { href: "#contact", label: "Staat jouw stad er niet bij?" },
         ]}
       />
     </>

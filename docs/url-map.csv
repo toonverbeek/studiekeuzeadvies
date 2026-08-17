@@ -60,29 +60,29 @@ old,kind,status,real_words,editorial_inbound,h1,new,action,note
 /amersfoort/,other,200,723,1,StudieKeuzeAdvies Amersfoort,/locaties/amersfoort,redirect,the old site already redirects this to /locaties/amersfoort/
 /amsterdam/,other,200,980,1,StudieKeuzeAdvies Amsterdam,/locaties/amsterdam,redirect,the old site already redirects this to /locaties/amsterdam/
 /angelina-muller/,page,200,511,8,Interview Studiekeuzecoach Angelina Muller,/studiekeuzecoaches/angelina-muller,redirect,
-/artikel-aanmelden-studies/,post,200,1068,3,Inschrijven,/artikelen/artikel-aanmelden-studies,redirect,posts move under the hub
-/artikel-studentenleven/,post,200,582,1,Lid worden bij een vereniging?,/artikelen/artikel-studentenleven,redirect,posts move under the hub
+/artikel-aanmelden-studies/,post,200,1068,3,Inschrijven,/artikel-aanmelden-studies,keep,the article keeps its root URL
+/artikel-studentenleven/,post,200,582,1,Lid worden bij een vereniging?,/artikel-studentenleven,keep,the article keeps its root URL
 /assessment-op-school/,page,200,4,1,Assessment op school,,drop,
 /bedankpagina-aanvraag-studiekeuzeadvies/,page,200,38,1,Je aanvraag is gelukt!,/bedankt,redirect,
 /bedankpagina-evaluatie-studiekeuzetraject/,other,200,20,1,Bedankpagina evaluatie studiekeuzetraject,,drop,
 /bedankpagina-vrijblijvend-intakegesprek-inplannen/,page,200,47,1,Je aanvraag is gelukt!,/bedankt,redirect,
 /bergen-op-zoom-2/,page,200,1,1,,/locaties/bergen-op-zoom,redirect,
 /bergen-op-zoom/,page,200,747,182,StudieKeuzeAdvies Bergen op Zoom,/locaties/bergen-op-zoom,redirect,
-/bindend-studieadvies/,post,200,415,1,Bindend studieadvies: wat moet je weten?,/artikelen/bindend-studieadvies,redirect,posts move under the hub
+/bindend-studieadvies/,post,200,415,1,Bindend studieadvies: wat moet je weten?,/bindend-studieadvies,keep,the article keeps its root URL
 /breda/,other,200,727,1,StudieKeuzeAdvies Breda,/locaties/breda,redirect,the old site already redirects this to /locaties/breda/
 /bussum/,other,200,722,1,StudieKeuzeAdvies Bussum,/locaties/bussum,redirect,the old site already redirects this to /locaties/bussum/
 /category/,taxonomy,404,0,0,,/artikelen,redirect,
 /category/blog/,taxonomy,200,1050,0,Oudergids: hoe begeleid je als ouder de studiekeuze van je kind?,/artikelen,redirect,
 /category/nieuws/,taxonomy,200,773,0,Een goede balans tussen studie en vrije tijd,/artikelen,redirect,
 /contact/,page,200,45,182,Neem vrijblijvend contact met ons op!,/contact,rebuild,
-/de-1-februariregeling/,post,200,402,3,De 1-februariregeling,/artikelen/de-1-februariregeling,redirect,posts move under the hub
-/de-voorbereiding-op-je-nieuwe-studie-begint-nu/,post,200,417,1,De voorbereiding op je nieuwe studie begint nu,/artikelen/de-voorbereiding-op-je-nieuwe-studie-begint-nu,redirect,posts move under the hub
-/de-wereld-aan-je-voeten-waarom-een-tussenjaar-soms-de-beste-studiekeuze-is/,post,200,398,1,De wereld aan je voeten: waarom een tussenjaar?,/artikelen/de-wereld-aan-je-voeten-waarom-een-tussenjaar-soms-de-beste-studiekeuze-is,redirect,posts move under the hub
-/deadline-decentrale-selectie-15-januari/,post,200,505,1,Deadline decentrale selectie 15 januari,/artikelen/deadline-decentrale-selectie-15-januari,redirect,posts move under the hub
-/decentrale-selectie/,post,200,829,2,Decentrale selectie,/artikelen/decentrale-selectie,redirect,posts move under the hub
+/de-1-februariregeling/,post,200,402,3,De 1-februariregeling,/de-1-februariregeling,keep,the article keeps its root URL
+/de-voorbereiding-op-je-nieuwe-studie-begint-nu/,post,200,417,1,De voorbereiding op je nieuwe studie begint nu,/de-voorbereiding-op-je-nieuwe-studie-begint-nu,keep,the article keeps its root URL
+/de-wereld-aan-je-voeten-waarom-een-tussenjaar-soms-de-beste-studiekeuze-is/,post,200,398,1,De wereld aan je voeten: waarom een tussenjaar?,/de-wereld-aan-je-voeten-waarom-een-tussenjaar-soms-de-beste-studiekeuze-is,keep,the article keeps its root URL
+/deadline-decentrale-selectie-15-januari/,post,200,505,1,Deadline decentrale selectie 15 januari,/deadline-decentrale-selectie-15-januari,keep,the article keeps its root URL
+/decentrale-selectie/,post,200,829,2,Decentrale selectie,/decentrale-selectie,keep,the article keeps its root URL
 /deventer-2/,page,200,723,182,StudieKeuzeAdvies Deventer,/locaties/deventer,redirect,
-/dingen-die-ik-had-willen-weten-toen-ik-een-vervolgstudie-moest-kiezen/,post,200,601,1,Dingen die ik had willen weten toen ik een vervolgstudie moest kiezen,/artikelen/dingen-die-ik-had-willen-weten-toen-ik-een-vervolgstudie-moest-kiezen,redirect,posts move under the hub
-/een-voltijd-deeltijd-of-een-duale-studie/,post,200,548,1,"Een voltijd, deeltijd of een duale studie",/artikelen/een-voltijd-deeltijd-of-een-duale-studie,redirect,posts move under the hub
+/dingen-die-ik-had-willen-weten-toen-ik-een-vervolgstudie-moest-kiezen/,post,200,601,1,Dingen die ik had willen weten toen ik een vervolgstudie moest kiezen,/dingen-die-ik-had-willen-weten-toen-ik-een-vervolgstudie-moest-kiezen,keep,the article keeps its root URL
+/een-voltijd-deeltijd-of-een-duale-studie/,post,200,548,1,"Een voltijd, deeltijd of een duale studie",/een-voltijd-deeltijd-of-een-duale-studie,keep,the article keeps its root URL
 /eerste-studiekeuze/,page,200,846,58,Eerste studiekeuze,/eerste-studiekeuze,keep,
 /eerste-studiekeuze/covers/,attachment,200,0,0,COVERS,/eerste-studiekeuze,redirect,attachment to its parent
 /eerste-studiekeuze/covers2/,attachment,200,0,0,COVERS2,/eerste-studiekeuze,redirect,attachment to its parent
@@ -91,24 +91,24 @@ old,kind,status,real_words,editorial_inbound,h1,new,action,note
 /eerste-studiekeuze/orja091-aangepast-2/,attachment,200,2,0,ORJA091 aangepast-2,/eerste-studiekeuze,redirect,attachment to its parent
 /eerste-studiekeuze/qompas-logo-fc-blauw-rood-payoff/,attachment,200,10,0,Qompas Logo FC Blauw Rood Payoff,/eerste-studiekeuze,redirect,attachment to its parent
 /eerste-studiekeuze/qompas-logo-rgb-blauw-rood-payoff/,attachment,200,10,0,Qompas Logo RGB Blauw Rood Payoff,/eerste-studiekeuze,redirect,attachment to its parent
-/eerstejaarsstress-zo-leer-jij-je-opleiding-en-studentenstad-kennen/,post,200,561,1,Studeren zonder stress,/artikelen/eerstejaarsstress-zo-leer-jij-je-opleiding-en-studentenstad-kennen,redirect,posts move under the hub
+/eerstejaarsstress-zo-leer-jij-je-opleiding-en-studentenstad-kennen/,post,200,561,1,Studeren zonder stress,/eerstejaarsstress-zo-leer-jij-je-opleiding-en-studentenstad-kennen,keep,the article keeps its root URL
 /enschede/,other,200,725,1,StudieKeuzeAdvies Enschede,/locaties/enschede,redirect,the old site already redirects this to /locaties/enschede/
 /ervaringen/,page,200,757,182,Honderden leerlingen en studenten gingen je voor!,/ervaringen,rebuild,
 /evaluatie-studiekeuzetraject/,page,200,2,1,,,drop,
-/februari-starten-met-een-studie-voordelen-en-nadelen/,post,200,413,1,In februari starten met een studie: voordelen en nadelen,/artikelen/februari-starten-met-een-studie-voordelen-en-nadelen,redirect,posts move under the hub
-/gekozen-voor-een-studie-maar-nu-slaat-de-twijfel-toe/,post,200,527,1,"Gekozen voor een studie, maar nu slaat de twijfel toe!",/artikelen/gekozen-voor-een-studie-maar-nu-slaat-de-twijfel-toe,redirect,posts move under the hub
-/geld-lenen-de-regering-wil-de-rente-op-de-studieschuld-verhogen/,post,200,416,1,Geld lenen? De regering wil de rente op de studieschuld verhogen,/artikelen/geld-lenen-de-regering-wil-de-rente-op-de-studieschuld-verhogen,redirect,posts move under the hub
-/geslaagd-maar-nog-geen-studie-gekozen-tussenjaar-of/,post,200,593,1,Geslaagd maar nog geen studie gekozen. Tussenjaar of alsnog een studie kiezen?,/artikelen/geslaagd-maar-nog-geen-studie-gekozen-tussenjaar-of,redirect,posts move under the hub
-/gestopt-met-je-studie-blijf-niet-stilzitten/,post,200,424,1,Gestopt met je studie? Blijf niet stilzitten!,/artikelen/gestopt-met-je-studie-blijf-niet-stilzitten,redirect,posts move under the hub
-/gestopt-met-studie/,post,200,369,1,"Gestopt met studie, een gemiste kans?",/artikelen/gestopt-met-studie,redirect,posts move under the hub
+/februari-starten-met-een-studie-voordelen-en-nadelen/,post,200,413,1,In februari starten met een studie: voordelen en nadelen,/februari-starten-met-een-studie-voordelen-en-nadelen,keep,the article keeps its root URL
+/gekozen-voor-een-studie-maar-nu-slaat-de-twijfel-toe/,post,200,527,1,"Gekozen voor een studie, maar nu slaat de twijfel toe!",/gekozen-voor-een-studie-maar-nu-slaat-de-twijfel-toe,keep,the article keeps its root URL
+/geld-lenen-de-regering-wil-de-rente-op-de-studieschuld-verhogen/,post,200,416,1,Geld lenen? De regering wil de rente op de studieschuld verhogen,/geld-lenen-de-regering-wil-de-rente-op-de-studieschuld-verhogen,keep,the article keeps its root URL
+/geslaagd-maar-nog-geen-studie-gekozen-tussenjaar-of/,post,200,593,1,Geslaagd maar nog geen studie gekozen. Tussenjaar of alsnog een studie kiezen?,/geslaagd-maar-nog-geen-studie-gekozen-tussenjaar-of,keep,the article keeps its root URL
+/gestopt-met-je-studie-blijf-niet-stilzitten/,post,200,424,1,Gestopt met je studie? Blijf niet stilzitten!,/gestopt-met-je-studie-blijf-niet-stilzitten,keep,the article keeps its root URL
+/gestopt-met-studie/,post,200,369,1,"Gestopt met studie, een gemiste kans?",/gestopt-met-studie,keep,the article keeps its root URL
 /gouda/,page,200,715,182,StudieKeuzeAdvies Gouda,/locaties/gouda,redirect,
 /gratis-studiekeuzetraject/,page,200,108,1,Gratis StudieKeuzeTraject!,/studiekeuzetraject,redirect,
 /groningen/,other,200,723,1,StudieKeuzeAdvies Groningen,/locaties/groningen,redirect,the old site already redirects this to /locaties/groningen/
-/halvering-collegegeld/,post,200,328,1,Halvering collegegeld,/artikelen/halvering-collegegeld,redirect,posts move under the hub
+/halvering-collegegeld/,post,200,328,1,Halvering collegegeld,/halvering-collegegeld,keep,the article keeps its root URL
 /hbo-opleiding-kiezen/,page,200,441,1,Hulp bij studiekeuze hbo,/hbo-opleiding-kiezen,rebuild,
-/het-studentenleven-hoe-leef-je-dat/,post,200,747,1,Het studentenleven: hoe leef je dat?,/artikelen/het-studentenleven-hoe-leef-je-dat,redirect,posts move under the hub
-/hoe-selecteren-opleidingen-hun-studenten/,post,200,511,1,Hoe selecteren opleidingen hun studenten?,/artikelen/hoe-selecteren-opleidingen-hun-studenten,redirect,posts move under the hub
-/home/,other,200,583,1,Een goede studiekeuze maken. Lastig hè?,/,redirect,the old site already redirects this to /
+/het-studentenleven-hoe-leef-je-dat/,post,200,747,1,Het studentenleven: hoe leef je dat?,/het-studentenleven-hoe-leef-je-dat,keep,the article keeps its root URL
+/hoe-selecteren-opleidingen-hun-studenten/,post,200,511,1,Hoe selecteren opleidingen hun studenten?,/hoe-selecteren-opleidingen-hun-studenten,keep,the article keeps its root URL
+/home/,other,200,583,1,Een goede studiekeuze maken. Lastig hè?,/,redirect,our own rule; the old site sends this to /
 /home/banner/,attachment,200,0,0,banner,/,redirect,attachment to its parent
 /home/boekenblauwblur/,attachment,200,0,0,boekenBlauwBlur,/,redirect,attachment to its parent
 /home/college-tutor-with-student/,attachment,200,6,0,College tutor with student,/,redirect,attachment to its parent
@@ -135,12 +135,12 @@ old,kind,status,real_words,editorial_inbound,h1,new,action,note
 /home/studiekeuzeadvies1/,attachment,200,0,0,StudieKeuzeAdvies1,/,redirect,attachment to its parent
 /home/thinking-woman-in-front-of-blackboard-with-question-marks/,attachment,200,16,0,Thinking woman in front of blackboard with question marks,/,redirect,attachment to its parent
 /home/two-students-learning-helping-each-other/,attachment,200,10,0,Two students learning helping each other,/,redirect,attachment to its parent
-/introductieweek-wat-kunnen-studenten-verwachten/,post,200,392,1,Introductieweek: wat kunnen studenten verwachten?,/artikelen/introductieweek-wat-kunnen-studenten-verwachten,redirect,posts move under the hub
-/its-not-a-match-nieuwe-studiekeuze-na-de-studiekeuzecheck/,post,200,398,1,It’s (not) a match: nieuwe studiekeuze na de studiekeuzecheck?,/artikelen/its-not-a-match-nieuwe-studiekeuze-na-de-studiekeuzecheck,redirect,posts move under the hub
+/introductieweek-wat-kunnen-studenten-verwachten/,post,200,392,1,Introductieweek: wat kunnen studenten verwachten?,/introductieweek-wat-kunnen-studenten-verwachten,keep,the article keeps its root URL
+/its-not-a-match-nieuwe-studiekeuze-na-de-studiekeuzecheck/,post,200,398,1,It’s (not) a match: nieuwe studiekeuze na de studiekeuzecheck?,/its-not-a-match-nieuwe-studiekeuze-na-de-studiekeuzecheck,keep,the article keeps its root URL
 /janneke-van-den-brand/,page,200,1129,4,Interview Studiekeuzecoach Janneke van den Brand,/studiekeuzecoaches/janneke-van-den-brand,redirect,
 /keuzegids/,page,200,123,182,Keuzegids,/studiekeuzetraject,redirect,
 /keuzegids/home-keuzegids/,attachment,200,4,0,Home - Keuzegids,/studiekeuzetraject,redirect,attachment to its parent
-/kosten-verkeerde-studiekeuze/,post,200,481,1,Kosten verkeerde studiekeuze,/artikelen/kosten-verkeerde-studiekeuze,redirect,posts move under the hub
+/kosten-verkeerde-studiekeuze/,post,200,481,1,Kosten verkeerde studiekeuze,/kosten-verkeerde-studiekeuze,keep,the article keeps its root URL
 /leiden/,other,200,716,1,StudieKeuzeAdvies Leiden,/locaties/leiden,redirect,the old site already redirects this to /locaties/leiden/
 /locaties/,page,200,354,182,Locaties,/locaties,keep,
 /locaties/almere/,page,200,723,182,StudieKeuzeAdvies Almere,/locaties/almere,keep,
@@ -165,7 +165,7 @@ old,kind,status,real_words,editorial_inbound,h1,new,action,note
 /locaties/enschede/,page,200,725,182,StudieKeuzeAdvies Enschede,/locaties/enschede,keep,
 /locaties/enschede/monique-kock/,attachment,200,2,0,Monique Kock,/locaties/enschede,redirect,attachment to its parent
 /locaties/enschede/schermafbeelding-2022-02-08-om-09-30-07/,attachment,200,2,0,Coach Ansje,/locaties/enschede,redirect,attachment to its parent
-/locaties/gouda/,other,200,715,2,StudieKeuzeAdvies Gouda,/locaties/gouda,redirect,the old site already redirects this to /gouda/
+/locaties/gouda/,other,200,715,2,StudieKeuzeAdvies Gouda,/locaties/gouda,keep,the new URL is the old URL; the old site already redirects this to /gouda/
 /locaties/groningen/,page,200,723,182,StudieKeuzeAdvies Groningen,/locaties/groningen,keep,
 /locaties/groningen/pieter-jpg/,attachment,200,2,0,Pieter JPG,/locaties/groningen,redirect,attachment to its parent
 /locaties/haarlem/,page,200,723,182,StudieKeuzeAdvies Haarlem,/locaties/haarlem,keep,
@@ -203,18 +203,18 @@ old,kind,status,real_words,editorial_inbound,h1,new,action,note
 /locaties/zwolle/ilse-froukje/,attachment,200,4,0,Ilse & Froukje,/locaties/zwolle,redirect,attachment to its parent
 /locaties/zwolle/ilse-van-den-belt/,attachment,200,6,0,Ilse van den Belt,/locaties/zwolle,redirect,attachment to its parent
 /maastricht/,other,200,727,1,StudieKeuzeAdvies Maastricht,/locaties/maastricht,redirect,the old site already redirects this to /locaties/maastricht/
-/matching-wat-moet-je-weten/,post,200,414,1,Matching: wat moet je weten?,/artikelen/matching-wat-moet-je-weten,redirect,posts move under the hub
-/mbo-hbo-of-wo-je-kunt-alle-kanten-op/,post,200,1315,3,"Mbo, hbo of wo? Je kunt alle kanten op!",/artikelen/mbo-hbo-of-wo-je-kunt-alle-kanten-op,redirect,posts move under the hub
+/matching-wat-moet-je-weten/,post,200,414,1,Matching: wat moet je weten?,/matching-wat-moet-je-weten,keep,the article keeps its root URL
+/mbo-hbo-of-wo-je-kunt-alle-kanten-op/,post,200,1315,3,"Mbo, hbo of wo? Je kunt alle kanten op!",/mbo-hbo-of-wo-je-kunt-alle-kanten-op,keep,the article keeps its root URL
 /mbo-opleiding-kiezen/,page,200,408,1,Hulp bij studiekeuze mbo,/mbo-opleiding-kiezen,rebuild,
-/mbo-opleidingen-beperkt-aantal-plaatsen/,post,200,437,1,Mbo-opleidingen beperkt aantal plaatsen,/artikelen/mbo-opleidingen-beperkt-aantal-plaatsen,redirect,posts move under the hub
+/mbo-opleidingen-beperkt-aantal-plaatsen/,post,200,437,1,Mbo-opleidingen beperkt aantal plaatsen,/mbo-opleidingen-beperkt-aantal-plaatsen,keep,the article keeps its root URL
 /merk/keuzegids/,taxonomy,200,0,0,StudieKeuzeAdvies,/tarieven,redirect,shop taxonomy; revisit with the price decision
 /merk/qompas/,taxonomy,200,0,0,StudieKeuzeAdvies,/tarieven,redirect,shop taxonomy; revisit with the price decision
 /merk/studiekeuzeadvies/,taxonomy,200,0,0,StudieKeuzeAdvies,/tarieven,redirect,shop taxonomy; revisit with the price decision
 /mijn-account/,shop,200,3,182,Mijn account,/tarieven,redirect,the price decision is open
 /mijn-account/lost-password/,shop,200,2,2,Mijn account,/tarieven,redirect,the price decision is open
-/mijn-studie-is-niet-leuk-wat-nu/,post,200,509,2,"Mijn studie is niet leuk, wat nu?",/artikelen/mijn-studie-is-niet-leuk-wat-nu,redirect,posts move under the hub
-/mijn-studie-is-te-moeilijk-voor-mij/,post,200,605,1,Mijn studie is te moeilijk voor mij…,/artikelen/mijn-studie-is-te-moeilijk-voor-mij,redirect,posts move under the hub
-/numerus-fixus-in-het-mbo/,post,200,539,2,Numerus fixus in het mbo,/artikelen/numerus-fixus-in-het-mbo,redirect,posts move under the hub
+/mijn-studie-is-niet-leuk-wat-nu/,post,200,509,2,"Mijn studie is niet leuk, wat nu?",/mijn-studie-is-niet-leuk-wat-nu,keep,the article keeps its root URL
+/mijn-studie-is-te-moeilijk-voor-mij/,post,200,605,1,Mijn studie is te moeilijk voor mij…,/mijn-studie-is-te-moeilijk-voor-mij,keep,the article keeps its root URL
+/numerus-fixus-in-het-mbo/,post,200,539,2,Numerus fixus in het mbo,/numerus-fixus-in-het-mbo,keep,the article keeps its root URL
 /online-studiekeuzeadvies/,page,200,624,1,Online StudieKeuzeAdvies,/studiekeuzetraject,redirect,
 /online-studiekeuzeadvies/orja091-2-1/,attachment,200,2,0,ORJA091-2 (1),/studiekeuzetraject,redirect,attachment to its parent
 /online-studiekeuzeadvies/orja091-2-2/,attachment,200,0,0,ORJA091-2,/studiekeuzetraject,redirect,attachment to its parent
@@ -228,10 +228,10 @@ old,kind,status,real_words,editorial_inbound,h1,new,action,note
 /onze-methode/pattern-2/,attachment,200,0,0,pattern-2,/onze-methode,redirect,attachment to its parent
 /onze-methode/scholieren-kijken-elkaar-aan-c/,attachment,200,0,0,scholieren-kijken-elkaar-aan-c,/onze-methode,redirect,attachment to its parent
 /onze-methode/talentfocus-keuzegids/,page,200,312,1,Talentfocus en Keuzegids,/onze-methode,redirect,
-/op-kamers-gaan-of-niet/,post,200,694,1,Op kamers gaan of niet?,/artikelen/op-kamers-gaan-of-niet,redirect,posts move under the hub
+/op-kamers-gaan-of-niet/,post,200,694,1,Op kamers gaan of niet?,/op-kamers-gaan-of-niet,keep,the article keeps its root URL
 /opnieuw-een-studiekeuze-maken/,page,200,636,1,,/verkeerde-studiekeuze,redirect,
 /opnieuw-een-studiekeuze-maken/meisje-met-koptelefoon-en-rugzak/,attachment,200,0,0,meisje-met-koptelefoon-en-rugzak,/verkeerde-studiekeuze,redirect,attachment to its parent
-/oudergids-hoe-begeleid-je-als-ouder-de-studiekeuze-van-je-kind/,post,200,1050,3,Oudergids: hoe begeleid je als ouder de studiekeuze van je kind?,/artikelen/oudergids-hoe-begeleid-je-als-ouder-de-studiekeuze-van-je-kind,redirect,posts move under the hub
+/oudergids-hoe-begeleid-je-als-ouder-de-studiekeuze-van-je-kind/,post,200,1050,3,Oudergids: hoe begeleid je als ouder de studiekeuze van je kind?,/oudergids-hoe-begeleid-je-als-ouder-de-studiekeuze-van-je-kind,keep,the article keeps its root URL
 /over-ons/,page,200,301,2,Wie zijn wij?,/over-ons,rebuild,
 /over-ons/two-students-doing-homework-at-home-2/,attachment,200,10,0,Two students doing homework at home,/over-ons,redirect,attachment to its parent
 /over-ons/veelgestelde-vragen/,page,200,380,182,Vragen of advies nodig?,/veelgestelde-vragen,redirect,
@@ -265,26 +265,26 @@ old,kind,status,real_words,editorial_inbound,h1,new,action,note
 /quiz/,page,200,30,1,Hbo-voorlichtingspresentatie,,drop,
 /roosendaal/,other,200,728,1,StudieKeuzeAdvies Roosendaal,/locaties/roosendaal,redirect,the old site already redirects this to /locaties/roosendaal/
 /sittard/,other,200,727,1,Studiekeuzeadvies Sittard,/locaties/sittard,redirect,the old site already redirects this to /locaties/sittard/
-/spoedcursus-studeren-1-wat-je-moet-weten-voor-je-gaat-studeren/,post,200,448,1,Spoedcursus studeren 1: Wat je moet weten vóór je gaat studeren,/artikelen/spoedcursus-studeren-1-wat-je-moet-weten-voor-je-gaat-studeren,redirect,posts move under the hub
-/spoedcursus-studeren-2-voorbereiden-op-je-studie/,post,200,550,1,Spoedcursus studeren 2: Voorbereiden op je studie,/artikelen/spoedcursus-studeren-2-voorbereiden-op-je-studie,redirect,posts move under the hub
-/spoedcursus-studeren-3-hoe-zit-een-studie-in-elkaar/,post,200,866,1,Spoedcursus studeren 3: Hoe zit een studie in elkaar?,/artikelen/spoedcursus-studeren-3-hoe-zit-een-studie-in-elkaar,redirect,posts move under the hub
-/spoedcursus-studeren-4-eigen-verantwoordelijkheid/,post,200,781,1,Spoedcursus studeren 4: Eigen verantwoordelijkheid,/artikelen/spoedcursus-studeren-4-eigen-verantwoordelijkheid,redirect,posts move under the hub
+/spoedcursus-studeren-1-wat-je-moet-weten-voor-je-gaat-studeren/,post,200,448,1,Spoedcursus studeren 1: Wat je moet weten vóór je gaat studeren,/spoedcursus-studeren-1-wat-je-moet-weten-voor-je-gaat-studeren,keep,the article keeps its root URL
+/spoedcursus-studeren-2-voorbereiden-op-je-studie/,post,200,550,1,Spoedcursus studeren 2: Voorbereiden op je studie,/spoedcursus-studeren-2-voorbereiden-op-je-studie,keep,the article keeps its root URL
+/spoedcursus-studeren-3-hoe-zit-een-studie-in-elkaar/,post,200,866,1,Spoedcursus studeren 3: Hoe zit een studie in elkaar?,/spoedcursus-studeren-3-hoe-zit-een-studie-in-elkaar,keep,the article keeps its root URL
+/spoedcursus-studeren-4-eigen-verantwoordelijkheid/,post,200,781,1,Spoedcursus studeren 4: Eigen verantwoordelijkheid,/spoedcursus-studeren-4-eigen-verantwoordelijkheid,keep,the article keeps its root URL
 /stedelijkgymnasium/,page,200,0,1,Inschrijfformulier,,drop,
-/stoppen-met-studeren-wat-moet-je-regelen/,post,200,416,1,Stoppen met studeren: wat moet je regelen?,/artikelen/stoppen-met-studeren-wat-moet-je-regelen,redirect,posts move under the hub
-/stoppen-voor-1-februari-studieschuld/,post,200,300,1,Stoppen voor 1 februari,/artikelen/stoppen-voor-1-februari-studieschuld,redirect,posts move under the hub
-/studeren-in-belgie/,post,200,421,1,Studeren in Belgie,/artikelen/studeren-in-belgie,redirect,posts move under the hub
-/studeren-in-het-buitenland/,post,200,566,1,Studeren in het buitenland?,/artikelen/studeren-in-het-buitenland,redirect,posts move under the hub
-/studeren-tegenvallers-twijfels-doorzettingsvermogen/,post,200,689,1,"Studeren: tegenvallers, twijfels en doorzettingsvermogen",/artikelen/studeren-tegenvallers-twijfels-doorzettingsvermogen,redirect,posts move under the hub
-/studie-baankansen-startsalaris/,post,200,535,1,Mijn studie: hoe zit het met baankansen en startsalaris?,/artikelen/studie-baankansen-startsalaris,redirect,posts move under the hub
-/studie-kiezen-ga-je-voor-leuk-of-nuttig/,post,200,520,1,Studie kiezen: ga je voor leuk of nuttig?,/artikelen/studie-kiezen-ga-je-voor-leuk-of-nuttig,redirect,posts move under the hub
-/studiefinanciering-in-het-leenstelsel-hoe-zit-het/,post,200,439,1,Studiefinanciering in het leenstelsel: hoe zit het?,/artikelen/studiefinanciering-in-het-leenstelsel-hoe-zit-het,redirect,posts move under the hub
+/stoppen-met-studeren-wat-moet-je-regelen/,post,200,416,1,Stoppen met studeren: wat moet je regelen?,/stoppen-met-studeren-wat-moet-je-regelen,keep,the article keeps its root URL
+/stoppen-voor-1-februari-studieschuld/,post,200,300,1,Stoppen voor 1 februari,/stoppen-voor-1-februari-studieschuld,keep,the article keeps its root URL
+/studeren-in-belgie/,post,200,421,1,Studeren in Belgie,/studeren-in-belgie,keep,the article keeps its root URL
+/studeren-in-het-buitenland/,post,200,566,1,Studeren in het buitenland?,/studeren-in-het-buitenland,keep,the article keeps its root URL
+/studeren-tegenvallers-twijfels-doorzettingsvermogen/,post,200,689,1,"Studeren: tegenvallers, twijfels en doorzettingsvermogen",/studeren-tegenvallers-twijfels-doorzettingsvermogen,keep,the article keeps its root URL
+/studie-baankansen-startsalaris/,post,200,535,1,Mijn studie: hoe zit het met baankansen en startsalaris?,/studie-baankansen-startsalaris,keep,the article keeps its root URL
+/studie-kiezen-ga-je-voor-leuk-of-nuttig/,post,200,520,1,Studie kiezen: ga je voor leuk of nuttig?,/studie-kiezen-ga-je-voor-leuk-of-nuttig,keep,the article keeps its root URL
+/studiefinanciering-in-het-leenstelsel-hoe-zit-het/,post,200,439,1,Studiefinanciering in het leenstelsel: hoe zit het?,/studiefinanciering-in-het-leenstelsel-hoe-zit-het,keep,the article keeps its root URL
 /studiekeuze-met-add-adhd/,page,200,561,1,ADHD of ADD en Beroepskeuze,/studiekeuze-met-add-adhd,rebuild,
 /studiekeuze-met-add-adhd/studiekeuze-add-adhd/,attachment,200,6,0,studiekeuze ADD - ADHD,/studiekeuze-met-add-adhd,redirect,attachment to its parent
 /studiekeuze-tarieven-2/,page,200,2,1,Tarieven,/tarieven,redirect,
 /studiekeuze-traject/,page,200,332,1,StudieKeuze Traject,/studiekeuzetraject,redirect,
-/studiekeuze-wacht-niet-te-lang-met-de-voorbereiding/,post,200,655,1,Studiekeuze? Wacht niet te lang met de voorbereiding!,/artikelen/studiekeuze-wacht-niet-te-lang-met-de-voorbereiding,redirect,posts move under the hub
+/studiekeuze-wacht-niet-te-lang-met-de-voorbereiding/,post,200,655,1,Studiekeuze? Wacht niet te lang met de voorbereiding!,/studiekeuze-wacht-niet-te-lang-met-de-voorbereiding,keep,the article keeps its root URL
 /studiekeuze/,other,200,561,2,ADHD of ADD en Beroepskeuze,/studiekeuze-met-add-adhd,redirect,the old site already redirects this to /studiekeuze-met-add-adhd/
-/studiekeuzecheck-is-motivatie/,post,200,436,1,Studiekeuzecheck: wat is jouw motivatie?,/artikelen/studiekeuzecheck-is-motivatie,redirect,posts move under the hub
+/studiekeuzecheck-is-motivatie/,post,200,436,1,Studiekeuzecheck: wat is jouw motivatie?,/studiekeuzecheck-is-motivatie,keep,the article keeps its root URL
 /studiekeuzecoaches/,page,200,3313,182,Leer onze studiekeuzecoaches kennen!,/studiekeuzecoaches,keep,
 /studiekeuzecoaches/171024-004-2/,attachment,200,0,0,171024-004-2,/studiekeuzecoaches,redirect,attachment to its parent
 /studiekeuzecoaches/afbeelding1/,attachment,200,0,0,Afbeelding1,/studiekeuzecoaches,redirect,attachment to its parent
@@ -397,8 +397,8 @@ old,kind,status,real_words,editorial_inbound,h1,new,action,note
 /studiekeuzetraject/rsz_neonbrand-618320-unsplash-2/,attachment,200,0,0,rsz_neonbrand-618320-unsplash,/studiekeuzetraject,redirect,attachment to its parent
 /studiekeuzetraject/stressed-schoolgirl-studying-in-classroom/,attachment,200,8,0,Stressed Schoolgirl Studying In Classroom,/studiekeuzetraject,redirect,attachment to its parent
 /studiekeuzetraject/tim-gouw-68319-unsplash/,attachment,200,0,0,tim-gouw-68319-unsplash,/studiekeuzetraject,redirect,attachment to its parent
-/studies-en-baankansen/,post,200,438,1,Studies en baankansen,/artikelen/studies-en-baankansen,redirect,posts move under the hub
-/switchen-van-studie/,post,200,378,1,Switchen van studie,/artikelen/switchen-van-studie,redirect,posts move under the hub
+/studies-en-baankansen/,post,200,438,1,Studies en baankansen,/studies-en-baankansen,keep,the article keeps its root URL
+/switchen-van-studie/,post,200,378,1,Switchen van studie,/switchen-van-studie,keep,the article keeps its root URL
 /tag/,tag,404,0,0,,/artikelen,redirect,the tag pages collapse into the hub
 /tag/1-mei/,tag,200,1068,0,Inschrijven,/artikelen,redirect,the tag pages collapse into the hub
 /tag/afweging/,tag,200,520,0,Studie kiezen: ga je voor leuk of nuttig?,/artikelen,redirect,the tag pages collapse into the hub
@@ -481,43 +481,43 @@ old,kind,status,real_words,editorial_inbound,h1,new,action,note
 /tarieven/unnamed-1/,attachment,200,2,0,unnamed (1),/tarieven,redirect,attachment to its parent
 /tarieven/unnamed-2/,attachment,200,2,0,unnamed (2),/tarieven,redirect,attachment to its parent
 /tarieven/unnamed/,attachment,200,0,0,unnamed,/tarieven,redirect,attachment to its parent
-/thuis-studeren-als-een-pro/,post,200,560,1,Thuis studeren als een pro,/artikelen/thuis-studeren-als-een-pro,redirect,posts move under the hub
-/uitgeloot-voor-je-studie-wat-nu/,post,200,421,1,Uitgeloot voor je studie: wat nu?,/artikelen/uitgeloot-voor-je-studie-wat-nu,redirect,posts move under the hub
-/uitschrijven-bij-je-studie-voor-1-februari/,post,200,617,1,Uitschrijven bij je studie voor 1 februari,/artikelen/uitschrijven-bij-je-studie-voor-1-februari,redirect,posts move under the hub
+/thuis-studeren-als-een-pro/,post,200,560,1,Thuis studeren als een pro,/thuis-studeren-als-een-pro,keep,the article keeps its root URL
+/uitgeloot-voor-je-studie-wat-nu/,post,200,421,1,Uitgeloot voor je studie: wat nu?,/uitgeloot-voor-je-studie-wat-nu,keep,the article keeps its root URL
+/uitschrijven-bij-je-studie-voor-1-februari/,post,200,617,1,Uitschrijven bij je studie voor 1 februari,/uitschrijven-bij-je-studie-voor-1-februari,keep,the article keeps its root URL
 /utrecht/,other,200,726,1,StudieKeuzeAdvies Utrecht,/locaties/utrecht,redirect,the old site already redirects this to /locaties/utrecht/
-/vacature-keuzecoach-dordrecht/,page,200,583,1,Een goede studiekeuze maken. Lastig hè?,/,redirect,the old site already redirects this to /
-/vacature-keuzecoach-zwolle/,page,200,0,1,Vacatures,/coach-worden,redirect,the old site already redirects this to /vacatures/
-/vacature-keuzecoach/,page,200,0,1,Vacatures,/coach-worden,redirect,the old site already redirects this to /vacatures/
+/vacature-keuzecoach-dordrecht/,page,200,583,1,Een goede studiekeuze maken. Lastig hè?,/coach-worden,redirect,our own rule; the old site sends this to /
+/vacature-keuzecoach-zwolle/,page,200,0,1,Vacatures,/coach-worden,redirect,our own rule; the old site sends this to /vacatures/
+/vacature-keuzecoach/,page,200,0,1,Vacatures,/coach-worden,redirect,our own rule; the old site sends this to /vacatures/
 /vacatures/,page,200,0,182,Vacatures,/coach-worden,redirect,
-/van-havo-naar-de-universiteit/,post,200,440,1,Van havo naar universiteit,/artikelen/van-havo-naar-de-universiteit,redirect,posts move under the hub
-/van-studie-wisselen/,post,200,3164,2,Van studie wisselen,/artikelen/van-studie-wisselen,redirect,posts move under the hub
-/van-studie-wisselen/foto1-2/,attachment,200,0,0,foto1,/artikelen/van-studie-wisselen,redirect,attachment to its parent
-/van-studie-wisselen/foto1/,attachment,200,0,0,foto1,/artikelen/van-studie-wisselen,redirect,attachment to its parent
-/van-studie-wisselen/foto2-2/,attachment,200,0,0,FOTO2,/artikelen/van-studie-wisselen,redirect,attachment to its parent
-/van-studie-wisselen/foto2/,attachment,200,0,0,foto2,/artikelen/van-studie-wisselen,redirect,attachment to its parent
-/van-studie-wisselen/foto3-2/,attachment,200,0,0,FOTO3,/artikelen/van-studie-wisselen,redirect,attachment to its parent
-/van-studie-wisselen/foto3/,attachment,200,0,0,foto3,/artikelen/van-studie-wisselen,redirect,attachment to its parent
-/van-studie-wisselen/foto4-2/,attachment,200,0,0,FOTO4,/artikelen/van-studie-wisselen,redirect,attachment to its parent
-/van-studie-wisselen/foto4/,attachment,200,0,0,foto4,/artikelen/van-studie-wisselen,redirect,attachment to its parent
-/van-studie-wisselen/foto5-2/,attachment,200,0,0,FOTO5,/artikelen/van-studie-wisselen,redirect,attachment to its parent
-/van-studie-wisselen/foto5/,attachment,200,0,0,foto5,/artikelen/van-studie-wisselen,redirect,attachment to its parent
-/van-vmbo-naar-mbo/,post,200,362,1,Van vmbo naar mbo,/artikelen/van-vmbo-naar-mbo,redirect,posts move under the hub
-/van-wisselende-vakken-tot-studiepunten-sprokkelen-scholier-versus-student-deel-2/,post,200,547,1,Van wisselende vakken tot studiepunten sprokkelen: scholier versus student (deel 2),/artikelen/van-wisselende-vakken-tot-studiepunten-sprokkelen-scholier-versus-student-deel-2,redirect,posts move under the hub
-/van-wisselende-vakken-tot-studiepunten-sprokkelen-scholier-vs-student/,post,200,532,1,Van wisselende vakken tot studiepunten sprokkelen: scholier vs. student (deel 1),/artikelen/van-wisselende-vakken-tot-studiepunten-sprokkelen-scholier-vs-student,redirect,posts move under the hub
+/van-havo-naar-de-universiteit/,post,200,440,1,Van havo naar universiteit,/van-havo-naar-de-universiteit,keep,the article keeps its root URL
+/van-studie-wisselen/,post,200,3164,2,Van studie wisselen,/van-studie-wisselen,keep,the article keeps its root URL
+/van-studie-wisselen/foto1-2/,attachment,200,0,0,foto1,/van-studie-wisselen,redirect,attachment to its parent
+/van-studie-wisselen/foto1/,attachment,200,0,0,foto1,/van-studie-wisselen,redirect,attachment to its parent
+/van-studie-wisselen/foto2-2/,attachment,200,0,0,FOTO2,/van-studie-wisselen,redirect,attachment to its parent
+/van-studie-wisselen/foto2/,attachment,200,0,0,foto2,/van-studie-wisselen,redirect,attachment to its parent
+/van-studie-wisselen/foto3-2/,attachment,200,0,0,FOTO3,/van-studie-wisselen,redirect,attachment to its parent
+/van-studie-wisselen/foto3/,attachment,200,0,0,foto3,/van-studie-wisselen,redirect,attachment to its parent
+/van-studie-wisselen/foto4-2/,attachment,200,0,0,FOTO4,/van-studie-wisselen,redirect,attachment to its parent
+/van-studie-wisselen/foto4/,attachment,200,0,0,foto4,/van-studie-wisselen,redirect,attachment to its parent
+/van-studie-wisselen/foto5-2/,attachment,200,0,0,FOTO5,/van-studie-wisselen,redirect,attachment to its parent
+/van-studie-wisselen/foto5/,attachment,200,0,0,foto5,/van-studie-wisselen,redirect,attachment to its parent
+/van-vmbo-naar-mbo/,post,200,362,1,Van vmbo naar mbo,/van-vmbo-naar-mbo,keep,the article keeps its root URL
+/van-wisselende-vakken-tot-studiepunten-sprokkelen-scholier-versus-student-deel-2/,post,200,547,1,Van wisselende vakken tot studiepunten sprokkelen: scholier versus student (deel 2),/van-wisselende-vakken-tot-studiepunten-sprokkelen-scholier-versus-student-deel-2,keep,the article keeps its root URL
+/van-wisselende-vakken-tot-studiepunten-sprokkelen-scholier-vs-student/,post,200,532,1,Van wisselende vakken tot studiepunten sprokkelen: scholier vs. student (deel 1),/van-wisselende-vakken-tot-studiepunten-sprokkelen-scholier-vs-student,keep,the article keeps its root URL
 /verkeerde-studiekeuze/,page,200,1408,54,Verkeerde studiekeuze,/verkeerde-studiekeuze,keep,
 /verkeerde-studiekeuze/pattern/,attachment,200,0,0,pattern,/verkeerde-studiekeuze,redirect,attachment to its parent
-/verschillen-tussen-een-reguliere-en-particuliere-opleiding/,post,200,536,1,Verschillen tussen een reguliere en particuliere opleiding,/artikelen/verschillen-tussen-een-reguliere-en-particuliere-opleiding,redirect,posts move under the hub
-/vervolgstudie-geen-goede-match-nu/,post,200,528,1,Vervolgstudie geen goede match: wat nu?,/artikelen/vervolgstudie-geen-goede-match-nu,redirect,posts move under the hub
-/vijf-tips-voor-een-vliegende-studiestart/,post,200,489,1,Vijf tips voor een vliegende studiestart,/artikelen/vijf-tips-voor-een-vliegende-studiestart,redirect,posts move under the hub
-/voor-1-mei-inschrijven/,post,200,1068,1,Inschrijven,/artikelen/artikel-aanmelden-studies,redirect,the old site already redirects this to /artikel-aanmelden-studies/
+/verschillen-tussen-een-reguliere-en-particuliere-opleiding/,post,200,536,1,Verschillen tussen een reguliere en particuliere opleiding,/verschillen-tussen-een-reguliere-en-particuliere-opleiding,keep,the article keeps its root URL
+/vervolgstudie-geen-goede-match-nu/,post,200,528,1,Vervolgstudie geen goede match: wat nu?,/vervolgstudie-geen-goede-match-nu,keep,the article keeps its root URL
+/vijf-tips-voor-een-vliegende-studiestart/,post,200,489,1,Vijf tips voor een vliegende studiestart,/vijf-tips-voor-een-vliegende-studiestart,keep,the article keeps its root URL
+/voor-1-mei-inschrijven/,post,200,1068,1,Inschrijven,/artikel-aanmelden-studies,redirect,the old site already redirects this to /artikel-aanmelden-studies/
 /wassenaar/,other,200,723,1,StudieKeuzeAdvies Wassenaar,/locaties/wassenaar,redirect,the old site already redirects this to /locaties/wassenaar/
-/wat-betekent-het-leenstelsel-concreet-voor-jou/,post,200,242,1,Wat betekent het leenstelsel concreet voor jou?,/artikelen/wat-betekent-het-leenstelsel-concreet-voor-jou,redirect,posts move under the hub
-/wat-betekent-het-leenstelsel-concreet-voor-jou/olympus-digital-camera/,attachment,200,0,0,Leenstelsel,/artikelen/wat-betekent-het-leenstelsel-concreet-voor-jou,redirect,attachment to its parent
-/wat-betekent-het-leenstelsel-voor-mij/,post,200,229,1,Wat betekent het leenstelsel voor mij?,/artikelen/wat-betekent-het-leenstelsel-voor-mij,redirect,posts move under the hub
+/wat-betekent-het-leenstelsel-concreet-voor-jou/,post,200,242,1,Wat betekent het leenstelsel concreet voor jou?,/wat-betekent-het-leenstelsel-concreet-voor-jou,keep,the article keeps its root URL
+/wat-betekent-het-leenstelsel-concreet-voor-jou/olympus-digital-camera/,attachment,200,0,0,Leenstelsel,/wat-betekent-het-leenstelsel-concreet-voor-jou,redirect,attachment to its parent
+/wat-betekent-het-leenstelsel-voor-mij/,post,200,229,1,Wat betekent het leenstelsel voor mij?,/wat-betekent-het-leenstelsel-voor-mij,keep,the article keeps its root URL
 /winkel/,shop,200,108,3,Winkel,/tarieven,redirect,the price decision is open
 /winkelwagen/,shop,200,8,182,Winkelwagen,/tarieven,redirect,the price decision is open
 /wo-opleiding-kiezen/,page,200,329,1,Hulp bij studiekeuze wo,/wo-opleiding-kiezen,rebuild,
-/zo-bewaar-jij-de-balans-tussen-productiviteit-en-vrije-tijd/,post,200,773,2,Een goede balans tussen studie en vrije tijd,/artikelen/zo-bewaar-jij-de-balans-tussen-productiviteit-en-vrije-tijd,redirect,posts move under the hub
-/zo-maak-jij-een-planning-waar-je-je-aan-kunt-houden/,post,200,512,3,Plannen als een pro,/artikelen/zo-maak-jij-een-planning-waar-je-je-aan-kunt-houden,redirect,posts move under the hub
+/zo-bewaar-jij-de-balans-tussen-productiviteit-en-vrije-tijd/,post,200,773,2,Een goede balans tussen studie en vrije tijd,/zo-bewaar-jij-de-balans-tussen-productiviteit-en-vrije-tijd,keep,the article keeps its root URL
+/zo-maak-jij-een-planning-waar-je-je-aan-kunt-houden/,post,200,512,3,Plannen als een pro,/zo-maak-jij-een-planning-waar-je-je-aan-kunt-houden,keep,the article keeps its root URL
 /zutphen/,page,200,724,182,StudieKeuzeAdvies Zutphen,/locaties/zutphen,redirect,
 /zwolle/,other,200,724,1,StudieKeuzeAdvies Zwolle,/locaties/zwolle,redirect,the old site already redirects this to /locaties/zwolle/

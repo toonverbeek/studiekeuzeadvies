@@ -64,6 +64,14 @@ Watch item, not a ban: the standard Dutch education look, soft blue and mint gre
 4. **Calm is the feature.** The reader is worried and often ashamed. No urgency, no counters, no popups. Space and rhythm do more work than color.
 5. **Say only what is true.** No number, no name, and no customer story goes on the site until we know we may use it. Where proof is missing, say less, do not invent more.
 
+**Generated images.** A generated image may show a scene. It may never show a person we present as one of ours. Decided on 2026-08-13:
+
+- The home page hero is a generated scene: a coach and two young people at a table. It may go live, because it names nobody.
+- It gets no name and no caption that claims a person. The caption describes the traject.
+- Hero only. Never on `/studiekeuzecoaches`, and never on a city page.
+- A real coach always gets their own real photo. Janneke has one, from the archive.
+- The five generated portraits of the stand-in coaches may not go live. In the code, `isPlaceholder` is the field that decides that.
+
 ## Accessibility & Inclusion
 
 Good practice level. No formal WCAG statement and no audit at this time.

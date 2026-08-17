@@ -96,6 +96,38 @@
     background-color: var(--color-ochre);
     color: var(--color-ink);
   }
+
+  /* The cookie bar (app/components/cookie-consent.tsx) sticks to the bottom of
+     the window until the reader reaches the end of the page, so halfway down a
+     page it lies over a strip of the text. While it is up, keep that strip free
+     when the browser scrolls to a jump link or to the element the keyboard just
+     reached: no focus ring may end up behind the bar. :has() means the rule
+     leaves together with the bar, and the bar leaves the moment the visitor has
+     answered. The two values are the height of the bar stacked on a telephone
+     and side by side from sm up. */
+  html:has([data-consent-bar]) {
+    scroll-padding-bottom: 13rem;
+  }
+
+  @media (min-width: 40rem) {
+    html:has([data-consent-bar]) {
+      scroll-padding-bottom: 8rem;
+    }
+  }
+
+  /* The bar arrives, it does not appear. One short move of transform and
+     opacity, nothing of the layout. The prefers-reduced-motion block at the end
+     of this file flattens it to nothing. */
+  [data-consent-bar] {
+    animation: consent-bar-in 260ms var(--ease-out-quart) both;
+  }
+}
+
+@keyframes consent-bar-in {
+  from {
+    opacity: 0;
+    transform: translateY(0.75rem);
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {
