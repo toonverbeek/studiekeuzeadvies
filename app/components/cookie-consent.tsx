@@ -13,7 +13,8 @@ import { button, shell } from "../shell";
 
 /**
  * The two client pieces of the cookie question, and the only client JavaScript
- * on a city page. Everything around them stays a server component.
+ * on the pages that carry a map. Everything around them stays a server
+ * component.
  *
  * PRODUCT.md, principle 4: calm is the feature, and the reader is worried. So
  * this is a bar and not a modal. It does not dim the page, it does not trap the
@@ -55,10 +56,14 @@ export function CookieConsentBar() {
       <div
         className={`${shell} flex flex-col gap-6 py-6 sm:flex-row sm:items-center sm:justify-between sm:gap-10`}
       >
+        {/* Two maps now: one on the home page, and one on a city page where a
+            coach works. So this line names the home page as well. It stays
+            indefinite about the other one ("een locatiepagina"), because a city
+            without a coach has no map. See app/components/maps.tsx. */}
         <p className="max-w-[62ch]">
-          Op een locatiepagina staat een kaart van Google. Die kaart zet cookies
-          op je apparaat, dus we laden hem pas als jij het goedvindt. Dit is de
-          enige vraag over cookies die we je stellen.
+          Op de homepage en op een locatiepagina staat een kaart van Google. Die
+          kaart zet cookies op je apparaat, dus we laden hem pas als jij het
+          goedvindt. Dit is de enige vraag over cookies die we je stellen.
         </p>
 
         {/* Both answers get the same size, the same type and the same place.

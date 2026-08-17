@@ -22,10 +22,21 @@ export type MeetingPlace = {
   town: string;
 };
 
+/** A place on the map, in degrees. */
+export type Point = { lat: number; lng: number };
+
 export type City = {
   slug: string;
   /** The name in the heading and in the running text. */
   name: string;
+  /**
+   * The middle of the city, so the map on the home page can frame the whole
+   * work area. This is not the meeting place: that is `meeting`, and no city
+   * has one yet. Read it off Google Maps; four decimals is more than enough at
+   * this zoom. It is required and not optional on purpose, because a city
+   * without a point would quietly fall outside the frame of that map.
+   */
+  at: Point;
   /**
    * The towns around it that the coach also covers. Where a coach works, take
    * this straight from the coach, so the region cannot say two things on two
@@ -61,6 +72,7 @@ export const cities: City[] = [
     // `meeting` field above.
     slug: "amsterdam",
     name: "Amsterdam",
+    at: { lat: 52.3676, lng: 4.9041 },
     region: janneke.region,
     coach: janneke,
     meeting: null,
@@ -86,6 +98,7 @@ export const cities: City[] = [
   {
     slug: "utrecht",
     name: "Utrecht",
+    at: { lat: 52.0907, lng: 5.1214 },
     region: hanneke.region,
     coach: hanneke,
     meeting: null,
@@ -93,6 +106,7 @@ export const cities: City[] = [
   {
     slug: "amersfoort",
     name: "Amersfoort",
+    at: { lat: 52.1561, lng: 5.3878 },
     region: bram.region,
     coach: bram,
     meeting: null,
@@ -103,6 +117,7 @@ export const cities: City[] = [
     // worth more than a page that promises a coach who is not there.
     slug: "bergen-op-zoom",
     name: "Bergen op Zoom",
+    at: { lat: 51.4939, lng: 4.2871 },
     region: "Bergen op Zoom, Roosendaal en Steenbergen",
     coach: null,
     meeting: null,
