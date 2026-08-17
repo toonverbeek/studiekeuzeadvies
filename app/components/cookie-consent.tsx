@@ -9,7 +9,7 @@ import {
   writeConsent,
   type ConsentState,
 } from "../consent";
-import { button, shell } from "../shell";
+import { button, buttonOnInk, shell } from "../shell";
 
 /**
  * The two client pieces of the cookie question, and the only client JavaScript
@@ -50,7 +50,12 @@ export function CookieConsentBar() {
   return (
     <aside
       aria-label="Cookies"
-      className="sticky bottom-0 z-10 border-t border-ink/20 bg-ochre text-ink"
+      // INK, NOT OCHRE. The bar used to be ochre, and it lay over ochre bands
+      // half the time: on the home page it could arrive on top of one. A bar
+      // that asks a question has to be an object on the page, not another band
+      // of it. Ink is the one surface this site keeps for that, and the thin
+      // ochre line on top separates it from the footer, which is ink as well.
+      className="sticky bottom-0 z-10 border-t border-ochre-line bg-ink text-paper"
       data-consent-bar
     >
       <div
@@ -77,17 +82,22 @@ export function CookieConsentBar() {
 
         {/* Both answers get the same size, the same type and the same place.
             Only the fill differs, so yes is easy to find and no is just as easy
-            to press. A no must never be the small grey word in the corner. */}
+            to press. A no must never be the small grey word in the corner.
+
+            They cannot use the ink button of the rest of the site, because an
+            ink block on an ink bar is a hole. The pair keeps its relation and
+            swaps its colours: the yes is filled, the no is the same shape in
+            outline, both in paper. */}
         <div className="flex shrink-0 flex-wrap items-center gap-4">
           <button
-            className={button}
+            className={buttonOnInk}
             onClick={() => writeConsent("granted")}
             type="button"
           >
             Cookies toestaan
           </button>
           <button
-            className="border border-ink px-8 py-4 text-eyebrow uppercase transition-colors duration-150 ease-out-quart hover:bg-ink hover:text-paper"
+            className="border border-paper px-8 py-4 text-eyebrow uppercase transition-colors duration-150 ease-out-quart hover:bg-paper hover:text-ink"
             onClick={() => writeConsent("denied")}
             type="button"
           >

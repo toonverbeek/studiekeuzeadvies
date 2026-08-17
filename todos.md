@@ -700,6 +700,12 @@ freelance coach.
       change the look of the whole site. Note that `oklch(58% 0.125 74)` is
       already slightly outside sRGB and clips to `#a56d00`, so a darker step has
       to be chosen, not just typed.
+- [x] **The focus ring was invisible on an ink surface.** Fixed on 2026-08-17.
+      `app/globals.css` set one ring, `3px solid var(--color-ink)`, for the
+      whole site, and the footer has held links on `bg-ink` since the day it was
+      built: an ink ring on ink is a ring nobody sees. The cookie bar became ink
+      the same day and put two buttons there. One rule, `.bg-ink :focus-visible`,
+      turns the ring to paper on every ink surface, this one and the next one.
 - [ ] **The wordmark and the header treat the name differently.** `issue #8`
       shipped `public/wordmark.svg` and the share image with the name in
       Alegreya Sans Bold camel case. `app/components/site-header.tsx` sets the
@@ -748,6 +754,7 @@ Do not re-open these without a reason.
 | The canonical host is `www.studiekeuzeadvies.nl`. Measured over the whole archive, not chosen | 2026-08-15 |
 | The cookie answer lives in `localStorage`, not in a cookie. A cookie would need `cookies()`, which makes every prerendered page dynamic, and the prerendered pages are what the purchase paid for | 2026-08-15 |
 | One question about cookies and no more. Two answers of equal weight, a bar and never a modal, and a no is never asked again | 2026-08-15 |
+| The cookie bar is ink, not ochre. An ochre bar over an ochre band reads as one more band, and the home page has three of them. Ink is the surface this site keeps for an object that is not the page. A 1px ochre line on top separates it from the footer, which is ink as well | 2026-08-17 |
 | The bar asks the generic question and names no page. It covers everything that comes from somebody else, with the Google map as the example. It also says we set no cookie ourselves, which is true and has to stay true: no analytics, no third party script, and the answer itself in `localStorage` | 2026-08-17 |
 | **The launch gate is the domain switch, not the build.** We are in rapid development: we merge to production all day, and production is a Vercel URL. `studiekeuzeadvies.nl` still points at the old WordPress on AWS, so nothing we ship is reachable by a customer until we flip the domain. Therefore no build guard on `isPlaceholder`, and issue `#13` stays closed. A guard would only block our own merges to protect a URL nobody visits. The five invented coaches are checked by a person before the flip. A future review will find this and call it a defect: it is not, it is this row | 2026-08-16 |
 | A generated image may show a scene, never a person we present as one of ours. The home page hero is such a scene; the five stand-in portraits still may not go live | 2026-08-13 |

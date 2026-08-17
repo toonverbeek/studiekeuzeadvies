@@ -92,6 +92,14 @@
     outline-offset: 3px;
   }
 
+  /* On an ink surface an ink ring is a ring you cannot see. There are two such
+     surfaces, the footer and the cookie bar, and both hold controls a keyboard
+     reaches. The class that paints the surface is the hook, so a third ink
+     surface is covered the day it exists. */
+  .bg-ink :focus-visible {
+    outline-color: var(--color-paper);
+  }
+
   ::selection {
     background-color: var(--color-ochre);
     color: var(--color-ink);
