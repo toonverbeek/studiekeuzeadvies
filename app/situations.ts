@@ -65,7 +65,7 @@
  * THE SCOPE IS ADD AND ADHD, decided by the user on 2026-08-05. PRODUCT.md
  * names a wider group ("ADD, ADHD, of autisme") and the home page and the
  * traject page use that wider wording, but the real copy only covers ADD and
- * ADHD. Nothing about autism is written here. The gap is in todos.md.
+ * ADHD. Nothing about autism is written here. The gap is issue #40.
  *
  * ONE SECTION IS NEW: "Overzicht in plaats van nog meer opties". The page is
  * short after the cleaning, and every sentence in that section is already true

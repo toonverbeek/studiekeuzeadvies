@@ -78,10 +78,10 @@ export const cities: City[] = [
     meeting: null,
 
     // The first city to carry its own text instead of the shared one, so this
-    // is also the worked example for section 5 of todos.md. What makes it local
-    // is the one thing the old Amsterdam page had that no other city page had:
-    // the four institutions a reader here is actually choosing between. The
-    // shared text stays underneath for every city that has nothing to add.
+    // is also the worked example for issue #35, the doorway risk. What makes it
+    // local is the one thing the old Amsterdam page had that no other city page
+    // had: the four institutions a reader here is actually choosing between.
+    // The shared text stays underneath for every city that has nothing to add.
     intro:
       "De UvA, de VU, de HvA en Inholland zitten allemaal in dezelfde stad. Meer keuze dus, maar niet meer overzicht. In Amsterdam en Amstelveen werkt een vaste coach die met je meeloopt tot je keuze rond is. Het eerste gesprek is gratis, en daarna beslis jij.",
 

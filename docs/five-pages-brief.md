@@ -129,8 +129,8 @@ was removed and why, the way `app/situations.ts` and `app/traject.ts` do.
 3. **Every claim about who the coaches are.** The old level pages say the
    coaches all finished a university degree, that they are young
    professionals, and that they have years of experience with this age group.
-   Those are hiring requirements, not facts, and `todos.md` lists them as a
-   blocker. Do not repeat them. Describe what the *traject* does instead.
+   Those are hiring requirements, not facts, and issue #19 holds them. Do not
+   repeat them. Describe what the *traject* does instead.
 4. **Every unprovable number and superlative.** 8,8 / 92 percent / "meest
    gevraagde partij" / "de enige echt onafhankelijke".
 5. **Prices.** No amount goes on any page in this batch.
@@ -164,7 +164,7 @@ Source: `/Users/toon/Dev/studiekeuzeadvies archive/markdown/studiekeuze-met-add-
 names a wider group ("ADD, ADHD, or autism"), and the home page and the traject
 page already use the wider wording. This page keeps the old scope, because that
 is where the real copy is. Do not write anything about autism on this page. The
-gap is recorded in `todos.md`, not filled with invention.
+gap is recorded as issue #40, not filled with invention.
 
 Build it as a third entry in `app/situations.ts` and render it with the existing
 `SituationPage`. The template needs one small change: the cross-link at the top
@@ -239,8 +239,8 @@ the right, a hairline between the pairs, and the question list repeated as the
 "Op deze pagina" index in the poster. Mark the questions up as real headings so
 the index and the browser find them.
 
-Do not add FAQ structured data in this session. `todos.md` keeps structured
-data as a separate decision.
+Do not add FAQ structured data in this session. Structured data is a separate
+decision, and it waits on a real address (issue #32).
 
 ### 9.3 `/hbo-opleiding-kiezen`, `/mbo-opleiding-kiezen`, `/wo-opleiding-kiezen` (session C)
 
@@ -338,7 +338,7 @@ edit only its own files. **Nobody edits a file in the "integration" row.**
 | A. ADD/ADHD | `app/situations.ts`, `app/components/situation-page.tsx`, `app/studiekeuze-met-add-adhd/page.tsx` |
 | B. FAQ | `app/faq.ts`, `app/components/faq-list.tsx` (if one is needed), `app/veelgestelde-vragen/page.tsx` |
 | C. Level pages | `app/levels.ts`, `app/components/level-page.tsx`, `app/hbo-opleiding-kiezen/page.tsx`, `app/mbo-opleiding-kiezen/page.tsx`, `app/wo-opleiding-kiezen/page.tsx` |
-| Integration (the main session, afterwards) | `app/page.tsx`, `app/traject.ts`, `app/components/site-header.tsx`, `app/components/site-footer.tsx`, `todos.md`, the commit |
+| Integration (the main session, afterwards) | `app/page.tsx`, `app/traject.ts`, `app/components/site-header.tsx`, `app/components/site-footer.tsx`, the commit |
 
 No session runs `git commit`, `git add`, or any other git command. The main
 session commits the whole branch once, after all three are finished and the
@@ -348,7 +348,7 @@ build is clean.
 
 1. The home page and the traject page describe the third door as "ADD, ADHD **of
    autisme**", and they will link to a page that says nothing about autism. Link
-   them anyway, and record the mismatch in `todos.md`.
+   them anyway, and record the mismatch. It is issue #40 now.
 2. Do the three level pages belong in the main menu? Probably not: the menu has
    five items already. The `/eerste-studiekeuze` page links to them, and that is
    the honest route in.

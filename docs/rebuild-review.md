@@ -7,7 +7,7 @@ and the site as it builds today.
 > was written when they were not, and it calls four pages blocked for that
 > reason: `/ervaringen/` and the three coach interviews. They are open. The rows
 > below say so. Everything else in this file stands: the pages that are still
-> blocked wait on the price decision, not on rights. See `todos.md`, section 3.
+> blocked wait on the price decision, not on rights. See issues #24 and #43.
 
 The goal this review measures against: a faithful rebuild of the old site, in a
 new design and a new URL structure, reusing as much of the old copy as we can.
@@ -81,7 +81,7 @@ Worth saying plainly, because the rest of this file is about gaps.
   documented in the file that made it. Nothing unprovable has leaked back in.
 - **Every stand-in is quarantined and labelled.** The invented coaches and the
   placeholder telephone number sit in named files with a warning at the top, and
-  `todos.md` lists them as blockers. Nothing fake is hidden inside a component.
+  issues #18 and #19 hold them. Nothing fake is hidden inside a component.
   (The two customer quotes were on this list until 2026-08-06. They are not
   stand-ins any more; the rights to them are bought.)
 - **The design holds.** Ochre carries the surface, one sans at all sizes, flat
@@ -143,7 +143,8 @@ Ordered by the body length they had on the old site:
 | `/contact/` | 45 | Was only a form. Decide: page or redirect |
 | `/vacatures/` | 0 | Empty on the old site. Needs an offer to a coach first, then `/coach-worden` |
 
-Note on `/over-ons/veelgestelde-vragen/`: `todos.md` records this as empty
+Note on `/over-ons/veelgestelde-vragen/`: the follow-up list of the day
+recorded this as empty
 ("the questions were never in the HTML"). That is not right — the five
 questions and their full answers **are** in the archived markdown. They are
 reusable copy today, minus the Keuzegids sentence and the two prices. This is
@@ -248,7 +249,7 @@ Five things change, and each one buys something:
 
 ### The decision this re-opens
 
-`todos.md` records, on 2026-08-05: *"An article keeps its old root URL. The hub
+The decision of 2026-08-05 reads: *"An article keeps its old root URL. The hub
 is at `/artikelen`. Zero redirects."* The structure above contradicts that on
 purpose, because you have now asked for a new URL structure and the article
 namespace is the only place where one is genuinely needed.
@@ -286,7 +287,7 @@ Two rows to look at by hand:
   come back.
 
 Every action in the file is a heuristic. None of it is final until the Search
-Console export exists, which is the deadline item in `todos.md` section 2.
+Console export exists, which is issue #22, the one with the deadline.
 
 ---
 
@@ -295,8 +296,8 @@ Console export exists, which is the deadline item in `todos.md` section 2.
 > **Update, later on 2026-08-05.** Everything under *Next, because it is
 > unblocked and cheap* is built: `/studiekeuze-met-add-adhd`,
 > `/veelgestelde-vragen` (without the price question) and the three level
-> pages. The design brief is `docs/five-pages-brief.md`, and `todos.md` records
-> what each page removed. The rest of this section still stands, and the
+> pages. The design brief is `docs/five-pages-brief.md`, and the commit of each
+> page records what it removed. The rest of this section still stands, and the
 > plumbing is now the first item with a deadline.
 
 **Now, because it expires.** Search Console and GA4 export. Everything in

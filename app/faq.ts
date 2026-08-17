@@ -25,7 +25,7 @@
  * - "Wie is mijn coach?" from /studiekeuzecoaches: one coach for the whole
  *   traject, the coach of your region where there is one, and the choice stays
  *   yours. Nothing here describes what a coach has studied or how long they
- *   have done this work. No coach is under contract. See todos.md.
+ *   have done this work. No coach is under contract. See issue #19.
  * - "Waar vinden de gesprekken plaats?" from /locaties and from the meeting
  *   place block on a city page.
  * - "Kan het ook online?" is the old line that already stands in
@@ -44,15 +44,16 @@
  *   prove, about a product we do not sell.
  * - The whole question about the price, and both amounts. The price is not
  *   decided, so this page says nothing about it: no "vanaf", no range, no
- *   placeholder. See todos.md. One line of that old answer does survive, in the
+ *   placeholder. See issue #42. One line of that old answer does survive, in the
  *   intake answer below: the intake is free because the click between you and
  *   your coach has to be right.
  * - The 088 number in the running text. It belonged to the seller, and since
  *   issue #7 this site prints no central number at all: a reader picks a city
  *   and writes to the coach who works there.
  *
- * NO FAQ STRUCTURED DATA. An FAQPage script is a separate decision and it sits
- * in todos.md. It is not added here.
+ * NO FAQ STRUCTURED DATA. An FAQPage script is a separate decision, and the
+ * structured data on this site waits on a real address (issue #32). It is not
+ * added here.
  */
 
 export type AnswerLink = { href: string; label: string };

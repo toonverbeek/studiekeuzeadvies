@@ -96,8 +96,8 @@ export async function requestIntake(
   /*
    * The delivery route, and the whole of it: the coach of this city, or the
    * inbox for a city where no coach works yet. Both are null today, so nothing
-   * arrives anywhere. That is one blocker in todos.md, not a bug in this file,
-   * and the site must not go live while it stands.
+   * arrives anywhere. That is issue #17, not a bug in this file, and the site
+   * must not go live while it stands.
    *
    * The warning names the person the request was meant for. A log line that
    * only says "not sent" hides which desk missed the request.
