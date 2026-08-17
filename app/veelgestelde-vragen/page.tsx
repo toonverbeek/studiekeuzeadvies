@@ -61,15 +61,20 @@ export default function FaqPage() {
                   pagina: je hoeft nergens op te klikken en niets uit te vouwen.
                 </p>
                 <p className="max-w-[58ch]">
-                  Staat je vraag er niet bij? Stel hem gerust. Kies onderaan deze
-                  pagina je stad, dan zie je wie daar werkt, en je vraagt het aan
-                  die coach zelf.
+                  Staat je vraag er niet bij? Stel hem gerust. Kies je stad, dan
+                  zie je wie daar werkt, en je vraagt het aan die coach zelf.
                 </p>
 
+                {/* The button used to say "Plan een gratis intakegesprek" and
+                    jump to #contact. Nothing was broken there, and that was the
+                    problem: this page cannot name a coach, so #contact shows the
+                    route ("kies je stad") and not a form. The label promised a
+                    step that the destination does not take. It names the first
+                    real step now, and it goes where that step happens. */}
                 <div className="mt-2 flex flex-wrap items-center gap-x-8 gap-y-4">
-                  <a className={button} href="#contact">
-                    Plan een gratis intakegesprek
-                  </a>
+                  <Link className={button} href="/locaties">
+                    Kies je stad
+                  </Link>
                   <Link className={linkOnOchre} href="/studiekeuzetraject">
                     Lees hoe het traject werkt
                   </Link>
@@ -136,23 +141,30 @@ export default function FaqPage() {
           </div>
         </section>
 
-        {/* The answers have been given, so now the offer may come. Not before. */}
+        {/* The answers have been given, so now the offer may come. Not before.
+            A short band, not a full section: without its button this block is
+            the sentence that hands over to the offer under it, and a full
+            section of padding left a hole between the two. */}
         <section className="bg-ochre text-ink" id="vraag">
-          <div className={`${shell} py-20 md:py-28`}>
+          <div className={`${shell} py-14 md:py-16`}>
             <div className="grid gap-x-16 gap-y-8 lg:grid-cols-[minmax(0,20rem)_minmax(0,1fr)]">
               <h2 className="text-section font-extrabold">
                 Staat je vraag er niet bij?
               </h2>
+              {/* No button here any more. It said "Plan een gratis
+                  intakegesprek" and it landed on the section directly below,
+                  which cannot plan one: this page knows no city, so it shows
+                  the three steps to a coach instead. Two calls to action within
+                  one screen, and the loud one promised the most and delivered
+                  the least. The section below is the offer; this block is the
+                  sentence that hands over to it. */}
               <div className="flex flex-col items-start gap-8">
                 <p className="text-lead max-w-[52ch]">
-                  Stel hem gewoon, dan zoeken we het samen uit. Wil je meteen
-                  verder praten? In het intakegesprek vertel je wat er speelt en
-                  leggen we uit hoe een traject werkt. Het kost je niets en je
-                  zegt daarna gewoon nee als het niet klopt.
+                  Stel hem dan aan de coach in jouw stad. Dat kan in het
+                  intakegesprek: je vertelt wat er speelt, wij leggen uit hoe een
+                  traject werkt. Het kost je niets en je zegt daarna gewoon nee
+                  als het niet klopt.
                 </p>
-                <a className={button} href="#contact">
-                  Plan een gratis intakegesprek
-                </a>
               </div>
             </div>
           </div>
@@ -168,7 +180,9 @@ export default function FaqPage() {
           { href: "#wat-is-het", label: "Wat houdt StudieKeuzeAdvies in?" },
           { href: "#hoe-lang", label: "Hoe lang duurt een traject?" },
           { href: "#je-coach", label: "Wie is mijn coach?" },
-          { href: "#contact", label: "Gratis intakegesprek" },
+          // Was "Gratis intakegesprek", which is not what the section does on a
+          // page that knows no city. It names the route, like /locaties does.
+          { href: "#contact", label: "Zo vraag je een gesprek aan" },
         ]}
       />
     </>
