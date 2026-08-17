@@ -263,7 +263,8 @@ trailing slash rule. Everything below is what the file cannot decide by itself.
       "studiekeuze Eindhoven" lands on `/locaties`: better than a 404, and not
       the page they wanted. **Importing the articles is the cheapest win by a
       distance.** The text is on disk in the archive, the rights are bought, and
-      Search Console only says which to do first, not whether we may.
+      Search Console only says which to do first, not whether we may. Tracked
+      as issue `#15`.
 - [ ] **Re-run the generator after every new page.** `python3
       scripts/build-url-map.py`. Add a city to `app/cities.ts` or an article to
       `app/articles.ts` and forget the re-run, and a parked redirect stands in
@@ -275,8 +276,13 @@ trailing slash rule. Everything below is what the file cannot decide by itself.
 - [ ] **Decide which of the 37 city pages stay.** The rule is: a city page only
       where a coach works. Every city you drop loses its ranking, so measure
       first.
-- [ ] **Decide which of the 63 articles stay.** They were orphaned on the old
-      site: no hub, no navigation link, one inbound link each.
+- [x] **Decide which of the 63 articles stay.** Re-framed on 2026-08-17: this
+      was filed as a decision that waits on Search Console, and that hid the
+      work inside it. Search Console says which article to import *first*. It
+      does not decide whether we may: the rights are settled and all 59 files
+      are on disk. The import is now issue `#15`, and it needs nobody's answer.
+      What genuinely waits on Search Console is which articles to *drop* later,
+      and dropping one is cheap once it is imported.
 - [x] **`sitemap.ts` and `robots.ts`.** Done on 2026-08-15, issue #11.
       `app/sitemap.ts` emits 20 URLs, built from the same lists
       `generateStaticParams` reads, and it throws at build time if a sitemap URL
