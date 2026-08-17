@@ -351,8 +351,16 @@ write nothing and it falls back to the shared text.
 - [x] **The map on the home page.** Done on 2026-08-17. "Waar we nu zitten" now
       carries a map of the area where a coach works, under the city names.
       `app/components/city-map.tsx` became `app/components/maps.tsx` and holds
-      both maps, and the consent bar names the home page as well. The prediction
-      in this item held: `ConsentGate` needed no change at all.
+      both maps. The prediction in this item held: `ConsentGate` needed no
+      change at all.
+- [x] **The consent bar names no page any more.** Done on 2026-08-17. This item
+      asked for one more sentence in the bar for the second map. That is a
+      sentence that has to be edited for every embed we ever add, so the bar
+      says what the answer covers instead: anything that comes from somebody
+      else, with the map as the example. The yes now reads "Cookies toestaan",
+      and the storage key is `ska:cookies` and not `ska:kaart-cookies`. A third
+      party video or form is covered by the bar the day it is wrapped in
+      `ConsentGate`.
 - [ ] **Give a new city its point on the map.** `at` in `app/cities.ts` is
       required, so the compiler asks for it. Read it off Google Maps. The home
       page map works out its own centre and zoom from those points, so a coach
@@ -740,6 +748,7 @@ Do not re-open these without a reason.
 | The canonical host is `www.studiekeuzeadvies.nl`. Measured over the whole archive, not chosen | 2026-08-15 |
 | The cookie answer lives in `localStorage`, not in a cookie. A cookie would need `cookies()`, which makes every prerendered page dynamic, and the prerendered pages are what the purchase paid for | 2026-08-15 |
 | One question about cookies and no more. Two answers of equal weight, a bar and never a modal, and a no is never asked again | 2026-08-15 |
+| The bar asks the generic question and names no page. It covers everything that comes from somebody else, with the Google map as the example. It also says we set no cookie ourselves, which is true and has to stay true: no analytics, no third party script, and the answer itself in `localStorage` | 2026-08-17 |
 | **The launch gate is the domain switch, not the build.** We are in rapid development: we merge to production all day, and production is a Vercel URL. `studiekeuzeadvies.nl` still points at the old WordPress on AWS, so nothing we ship is reachable by a customer until we flip the domain. Therefore no build guard on `isPlaceholder`, and issue `#13` stays closed. A guard would only block our own merges to protect a URL nobody visits. The five invented coaches are checked by a person before the flip. A future review will find this and call it a defect: it is not, it is this row | 2026-08-16 |
 | A generated image may show a scene, never a person we present as one of ours. The home page hero is such a scene; the five stand-in portraits still may not go live | 2026-08-13 |
 | No `lastModified`, `changeFrequency` or `priority` in the sitemap. We can prove none of the three, and a wrong one costs trust | 2026-08-15 |

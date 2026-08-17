@@ -56,14 +56,23 @@ export function CookieConsentBar() {
       <div
         className={`${shell} flex flex-col gap-6 py-6 sm:flex-row sm:items-center sm:justify-between sm:gap-10`}
       >
-        {/* Two maps now: one on the home page, and one on a city page where a
-            coach works. So this line names the home page as well. It stays
-            indefinite about the other one ("een locatiepagina"), because a city
-            without a coach has no map. See app/components/maps.tsx. */}
+        {/* THIS LINE NAMES NO PAGE, ON PURPOSE. It named the city page, and
+            then the home page as well, and it would have to be edited again for
+            every embed we add. It says what the answer covers instead: anything
+            of somebody else. The map is the example, not the rule, so a video
+            or a form of a third party is already covered here. Wrap it in
+            ConsentGate and this bar needs no new sentence.
+
+            "Zelf zetten we er geen" is true and it is checked: this site has no
+            analytics and no third party script, and the answer to this very
+            question lives in localStorage and not in a cookie (app/consent.ts).
+            Add anything that sets a cookie of our own and this sentence has to
+            go first. */}
         <p className="max-w-[62ch]">
-          Op de homepage en op een locatiepagina staat een kaart van Google. Die
-          kaart zet cookies op je apparaat, dus we laden hem pas als jij het
-          goedvindt. Dit is de enige vraag over cookies die we je stellen.
+          Sommige onderdelen op deze site komen van iemand anders, zoals een
+          kaart van Google. Die zetten cookies op je apparaat, dus we laden ze
+          pas als jij het goedvindt. Zelf zetten we er geen. Dit is de enige
+          vraag over cookies die we je stellen.
         </p>
 
         {/* Both answers get the same size, the same type and the same place.
@@ -75,7 +84,7 @@ export function CookieConsentBar() {
             onClick={() => writeConsent("granted")}
             type="button"
           >
-            Kaart toestaan
+            Cookies toestaan
           </button>
           <button
             className="border border-ink px-8 py-4 text-eyebrow uppercase transition-colors duration-150 ease-out-quart hover:bg-ink hover:text-paper"

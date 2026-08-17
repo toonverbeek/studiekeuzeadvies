@@ -1,6 +1,9 @@
 /**
- * Cookie consent. One question, and today only one thing depends on it: may the
- * Google map load?
+ * Cookie consent. One question: may we load the parts of this site that come
+ * from somebody else? Today that is the two Google maps and nothing else, but
+ * the question is written wider than the map on purpose, so a video or a form
+ * of a third party needs no second bar and no second answer. Wrap it in
+ * ConsentGate and it is covered.
  *
  * WHY THE ANSWER LIVES IN localStorage AND NOT IN A COOKIE
  *
@@ -36,8 +39,15 @@ export type ConsentChoice = "granted" | "denied";
  */
 export type ConsentState = ConsentChoice | "unanswered" | "unknown";
 
-/** First party, one key, prefixed so it is recognisable in devtools. */
-export const consentStorageKey = "ska:kaart-cookies";
+/**
+ * First party, one key, prefixed so it is recognisable in devtools.
+ *
+ * It was "ska:kaart-cookies" until 2026-08-17. The question is not about the
+ * map any more, it is about anything of somebody else, and the key said the old
+ * thing. An answer under the old key is simply asked again, which costs nobody
+ * anything: the site has no visitors yet.
+ */
+export const consentStorageKey = "ska:cookies";
 
 /** Same tab: the bar and the map must agree the moment one of them is used. */
 const consentEventName = "ska:consent-change";
