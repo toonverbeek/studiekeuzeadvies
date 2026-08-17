@@ -103,6 +103,13 @@ cannot get them back later.
       `app/components/cookie-consent.tsx` keeps the map out of the DOM until the
       visitor says yes. Verified on the production build: no `<iframe>` and no
       request to Google in the HTML of `/locaties/amsterdam` before an answer.
+      Verified again on 2026-08-17 for the second map, on the home page: before
+      an answer the page makes 40 requests and not one of them goes to Google.
+
+      One thing that looks wrong and is not: the map URL *is* in the served
+      HTML, inside the React payload, because the iframe is a child of a client
+      component. It is a string in a script, so nothing fetches it and no cookie
+      is set. The element only exists after a yes.
 - [x] **Telephone number, WhatsApp number and the central mailbox.** Changed,
       not obtained. Decided in issue #7: there is no central contact point. The
       088 number, the WhatsApp link and `hallo@studiekeuzeadvies.nl` are gone
@@ -336,14 +343,33 @@ write nothing and it falls back to the shared text.
 ## 6. Google Maps
 
 - [ ] **Get an API key** and restrict it to the studiekeuzeadvies.nl domain.
-      Put it in `NEXT_PUBLIC_GOOGLE_MAPS_EMBED_KEY`, see `.env.example`.
-      Until then the map uses an old keyless endpoint that Google does not
-      document or support. This is the last open item on the map; the cookie
-      question in front of it is answered, see section 1.
-- [ ] **Widen the consent bar text if a map ever lands on the home page.** The
-      bar says "Op een locatiepagina staat een kaart van Google". `ConsentGate`
-      in `app/components/cookie-consent.tsx` is already written generic, so the
-      second map needs no new code, only that one sentence.
+      Put it in `NEXT_PUBLIC_GOOGLE_MAPS_EMBED_KEY`, see `.env.example`. One key
+      serves both maps: the city page uses `place`, the home page uses `view`.
+      Until then both use an old keyless endpoint that Google does not document
+      or support. This is the last open item on the maps; the cookie question in
+      front of them is answered, see section 1.
+- [x] **The map on the home page.** Done on 2026-08-17. "Waar we nu zitten" now
+      carries a map of the area where a coach works, under the city names.
+      `app/components/city-map.tsx` became `app/components/maps.tsx` and holds
+      both maps. The prediction in this item held: `ConsentGate` needed no
+      change at all.
+- [x] **The consent bar names no page any more.** Done on 2026-08-17. This item
+      asked for one more sentence in the bar for the second map. That is a
+      sentence that has to be edited for every embed we ever add, so the bar
+      says what the answer covers instead: anything that comes from somebody
+      else, with the map as the example. The yes now reads "Cookies toestaan",
+      and the storage key is `ska:cookies` and not `ska:kaart-cookies`. A third
+      party video or form is covered by the bar the day it is wrapped in
+      `ConsentGate`.
+- [ ] **Give a new city its point on the map.** `at` in `app/cities.ts` is
+      required, so the compiler asks for it. Read it off Google Maps. The home
+      page map works out its own centre and zoom from those points, so a coach
+      in Groningen widens the frame by itself. Nothing to tune by hand.
+- [ ] **The home page map carries no pins, and it stays that way for now.** The
+      Maps Embed API shows one place or one view, never a list of ours. The city
+      names next to the map are the legend. Only revisit this with the Maps
+      JavaScript API or the Static Maps API, and both cost more than the map is
+      worth today. `app/components/maps.tsx` holds the reasoning.
 - [ ] **Fill the meeting places.** `app/cities.ts`, the `meeting` field. When it
       holds an address, the map moves to that address and zooms in, and the
       address block appears. No code change is needed.
@@ -674,6 +700,12 @@ freelance coach.
       change the look of the whole site. Note that `oklch(58% 0.125 74)` is
       already slightly outside sRGB and clips to `#a56d00`, so a darker step has
       to be chosen, not just typed.
+- [x] **The focus ring was invisible on an ink surface.** Fixed on 2026-08-17.
+      `app/globals.css` set one ring, `3px solid var(--color-ink)`, for the
+      whole site, and the footer has held links on `bg-ink` since the day it was
+      built: an ink ring on ink is a ring nobody sees. The cookie bar became ink
+      the same day and put two buttons there. One rule, `.bg-ink :focus-visible`,
+      turns the ring to paper on every ink surface, this one and the next one.
 - [ ] **The wordmark and the header treat the name differently.** `issue #8`
       shipped `public/wordmark.svg` and the share image with the name in
       Alegreya Sans Bold camel case. `app/components/site-header.tsx` sets the
@@ -714,12 +746,16 @@ Do not re-open these without a reason.
 | A meeting place per city, to be filled in later | 2026-08-05 |
 | The coach is the only local proof on a city page | 2026-08-05 |
 | Google Maps embed for the map, not OpenStreetMap | 2026-08-05 |
+| The map on the home page shows the area, not pins. The Maps Embed API cannot pin a list of cities, and the two ways that can (the Maps JavaScript API, the Static Maps API) each buy one map at the price of a second Google product. The city names beside it are the legend | 2026-08-17 |
+| Both map frames are square below `sm`. This is the consent placeholder talking, not the map: four lines of text and a button need 260px, and a 4/3 box on a 320px screen is 204px | 2026-08-17 |
 | The traject page keeps the section order of the old page | 2026-08-05 |
 | The intake form stays at the end of every page. Mid-page the traject page carries an invitation to it, where the old page had the form. **Reversed on 2026-08-15 by issue #7:** there is no central sign-up point, so only a page that can name the person who reads the request shows a form. Every other page shows the route to one instead | 2026-08-05 |
 | No central telephone number, no WhatsApp number and no central mailbox anywhere on the site. The contact point is a named coach in a named city | 2026-08-15 |
 | The canonical host is `www.studiekeuzeadvies.nl`. Measured over the whole archive, not chosen | 2026-08-15 |
 | The cookie answer lives in `localStorage`, not in a cookie. A cookie would need `cookies()`, which makes every prerendered page dynamic, and the prerendered pages are what the purchase paid for | 2026-08-15 |
 | One question about cookies and no more. Two answers of equal weight, a bar and never a modal, and a no is never asked again | 2026-08-15 |
+| The cookie bar is ink, not ochre. An ochre bar over an ochre band reads as one more band, and the home page has three of them. Ink is the surface this site keeps for an object that is not the page. A 1px ochre line on top separates it from the footer, which is ink as well | 2026-08-17 |
+| The bar asks the generic question and names no page. It covers everything that comes from somebody else, with the Google map as the example. It also says we set no cookie ourselves, which is true and has to stay true: no analytics, no third party script, and the answer itself in `localStorage` | 2026-08-17 |
 | **The launch gate is the domain switch, not the build.** We are in rapid development: we merge to production all day, and production is a Vercel URL. `studiekeuzeadvies.nl` still points at the old WordPress on AWS, so nothing we ship is reachable by a customer until we flip the domain. Therefore no build guard on `isPlaceholder`, and issue `#13` stays closed. A guard would only block our own merges to protect a URL nobody visits. The five invented coaches are checked by a person before the flip. A future review will find this and call it a defect: it is not, it is this row | 2026-08-16 |
 | A generated image may show a scene, never a person we present as one of ours. The home page hero is such a scene; the five stand-in portraits still may not go live | 2026-08-13 |
 | No `lastModified`, `changeFrequency` or `priority` in the sitemap. We can prove none of the three, and a wrong one costs trust | 2026-08-15 |

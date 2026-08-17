@@ -4,6 +4,7 @@ import Link from "next/link";
 import heroPhoto from "@/public/images/hero-gesprek.jpg";
 import { citiesWithCoach } from "./cities";
 import { ContactSection } from "./components/contact-section";
+import { WorkAreaMap } from "./components/maps";
 import { SiteFooter } from "./components/site-footer";
 import { SiteHeader } from "./components/site-header";
 import { linkOnPaper, shell } from "./shell";
@@ -178,6 +179,14 @@ export default function Home() {
                   </Link>
                   .
                 </p>
+
+                {/* Under the names and under the sentence, in that order, on
+                    every screen. The names are the answer to "waar", the
+                    sentence is the nuance, and the map is the picture of both.
+                    It carries no pins, so it says nothing on its own: the list
+                    above it is its legend. app/components/maps.tsx says why the
+                    pins are not there. */}
+                <WorkAreaMap cities={citiesWithCoach} />
               </div>
             </div>
           </div>

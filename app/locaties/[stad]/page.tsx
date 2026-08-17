@@ -3,7 +3,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { cityCopy, citySlugs, getCity, otherCitiesWithCoach } from "@/app/cities";
-import { CityMap } from "@/app/components/city-map";
+import { CityMap } from "@/app/components/maps";
 import { ContactSection } from "@/app/components/contact-section";
 import { SiteFooter } from "@/app/components/site-footer";
 import { SiteHeader, type NavItem } from "@/app/components/site-header";

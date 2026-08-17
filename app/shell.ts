@@ -30,3 +30,8 @@ export const linkOnInk =
 /** The one button of this site. A flat ink block, never a rounded pill. */
 export const button =
   "bg-ink px-8 py-4 text-eyebrow uppercase text-paper transition-colors duration-150 ease-out-quart hover:bg-ochre-deep";
+
+/** The same button on an ink surface, where an ink block would be a hole. Same
+ *  shape, same size, colours swapped, and the hover goes to the brand. */
+export const buttonOnInk =
+  "bg-paper px-8 py-4 text-eyebrow uppercase text-ink transition-colors duration-150 ease-out-quart hover:bg-ochre";
