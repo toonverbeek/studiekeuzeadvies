@@ -71,7 +71,7 @@ export default function Home() {
                     className="bg-ink px-8 py-4 text-eyebrow uppercase text-paper transition-colors duration-150 ease-out-quart hover:bg-ochre-deep"
                     href="#contact"
                   >
-                    Plan een gratis intakegesprek
+                    Begin met een gesprek
                   </a>
                   <a
                     className="font-medium underline decoration-ink/40 decoration-2 underline-offset-4 transition-colors duration-150 ease-out-quart hover:decoration-ink"
@@ -250,7 +250,7 @@ export default function Home() {
                   className="bg-ink px-8 py-4 text-eyebrow uppercase text-paper transition-colors duration-150 ease-out-quart hover:bg-ochre-deep"
                   href="#contact"
                 >
-                  Bespreek je situatie
+                  Begin met een gesprek
                 </a>
               </div>
             </div>

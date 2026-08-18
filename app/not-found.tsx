@@ -49,7 +49,7 @@ export default function NotFound() {
         pageLinks={[
           { href: "/#aanpak", label: "Waar sta jij nu?" },
           { href: "/studiekeuzecoaches", label: "De coaches" },
-          { href: "/#contact", label: "Gratis intakegesprek" },
+          { href: "/#contact", label: "Begin met een gesprek" },
         ]}
       />
     </>
