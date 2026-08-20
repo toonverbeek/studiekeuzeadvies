@@ -13,9 +13,9 @@ brand
 
 A third group is named on the old site: choosers with ADD, ADHD, or autism, who need overview more than options.
 
-**Secondary: the parent.** The parent pays, the parent searches too, and the parent decides whether outside help is worth €269 or €699. They want other information than the child: what happens in the four meetings, what it costs, what the result is, and who the coach is.
+**Secondary: the parent.** The parent pays, the parent searches too, and the parent decides whether outside help is worth € 249 or € 649. They want other information than the child: what happens in the four meetings, what it costs, what the result is, and who the coach is.
 
-**Third: the coach.** The business is a network of freelance study choice coaches per city. Without coaches there is no product. The site must make a good coach want to write to us, in their own city.
+**Third: the coach.** The business is a network of freelance study choice coaches per city. Without coaches there is no product. The site must make a good coach want to write to us, in their own city. Since 2026-08-20 the site says so out loud: `/coach-worden` describes the licence model the client decided, one coach per region, one one-off licence fee (about € 750, an indication until the client fixes it), no monthly share of the turnover, and work by the method the traject page describes.
 
 ## Product Purpose
 
@@ -24,7 +24,7 @@ A Dutch site for study choice advice, rebuilt after the domain, the content, and
 The site has two engines:
 
 1. **Found.** 37 city pages and 63 articles answer the question a person types into Google. This is what the purchase paid for. Losing it loses the business.
-2. **Sold.** A free intake conversation, then a traject with a personal coach (the old price was €699), or a self-service test package (the old prices were €199 to €499).
+2. **Sold.** A free intake conversation, then one of two products. The **Studiekeuzetraject**, € 649: four meetings with one personal coach, with a personality test and a study interest test in it. The **Studiekeuzescan**, € 249: the two tests and one conversation about the result, for a reader who wants a short exploration. **Extra coaching** is € 89 per meeting and is not a third product: it can only be added after a scan or a traject, and only when the coach thinks it helps. The prices are decided by the client and stand on the site (`/tarieven`), so no page writes "vanaf" or a range any more. The two tests came back into the product with the client's feedback of 2026-08-12, which reversed the decision of 2026-08-04.
 
 Success:
 - The rankings survive the move.
@@ -50,7 +50,9 @@ The site must not look like:
 
 - **A corporate consultancy.** Dark blue and gold, a photo of a handshake, "wij ontzorgen". Formal and cold.
 - **A government website.** Correct, grey, dense, with no person visible.
-- **A SaaS landing page.** Gradient hero, a row of three cards with icons, big number statistics, purple accent, "Get started free".
+- **A SaaS landing page.** Gradient hero, a row of three cards with icons, big number statistics, "Get started free".
+
+  **"Purple accent" is struck from this line, on 2026-08-20.** The client designed the new site themselves and chose violet `#6d4aff` with indigo `#1e1b4b` as the identity, so the colour this line warned against is now the brand. Only that one word is overruled, and only for a flat violet that carries the logo, the button and the link. The rest of the bullet stands, and a violet gradient, a violet glow behind a hero, or violet as a decorative wash is still the SaaS look and is still out. See DESIGN.md and the row of 2026-08-20 in `docs/decisions.md`.
 - **A gamified app.** A mascot, points, badges, a level bar, animation after every action. This is a serious decision, not a game.
 - **The old site itself.** A bar of three statistics under the hero (8,8 / 92% / "meest gevraagde partij"), stock photos of pupils in a library, and 37 city pages that are one text with the city name changed.
 
@@ -99,8 +101,8 @@ The archive at `../studiekeuzeadvies archive/` holds 514 pages, 219 media files,
 
 **Still open, but not because of rights:**
 - The 8,8 coach rating, the 92 percent success number, and "meest gevraagde partij". We may print these sentences. Whether they are true of the new company is a different question, and Design Principle 5 answers it: a number goes on the site when we can prove it of ourselves. Most of the coaches who earned the 8,8 are not ours.
-- The Qompas tests (Persoonstype, Competentie, Beroepen, Interesse) and the TalentenTest with Tilburg University. Owning the page that describes a test is not owning the test. The decision of 2026-08-04 is that the site does not sell them.
-- The old prices, €199 to €699. They belong to a product that included the tests.
+- The Qompas tests (Persoonstype, Competentie, Beroepen, Interesse) and the TalentenTest with Tilburg University. Owning the page that describes a test is not owning the test, so these four stay off the site. **The product does have two tests again since 2026-08-12**, a personality test and a study interest test, in the traject and in the scan. They are not the Qompas ones: they come from the client's own supplier, and only the client can name that supplier on a page.
+- ~~The old prices, €199 to €699.~~ **Closed on 2026-08-20.** The client decided the prices with the new design: Studiekeuzescan € 249, Studiekeuzetraject € 649, Extra coaching € 89 per meeting after a scan or a traject. The old numbers are history and no page repeats them.
 - The meeting rooms. The seller rented them, and a lease is not content. Confirm each address before it goes on a city page.
 
 **Decisions that need data, not judgement:**
