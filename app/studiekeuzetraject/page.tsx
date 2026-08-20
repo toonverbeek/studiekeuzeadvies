@@ -46,7 +46,7 @@ const jumps: NavItem[] = [
   { href: "#voor-wie", label: "Voor wie is het?" },
   { href: "#gesprekken", label: "Hoe het traject eruitziet" },
   { href: "#waarom-ska", label: "Waarom StudieKeuzeAdvies" },
-  { href: "#contact", label: "Gratis intakegesprek" },
+  { href: "#contact", label: "Begin met een gesprek" },
 ];
 
 export default function TrajectPage() {
@@ -94,7 +94,7 @@ export default function TrajectPage() {
 
                 <div className="mt-2 flex flex-wrap items-center gap-x-8 gap-y-4">
                   <a className={button} href="#contact">
-                    Plan een gratis intakegesprek
+                    Begin met een gesprek
                   </a>
                   <a className={linkOnOchre} href="#gesprekken">
                     Eerst lezen wat je doet
@@ -214,7 +214,7 @@ export default function TrajectPage() {
                   gewoon nee als het niet klopt.
                 </p>
                 <a className={button} href="#contact">
-                  Plan een gratis intakegesprek
+                  Begin met een gesprek
                 </a>
               </div>
             </div>
@@ -416,7 +416,7 @@ export default function TrajectPage() {
           { href: "#voor-wie", label: "Voor wie is het?" },
           { href: "#gesprekken", label: "De vier gesprekken" },
           { href: "#waarom-ska", label: "Waarom StudieKeuzeAdvies" },
-          { href: "#contact", label: "Gratis intakegesprek" },
+          { href: "#contact", label: "Begin met een gesprek" },
         ]}
       />
     </>

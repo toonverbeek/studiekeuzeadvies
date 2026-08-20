@@ -180,9 +180,7 @@ export default function FaqPage() {
           { href: "#wat-is-het", label: "Wat houdt StudieKeuzeAdvies in?" },
           { href: "#hoe-lang", label: "Hoe lang duurt een traject?" },
           { href: "#je-coach", label: "Wie is mijn coach?" },
-          // Was "Gratis intakegesprek", which is not what the section does on a
-          // page that knows no city. It names the route, like /locaties does.
-          { href: "#contact", label: "Zo vraag je een gesprek aan" },
+          { href: "#contact", label: "Begin met een gesprek" },
         ]}
       />
     </>

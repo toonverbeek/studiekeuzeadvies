@@ -43,6 +43,20 @@ const steps = [
  *   no city            no form. The reader picks a city first.
  *
  * The prop stays a plain city name, so every caller keeps working unchanged.
+ *
+ * WHAT A LINK TO THIS SECTION MAY SAY. Every heading below is also the promise
+ * that the link making the jump has to keep, and for a year they did not match:
+ * about twenty buttons said "Plan een gratis intakegesprek" and landed here on
+ * a page with no form. The link worked, so nothing looked broken. The rule:
+ *
+ *   a form is here      "Plan een gratis intakegesprek". Only a city page with
+ *                       a coach can say this.
+ *   no form, no city    "Begin met een gesprek", the first three words of the
+ *                       heading this section then carries.
+ *   a city, no coach    "Zoek een coach in de buurt", because that is what the
+ *                       heading says and what the reader can do next.
+ *
+ * Change a heading here and the labels that point at it change with it.
  */
 export function ContactSection({ city }: { city?: string }) {
   const known = city ? findCity(city) : undefined;

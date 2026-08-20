@@ -86,7 +86,7 @@ export default function CoachesPage() {
                 </p>
                 <div className="flex flex-wrap items-center gap-x-8 gap-y-4">
                   <a className={button} href="#contact">
-                    Plan een gratis intakegesprek
+                    Begin met een gesprek
                   </a>
                   <Link className={linkOnOchre} href="/studiekeuzetraject">
                     Eerst lezen hoe het traject werkt
@@ -256,7 +256,7 @@ export default function CoachesPage() {
                 </p>
                 <div className="flex flex-wrap items-center gap-x-8 gap-y-4">
                   <a className={button} href="#contact">
-                    Plan een gratis intakegesprek
+                    Begin met een gesprek
                   </a>
                   <Link className={linkOnOchre} href="/locaties">
                     Bekijk alle locaties
@@ -274,7 +274,7 @@ export default function CoachesPage() {
         pageLinks={[
           { href: "#samen", label: "Wat elke coach gemeen heeft" },
           { href: "#coaches", label: "De coaches" },
-          { href: "#contact", label: "Gratis intakegesprek" },
+          { href: "#contact", label: "Begin met een gesprek" },
         ]}
       />
     </>

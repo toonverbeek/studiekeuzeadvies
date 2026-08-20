@@ -55,7 +55,10 @@ export default async function CityPage(props: PageProps<"/locaties/[stad]">) {
     { href: "#traject", label: "Als je voor het eerst kiest" },
     { href: "#traject-stoppen", label: "Als je bent gestopt" },
     { href: "#afspreken", label: city.coach ? "Waar we afspreken" : "Hoe het dan gaat" },
-    { href: "#contact", label: "Gratis intakegesprek" },
+    {
+      href: "#contact",
+      label: city.coach ? "Gratis intakegesprek" : "Zoek een coach in de buurt",
+    },
   ];
 
   return (
@@ -95,7 +98,9 @@ export default async function CityPage(props: PageProps<"/locaties/[stad]">) {
                 <p className="text-lead max-w-[52ch]">{copy.intro}</p>
                 <div className="flex flex-wrap items-center gap-x-8 gap-y-4">
                   <a className={button} href="#contact">
-                    Plan een gratis intakegesprek
+                    {city.coach
+                      ? "Plan een gratis intakegesprek"
+                      : "Zoek een coach in de buurt"}
                   </a>
                   <a className={linkOnOchre} href="#traject">
                     Eerst lezen hoe het werkt
@@ -251,7 +256,9 @@ export default async function CityPage(props: PageProps<"/locaties/[stad]">) {
                   ))}
                   <p>
                     <a className={linkOnPaper} href="#contact">
-                      Bespreek je situatie in een gratis gesprek
+                      {city.coach
+                        ? "Bespreek je situatie in een gratis gesprek"
+                        : "Zoek een coach in de buurt"}
                     </a>
                   </p>
                 </div>
@@ -302,7 +309,12 @@ export default async function CityPage(props: PageProps<"/locaties/[stad]">) {
         pageLinks={[
           { href: "#coach", label: city.coach ? "De coach" : "Coach gezocht" },
           { href: "#traject", label: "Het traject" },
-          { href: "#contact", label: "Gratis intakegesprek" },
+          {
+            href: "#contact",
+            label: city.coach
+              ? "Gratis intakegesprek"
+              : "Zoek een coach in de buurt",
+          },
         ]}
       />
     </>
