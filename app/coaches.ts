@@ -69,6 +69,36 @@ export type Coach = {
    * postcode, and over the whole roster it names the three groups of PRODUCT.md.
    */
   focus: string;
+  /**
+   * The levels the roster card prints, as one line. It says the same thing for
+   * every coach on purpose. It is a fact about the traject and not a claim
+   * about the person: every city page already says that mbo, hbo or wo makes
+   * no difference to the way we work, so nobody is presented here as a
+   * specialist in a level they were never asked about.
+   */
+  levels: string;
+  /**
+   * The one line on the roster card. Not a shortened `intro`: `intro` is three
+   * sentences of history, and this is the single thing a reader who is scanning
+   * six cards needs to know about this person. Every word of it is already said
+   * in `intro`, `bio` or `focus`.
+   */
+  oneLiner: string;
+  /**
+   * Two or three short labels, printed as pills on the card. Same rule as
+   * `oneLiner`: each one points at something this coach already says further
+   * down. Nothing is claimed here that is not written somewhere else in this
+   * file.
+   */
+  specialties: string[];
+  /**
+   * How fast this coach answers an intake request, in their own words, or null
+   * when nobody asked them. The promise is printed under the form, so it may
+   * only stand where the person confirmed it (design-spec open question 3).
+   * Generating "binnen twee werkdagen" for a stand-in printed a promise that
+   * nobody made.
+   */
+  responseTime: string | null;
   /** A coach can start before they send a photo. Then this stays null. */
   portrait: StaticImageData | null;
   portraitAlt: string;
@@ -90,9 +120,15 @@ export type Coach = {
 export const janneke: Coach = {
   slug: "janneke",
   isPlaceholder: false,
+  // Her own page in the archive makes this promise in the first person.
+  responseTime: "binnen twee werkdagen",
   name: "Janneke",
   town: "Amsterdam",
-  region: "Amsterdam en Amstelveen",
+  // The region is written once and taken from the coach (decision 2026-08-06).
+  // Her own profile lists Abcoude, Zaandam, Haarlem, Purmerend, Diemen,
+  // Hoofddorp, Heemstede, Uithoorn en Aalsmeer, so the short "Amsterdam en
+  // Amstelveen" made the roster and the city page say less than her page did.
+  region: "Amsterdam, Amstelveen, Haarlem, Zaandam en omgeving",
   citySlug: "amsterdam",
   // Janneke exists, so this one can be filled the day she says which address
   // she wants. It is null because nobody asked her yet.
@@ -105,6 +141,10 @@ export const janneke: Coach = {
     "Vraag je haar wat ze belangrijk vindt in een traject, dan begint ze bij vertrouwen. Ze werkt veel met studiekiezers bij wie thuis al een richting klaarligt, en met studiekiezers die weinig van zichzelf verwachten. Ouders hebben haar weleens apart gevraagd om hun kind richting de universiteit te duwen. Dat doet ze niet. De keuze is van jou, ook als iemand anders betaalt.",
   ],
   focus: "Kiezen terwijl thuis iets anders wordt verwacht",
+  levels: "MBO · HBO · WO",
+  oneLiner:
+    "Psycholoog. Werkt veel met studiekiezers bij wie thuis al een richting klaarligt.",
+  specialties: ["Psycholoog", "Verwachtingen van thuis", "Weinig van jezelf verwachten"],
   portrait: portraitJanneke,
   portraitAlt:
     "Janneke, studiekeuzecoach in Amsterdam, zwart-witportret tegen een lichte muur",
@@ -113,6 +153,8 @@ export const janneke: Coach = {
 export const hanneke: Coach = {
   slug: "hanneke",
   isPlaceholder: true,
+  // Nobody asked this person, because this person does not exist.
+  responseTime: null,
   name: "Hanneke",
   town: "Utrecht",
   region: "Utrecht, Nieuwegein, Houten en Zeist",
@@ -127,6 +169,10 @@ export const hanneke: Coach = {
     "Ze ziet veel studiekiezers die tussen twee richtingen heen en weer gaan, en tweedejaars die zich afvragen of ze door moeten. Bij allebei duurt het meestal twee gesprekken voordat het echte antwoord op tafel komt.",
   ],
   focus: "Twijfelen tussen twee richtingen, en tweedejaars",
+  levels: "MBO · HBO · WO",
+  oneLiner:
+    "Was tien jaar decaan in Utrecht. Werkt graag met mensen die nog twijfelen.",
+  specialties: ["Oud-decaan", "Twijfel tussen twee richtingen", "Tweedejaars"],
   portrait: portraitOne,
   portraitAlt:
     "Hanneke, studiekeuzecoach in Utrecht, aan tafel in haar werkkamer",
@@ -135,6 +181,8 @@ export const hanneke: Coach = {
 export const bram: Coach = {
   slug: "bram",
   isPlaceholder: true,
+  // Nobody asked this person, because this person does not exist.
+  responseTime: null,
   name: "Bram",
   town: "Amersfoort",
   region: "Amersfoort, Leusden, Soest en Barneveld",
@@ -149,6 +197,10 @@ export const bram: Coach = {
     "Bram begint daarom bij wat er misging. Niet om erin te blijven hangen, maar omdat je daarna weet waar je de tweede keer op moet letten. Wachten tot september hoeft van hem niet.",
   ],
   focus: "Gestopt, of erover denken te stoppen",
+  levels: "MBO · HBO · WO",
+  oneLiner:
+    "Stopte zelf twee keer met een studie. Werkt vooral met studiestoppers.",
+  specialties: ["Gestopt met een studie", "Opnieuw kiezen", "Een jaar overdoen"],
   portrait: portraitTwo,
   portraitAlt:
     "Bram, studiekeuzecoach in Amersfoort, aan tafel in zijn werkkamer",
@@ -157,6 +209,8 @@ export const bram: Coach = {
 export const nadia: Coach = {
   slug: "nadia",
   isPlaceholder: true,
+  // Nobody asked this person, because this person does not exist.
+  responseTime: null,
   name: "Nadia",
   town: "Rotterdam",
   region: "Rotterdam, Schiedam en Capelle aan den IJssel",
@@ -171,6 +225,10 @@ export const nadia: Coach = {
     "Met studiekiezers legt ze daarom eerst het speelveld uit, ook als je denkt dat je dat allang zou moeten weten. Pas daarna gaat het over wat bij jou past. Die volgorde scheelt een hoop schaamte.",
   ],
   focus: "De eerste in je familie die gaat studeren",
+  levels: "MBO · HBO · WO",
+  oneLiner:
+    "Twaalf jaar personeelszaken. Was zelf de eerste in haar familie die ging studeren.",
+  specialties: ["Eerste in de familie", "Verschil tussen hbo en wo", "Uit personeelszaken"],
   portrait: portraitThree,
   portraitAlt:
     "Nadia, studiekeuzecoach in Rotterdam, aan tafel in haar werkkamer",
@@ -179,6 +237,8 @@ export const nadia: Coach = {
 export const wietske: Coach = {
   slug: "wietske",
   isPlaceholder: true,
+  // Nobody asked this person, because this person does not exist.
+  responseTime: null,
   name: "Wietske",
   town: "Groningen",
   region: "Groningen, Assen en Leeuwarden",
@@ -193,6 +253,10 @@ export const wietske: Coach = {
     "Ze werkt met een vast ritme: hetzelfde tijdstip, dezelfde plek, en aan het begin van elk gesprek de vraag wat er sinds de vorige keer is gebeurd. Heb je daar niets aan, dan laat ze het weg.",
   ],
   focus: "Kiezen met ADD, ADHD of autisme",
+  levels: "MBO · HBO · WO",
+  oneLiner:
+    "Achttien jaar voor de klas en zorgcoördinator. Opgeleid als autismecoach.",
+  specialties: ["Autismecoach", "ADD en ADHD", "Vast ritme en overzicht"],
   portrait: portraitFour,
   portraitAlt:
     "Wietske, studiekeuzecoach in Groningen, aan tafel in haar werkkamer",
@@ -201,6 +265,8 @@ export const wietske: Coach = {
 export const joris: Coach = {
   slug: "joris",
   isPlaceholder: true,
+  // Nobody asked this person, because this person does not exist.
+  responseTime: null,
   name: "Joris",
   town: "Eindhoven",
   region: "Eindhoven, Helmond en Veldhoven",
@@ -215,6 +281,10 @@ export const joris: Coach = {
     "Joris maakt dat gevoel kleiner. Je kiest geen leven, je kiest een eerste opleiding, en die ligt niet vast tot je pensioen. Je mag bij hem ook gewoon zeggen dat je het niet weet. Dat is precies waarom je er zit.",
   ],
   focus: "Te veel leuk vinden om te kunnen kiezen",
+  levels: "MBO · HBO · WO",
+  oneLiner:
+    "Studeerde natuurkunde, werkte in de techniek. Werkt met wie te veel leuk vindt.",
+  specialties: ["Te veel leuk vinden", "Uit de techniek", "Niet kunnen kiezen"],
   portrait: portraitFive,
   portraitAlt:
     "Joris, studiekeuzecoach in Eindhoven, aan tafel in zijn werkkamer",

@@ -74,6 +74,8 @@
  * gaat gebeuren.
  */
 
+import { meetings } from "@/app/traject";
+
 /** A link with its own words. Used in the poster and under a section. */
 export type SituationLink = {
   href: string;
@@ -97,6 +99,13 @@ export type Situation = {
   eyebrow: string;
   /** The h1. A few short words, and the old page's own words. */
   title: string;
+  /**
+   * The colour this page borrows from its own card on /voor-wie
+   * (design-spec 6.2). `violet` and `coral` paint the eyebrow; `ink` keeps the
+   * violet eyebrow and gives the index card the 1.5px ink rule of the third
+   * card. It is the only visual difference between the three pages.
+   */
+  accent: "violet" | "coral" | "ink";
   /** The <title>. The old one, word for word. */
   seoTitle: string;
   description: string;
@@ -116,20 +125,25 @@ export type Situation = {
   related: string[];
 };
 
-/** The four themes are the four the old landing pages list, word for word. */
-const themes = [
-  "Oriëntatie",
-  "Wie ben ik en wat kan ik?",
-  "Blik op de toekomst",
-  "De studiekeuze",
-];
+/**
+ * The four meetings of the traject, by name only.
+ *
+ * READ FROM app/traject.ts, NOT TYPED HERE. This list used to be typed by hand
+ * and it drifted: it opened with "Oriëntatie" and it had no "Mijn interesses
+ * en verdieping", so a reader who opened this page and the traject page saw
+ * two different trajects. There is one traject, so there is one list. The same
+ * rule holds for `levelThemes` in app/levels.ts.
+ */
+const themes = meetings.map((meeting) => meeting.title);
 
 export const situations: Situation[] = [
   {
     slug: "verkeerde-studiekeuze",
     eyebrow: "Als je bent gestopt of twijfelt",
     title: "Verkeerde studiekeuze",
-    seoTitle: "Verkeerde studiekeuze? Geen paniek! | (Online) StudieKeuzeAdvies",
+    accent: "coral",
+    seoTitle:
+      "Verkeerde studiekeuze? Geen paniek! | (Online) StudiekeuzeAdvies",
     description:
       "Bleek jouw eerste studiekeuze toch niet bij jou te passen? Met een persoonlijke coach ga jij aan de slag om dit keer wél de juiste studiekeuze te maken.",
     lead: "De keuze voor de juiste studie kan verdraaid lastig zijn. Dat merken eindexamenscholieren vaak op het moment dat ze zich serieus gaan oriënteren op hun vervolgopleiding. Wanneer jij al gestopt bent met een opleiding of erover denkt te stoppen met een studie, weet jij nog veel beter hoe lastig een studie kiezen kan zijn.",
@@ -138,7 +152,7 @@ export const situations: Situation[] = [
       {
         title: "Het traject",
         paragraphs: [
-          "Bij StudieKeuzeAdvies ga jij met een persoonlijke en ervaren studiecoach aan de slag om dit keer wél de juiste studiekeuze te maken. Je ontdekt in vier bijeenkomsten wie je bent, wat je kan en welke studiemogelijkheden er zijn. We richten ons volledig op het einddoel, de studiekeuze. We kijken ook naar de invulling daarna, waaronder: beroep, carrière en werkomgeving. Aan het eind van het traject heb jij deze keer wél een passende studiekeuze gemaakt.",
+          "Bij StudiekeuzeAdvies ga jij met een eigen studiekeuzecoach aan de slag om dit keer wél de juiste studiekeuze te maken. Je ontdekt in vier bijeenkomsten wie je bent, wat je kan en welke studiemogelijkheden er zijn. We richten ons volledig op het einddoel, de studiekeuze. We kijken ook naar de invulling daarna, waaronder: beroep, carrière en werkomgeving. Aan het eind van het traject heb jij deze keer wél een passende studiekeuze gemaakt.",
           "Het is ook mogelijk om de trajecten online te volgen, uiteraard afhankelijk van jouw wensen en behoeften.",
         ],
       },
@@ -163,9 +177,9 @@ export const situations: Situation[] = [
         ],
       },
       {
-        title: "Wat doet StudieKeuzeAdvies voor jou?",
+        title: "Wat doet StudiekeuzeAdvies voor jou?",
         paragraphs: [
-          "Jij wilt een studie kiezen, wat doet StudieKeuzeAdvies tijdens een keuzetraject voor jou? Een betere vraag is: wat doet StudieKeuzeAdvies sámen met jou? Jij gaat een nieuwe en passende studie kiezen, wij zijn er voor de ondersteuning en de begeleiding. We gaan kijken naar wie jij bent, en wat je kunt. We betrekken je interesses en je toekomstbeeld bij de studiekeuze, en we kijken samen met jou terug naar je eerdere verkeerde studiekeuze.",
+          "Jij wilt een studie kiezen, wat doet StudiekeuzeAdvies tijdens een keuzetraject voor jou? Een betere vraag is: wat doet StudiekeuzeAdvies sámen met jou? Jij gaat een nieuwe en passende studie kiezen, wij zijn er voor de ondersteuning en de begeleiding. We gaan kijken naar wie jij bent, en wat je kunt. We betrekken je interesses en je toekomstbeeld bij de studiekeuze, en we kijken samen met jou terug naar je eerdere verkeerde studiekeuze.",
           "Met name voor studenten die opnieuw kiezen zit er vaak een knelpunt bij het stukje verleden. Je hebt immers al eens gekozen en dat was helaas geen succes. Dat je daardoor bewust of onbewust spanning ervaart bij het idee dat je weer een belangrijke keuze moet maken is logisch. We zijn gewend om studenten te begeleiden die zich in deze situatie bevinden.",
         ],
       },
@@ -177,16 +191,20 @@ export const situations: Situation[] = [
         ],
       },
     ],
-    themesIntro:
-      "De thema's van de vier coachingsgesprekken zijn als volgt.",
+    themesIntro: "De thema's van de vier coachingsgesprekken zijn als volgt.",
     themes,
-    related: ["gestopt-met-je-studie-blijf-niet-stilzitten", "de-1-februariregeling"],
+    related: [
+      "gestopt-met-je-studie-blijf-niet-stilzitten",
+      "de-1-februariregeling",
+    ],
   },
   {
     slug: "eerste-studiekeuze",
     eyebrow: "Als je voor het eerst kiest",
     title: "Eerste studiekeuze",
-    seoTitle: "Bewuste studiekeuze | mbo, hbo of wo | (Online) StudieKeuzeAdvies",
+    accent: "violet",
+    seoTitle:
+      "Bewuste studiekeuze | mbo, hbo of wo | (Online) StudiekeuzeAdvies",
     // The old description sold the page as the alternative to open days that
     // were cancelled in 2020. That is gone, so this line is new.
     description:
@@ -200,7 +218,7 @@ export const situations: Situation[] = [
       {
         title: "Het traject",
         paragraphs: [
-          "Met het persoonlijke en doelgerichte studiekeuzetraject begeleiden wij jou op gestructureerde wijze naar een passende vervolgstudie. Je krijgt een enthousiaste en ervaren studiekeuzecoach met wie je in totaal vier bijeenkomsten op een locatie bij jou in de buurt zult hebben.",
+          "Met het persoonlijke en doelgerichte studiekeuzetraject begeleiden wij jou op gestructureerde wijze naar een passende vervolgstudie. Je krijgt een eigen studiekeuzecoach met wie je in totaal vier bijeenkomsten op een locatie bij jou in de buurt zult hebben.",
           "Het is ook mogelijk om de trajecten online te volgen, uiteraard afhankelijk van jouw wensen en behoeften.",
         ],
       },
@@ -233,7 +251,9 @@ export const situations: Situation[] = [
     slug: "studiekeuze-met-add-adhd",
     eyebrow: "Als je ADD of ADHD hebt",
     title: "Studeren met ADD of ADHD",
-    seoTitle: "Studeren met ADD of ADHD | Hulp bij studiekeuze | StudieKeuzeAdvies",
+    accent: "ink",
+    seoTitle:
+      "Studeren met ADD of ADHD | Hulp bij studiekeuze | StudiekeuzeAdvies",
     // The old meta description, word for word. It makes no claim we cannot keep.
     description:
       "Een studiekeuze voor jongeren met ADD of ADHD is vaak erg lastig. Met een persoonlijke studiecoach helpen wij jou de juiste vervolgopleiding te kiezen.",

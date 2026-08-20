@@ -1,7 +1,8 @@
 # The redirect table
 
-Written 2026-08-15. It answers GitHub issue #4, and the canonical host half of
-issue #6.
+Written 2026-08-15, re-measured on 2026-08-20 after the client's redesign
+landed and five pages that were only planned became real. It answers GitHub
+issue #4, and the canonical host half of issue #6.
 
 The old WordPress site goes offline in September 2026. On that day every old
 address must land somewhere correct, or the search rankings that were bought are
@@ -13,7 +14,7 @@ and what still has to happen before the old site can be switched off.
 | File | What it is |
 |---|---|
 | `docs/url-map.csv` | All 522 old URLs, each with a new URL and an action. Generated. |
-| `app/redirects.ts` | Every row that must not 404, as a typed array: 439 of them. Generated. |
+| `app/redirects.ts` | Every row that must not 404, as a typed array: 436 of them. Generated. |
 | `next.config.ts` | Imports the array, turns `temporary` into 307 or 308, and adds the canonical host rule. Written by hand. |
 | `scripts/build-url-map.py` | Writes both generated files. Run it after any change. |
 
@@ -22,12 +23,20 @@ python3 scripts/build-url-map.py
 ```
 
 The table is data, so it does not live in `next.config.ts`. A config file that
-is 439 rows of data is a config file nobody reads.
+is 436 rows of data is a config file nobody reads.
 
-Counts today: 522 old URLs, of which 346 redirect, 101 keep, 66 drop and 9
-rebuild. That produces 439 rows in `app/redirects.ts`: 259 permanent (308,
-the address has moved for good) and 180 parked (307, the page it wants is not
+Counts today: 522 old URLs, of which 345 redirect, 109 keep, 66 drop and 2
+rebuild. That produces 436 rows in `app/redirects.ts`: 302 permanent (308,
+the address has moved for good) and 134 parked (307, the page it wants is not
 written yet). Only the 66 `drop` rows answer 404, which is what `drop` means.
+
+**What changed on 2026-08-20.** `/tarieven`, `/over-ons`, `/coach-worden`,
+`/voor-wie` and the six coach profiles were written, so 46 rows stopped being
+parked and started landing on the page they always wanted. Three entries left
+the fallback ladder with them, and one of the three also reversed its own note:
+`/over-ons` used to be a settled 308 to `/studiekeuzecoaches` on the grounds
+that no about page was planned. One is planned and one is built. Two `rebuild`
+rows are left, `/onze-methode/` and `/contact/`.
 
 ## Decision 1. The articles stay at the root
 
@@ -70,14 +79,27 @@ every target that does not exist down this ladder:
 
 | Target with no page | Lands on |
 |---|---|
-| `/tarieven` | `/studiekeuzetraject` (the price is not decided) |
-| `/onze-methode` | `/studiekeuzetraject` |
-| `/coach-worden`, `/vacatures` | `/studiekeuzecoaches` |
+| `/onze-methode` | `/studiekeuzetraject` (blocked, issue #37) |
+| `/vacatures` | `/studiekeuzecoaches` |
 | `/bedankt` | `/` |
-| `/studiekeuzecoaches/<person>` | `/studiekeuzecoaches` |
+| `/contact` | `/locaties` (settled, issue #7) |
+| `/studiekeuzecoaches/<person we do not employ>` | `/studiekeuzecoaches` |
 | `/locaties/<city with no page>` | `/locaties` |
 | An article slug that is not in `app/articles.ts` | `/artikelen` |
 | Anything else | `/` |
+
+`[coach]` was added to the dynamic segments the script expands, beside
+`[artikel]` and `[stad]`, so a coach profile counts as a real route only for a
+slug that is really in `app/coaches.ts`.
+
+**An old address that is a page on this site now can never redirect.** The
+generator checks that on every row, and it is not a theoretical rule: the day
+the coach profiles landed, `/studiekeuzecoaches/janneke/` was an old attachment
+page (a photograph titled "Janneke"), the attachment rule sent it to its parent
+`/studiekeuzecoaches`, and that 308 stood in front of the new profile page. A
+redirect answers before the router does, so the page was unreachable. The row is
+a `keep` now, by a general rule: an address that answers 200 keeps itself,
+whatever the archive made of it. `app/sitemap.ts` throws when this is missed.
 
 A route counts as real only when its page is on disk, so the ladder can never
 trust a promise. `/ervaringen` was written as an exception while this table was
@@ -124,32 +146,32 @@ as "did we need a fallback"**. A fallback can be the final answer:
 |---|---|---|
 | The real target exists | 308 | The move is done |
 | `/contact` to `/locaties` | 308 | There is no central contact point, and there will not be one |
-| `/over-ons` to `/studiekeuzecoaches` | 308 | The company is the coaches. No about page is planned |
-| `/studiekeuzecoaches/<person>` to the roster | 308 | Those three people do not work here. That page is never coming |
+| `/studiekeuzecoaches/<person>` to the roster | 308 | Aart Smit and Angelina Muller do not work here. That page is never coming |
 | An article to `/artikelen` | 307 | The text is in the archive and the rights are bought. Importing it is work, not a decision |
 | A city to `/locaties` | 307 | The page opens when a coach signs |
-| `/tarieven`, `/onze-methode`, `/coach-worden`, `/bedankt` | 307 | Planned, blocked on the client |
+| `/onze-methode`, `/bedankt` | 307 | Planned, blocked on the client |
 | Anything unrecognised | 308 | Nothing is planned for it, so the front door is the honest final answer |
 
 ### Targets waiting for a page
 
-180 of the 439 rows stand on a fallback today, and answer 307 rather than 308.
+134 of the 436 rows stand on a fallback today, and answer 307 rather than 308.
 
 | Waiting target | Rows | Lands on for now |
 |---|---:|---|
-| `/tarieven` | 42 | `/studiekeuzetraject` |
 | `/onze-methode` | 4 | `/studiekeuzetraject` |
-| `/coach-worden` | 4 | `/studiekeuzecoaches` |
 | `/bedankt` | 2 | `/` |
 | `/locaties/` for 33 cities without a coach | 58 | `/locaties` |
 | 59 articles not imported into `app/articles.ts` | 70 | `/artikelen` |
 
-The three old coach interviews are not in that list any more: they are settled
-308s to the roster, because those people do not work here. One of them is worth
-a second look though. 1129 words of Janneke's interview hang on
-`/studiekeuzecoaches/janneke-van-den-brand`, she IS our coach, and today the
-roster only offers the anchor `#janneke`. A page per coach would turn that 308
-into a real destination. See issue #46.
+The 42 rows that waited for `/tarieven` and the 4 that waited for
+`/coach-worden` are gone from this list: both pages are built and both are
+308s to themselves now.
+
+**Janneke's interview has a destination.** `/janneke-van-den-brand/` used to
+fall down the ladder to the roster with the two coaches who do not work here.
+It carries 1.129 real words and 4 editorial inbound links, it is about the one
+coach who is real, and she now has a page. The row is a hand-written 308 to
+`/studiekeuzecoaches/janneke` in `PAGE_MAP`. That closes issue #46.
 
 ## The 22 legacy redirects
 
@@ -171,18 +193,18 @@ deleted vacancy, not a decision: its two sisters, `/vacature-keuzecoach/` and
 mapped to `/coach-worden` by hand. The reader on that URL is a coach who looks
 for work, and the home page speaks to a study chooser. So the rule in the script
 is now general: a path that is written down by hand in `PAGE_MAP` beats the hop
-the old site happens to make. Only this one row changes because of it. Until
-`/coach-worden` is built, the ladder sends it on to `/studiekeuzecoaches`.
+the old site happens to make. Only this one row changes because of it. `/coach-worden` is built now, so the row is a 308 that lands on it.
 
-**The webshop URLs still point at `/tarieven`.** 41 rows target `/tarieven`, of
+**The webshop URLs still point at `/tarieven`.** 41 rows target `/tarieven`,
+and since 2026-08-20 that page exists, so all of them are 308s that really land
+there. Of
 which 29 are the shop itself: 9 product pages, 5 shop pages (`/winkel/`,
 `/winkelwagen/`, `/afrekenen/`, `/mijn-account/` and its lost password page) and
-15 product taxonomies. That holds only if the shop does not come back. It is not
-decided, so they follow the ladder to `/studiekeuzetraject` for now. Two things
-to know when the price decision lands: the old products are the Qompas tests,
-which this site does not sell (see issue #43), so most of those URLs
-describe something we do not offer. Sending them to a price page we do have is
-still better than a 404.
+15 product taxonomies. That holds only if the shop does not come back, and it is
+not decided. One thing to know: the old products are the Qompas tests, which
+this site does not sell (see issue #43), so most of those URLs describe
+something we do not offer. Sending them to our own price page is still better
+than a 404, and better than the stand-in they used to get.
 
 ## Trailing slashes, and the one extra hop
 
@@ -257,12 +279,12 @@ rows of `docs/url-map.csv` against a production build on 2026-08-16:
 
 | Intended action | Rows | Final answer |
 |---|---:|---|
-| `redirect` | 346 | 200 |
-| `keep` | 101 | 200 |
-| `rebuild` | 9 | 200 |
+| `redirect` | 345 | 200 |
+| `keep` | 109 | 200 |
+| `rebuild` | 2 | 200 |
 | `drop` | 66 | 404, on purpose |
 
-**The 404s are gone, the work behind them is not.** 180 of those rows only reach
+**The 404s are gone, the work behind them is not.** 134 of those rows only reach
 200 because they are parked on a stand-in page. A reader who followed a Google
 result for "studiekeuze Eindhoven" now lands on `/locaties` instead of nothing,
 which is better, but it is not the page they searched for. The two decisions
@@ -286,8 +308,8 @@ the real routes:
 3. Every target resolves to a route that exists.
 4. No duplicate sources.
 
-Result on 2026-08-16: 439 rows, 0 shadowed routes, 0 chains, 0 missing targets,
-0 duplicates, 0 self redirects, 0 empty sources, 259 permanent and 180 parked.
+Result on 2026-08-20: 436 rows, 0 shadowed routes, 0 chains, 0 missing targets,
+0 duplicates, 0 self redirects, 0 empty sources, 302 permanent and 134 parked.
 Re-check after any change to `app/`:
 
 ```sh

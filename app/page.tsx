@@ -3,42 +3,132 @@ import Image from "next/image";
 import Link from "next/link";
 import heroPhoto from "@/public/images/hero-gesprek.jpg";
 import { citiesWithCoach } from "./cities";
-import { ContactSection } from "./components/contact-section";
-import { WorkAreaMap } from "./components/maps";
+import { NlMap } from "./components/nl-map";
 import { SiteFooter } from "./components/site-footer";
 import { SiteHeader } from "./components/site-header";
-import { linkOnPaper, shell } from "./shell";
-import { heroImage, legacyQuotes } from "./site-config";
+import {
+  Button,
+  Card,
+  Check,
+  Container,
+  CtaBand,
+  Eyebrow,
+  Pill,
+  Reveal,
+  Section,
+} from "./components/ui";
+import { scan, traject } from "./pricing";
+import { HeroLines } from "./home/hero-lines";
+import { RegionPicker, type RegionOption } from "./home/region-picker";
+import { HomeTicker } from "./home/ticker";
+import { heroImage } from "./site-config";
 
 export const metadata: Metadata = {
+  title: "Studiekeuzehulp met een vaste coach | StudieKeuzeAdvies",
+  description:
+    "Kiezen uit honderden opleidingen is lastig. In vier gesprekken met één vaste coach ontdek je wie je bent, wat je kunt en welke studie daarbij past. De intake is gratis.",
   alternates: { canonical: "/" },
 };
 
-const situations = [
+/**
+ * The four steps of the traject, in the client's words (design-spec 4.1). The
+ * fourth number is violet: it is the one the reader is walking towards.
+ */
+const steps = [
   {
     number: "01",
-    href: "/eerste-studiekeuze",
-    title: "Je kiest voor het eerst",
-    body: "Je gaat na je examen studeren, maar je weet nog niet wat. Of je vindt juist veel dingen leuk, en daarom kun je niet kiezen.",
+    title: "Wie ben ik en wat kan ik?",
+    body: "Je begint bij jezelf, niet bij opleidingen. Met een persoonlijkheidstest en gesprekken ontdek je je sterke kanten.",
   },
   {
     number: "02",
-    href: "/verkeerde-studiekeuze",
-    title: "Je twijfelt of je bent gestopt",
-    body: "Je bent begonnen aan een opleiding die niet blijkt te passen. Dat is balen, en het zegt niets over jou. We kijken samen wat er wel klopt.",
+    title: "Blik op de toekomst",
+    body: "In wat voor werk zou je passen, met wat voor mensen? Je hoeft geen beroep te kiezen, alleen een warme richting.",
   },
   {
-    // The page behind this door is about ADD and ADHD only, because that is
-    // where the archived copy is. The door still names autism, because the
-    // group is named in PRODUCT.md and a coach can answer it in the intake.
-    // See issue #40: the page must gain an autism section, or this door must
-    // lose the word.
     number: "03",
-    href: "/studiekeuze-met-add-adhd",
-    title: "Je hebt ADD, ADHD of autisme",
-    body: "Dan helpt overzicht meer dan nog meer opties. Minder keuzes tegelijk, een vast ritme, en een coach die weet dat de manier van kiezen net zo belangrijk is als de keuze zelf.",
+    title: "Mijn interesses en verdieping",
+    body: "Met de studie-interessetest maak je de lijst kort: van duizenden opleidingen naar tien, van tien naar drie.",
+  },
+  {
+    number: "04",
+    title: "De studiekeuze",
+    body: "Je legt je keuze naast alles wat je ontdekte en schrijft op waarom. Zo start je met een keuze waar je achter staat.",
   },
 ];
+
+/**
+ * What the price covers. The client's fourth line reads "Online of op een van
+ * de 35+ locaties"; we have no 35 locations, so it says what is true instead.
+ */
+const included = [
+  "Vier 1-op-1 gesprekken met één vaste coach",
+  "Persoonlijkheidstest én studie-interessetest",
+  "Opdrachten voor thuis, elk gesprek bouwt verder",
+  "Online of op locatie bij jou in de buurt",
+];
+
+const forYou = [
+  "Ontdek wat je écht leuk vindt (niet wat “moet”)",
+  "Eén vaste coach, geen wisselende gezichten",
+  "Ook als je gestopt bent of vastloopt",
+];
+
+/** The client wrote this half in "u". It is their wording and it stays. */
+const forParents = [
+  "Alle gesprekken zijn 1-op-1, zo praat uw kind vrijuit",
+  "Het traject bevat een persoonlijkheidstest en een studie-interessetest",
+  "Uw kind beslist zelf, weloverwogen en zonder haast",
+];
+
+const regioSteps = [
+  "Kies de stad waar je begeleiding wilt",
+  "Lees wie daar werkt en waar die coach goed in is",
+  "Vraag bij die coach een gratis intakegesprek aan",
+];
+
+/**
+ * The chips of the regio-kiezer, built from the file that decides where we
+ * work. The line under a coach is the first sentence of their own
+ * introduction, so this card and their profile cannot say two things.
+ */
+const regionOptions: RegionOption[] = [
+  ...citiesWithCoach.map((city): RegionOption => {
+    const coach = city.coach;
+    const firstSentence = `${coach.intro.split(". ")[0]}.`;
+
+    return {
+      key: city.slug,
+      chip: city.name,
+      name: coach.name,
+      line: firstSentence,
+      href: `/studiekeuzecoaches/${coach.slug}`,
+      cta: "Plan gratis intake bij deze coach",
+      // A generated portrait belongs to a coach who does not exist yet, and
+      // those may not go live: `isPlaceholder` is the field that decides it.
+      portrait:
+        !coach.isPlaceholder && coach.portrait
+          ? { src: coach.portrait, alt: coach.portraitAlt }
+          : null,
+    };
+  }),
+  {
+    key: "online",
+    chip: "Online",
+    name: "Online, waar je ook woont",
+    line: "Het volledige traject via video. Je kiest de coach bij wie het klikt, ook als die niet in jouw stad zit.",
+    href: "/studiekeuzecoaches",
+    cta: "Plan gratis intake bij een coach",
+    portrait: null,
+  },
+];
+
+/** The pins of the map beside the coaches panel: only cities with a coach. */
+const mapCities = citiesWithCoach.map((city) => ({
+  name: city.name,
+  at: city.at,
+  href: `/locaties/${city.slug}`,
+}));
 
 export default function Home() {
   return (
@@ -46,255 +136,419 @@ export default function Home() {
       <SiteHeader />
 
       <main id="top">
-        {/* The ochre poster. It carries the brand and it holds the only proof we have. */}
-        <section className="bg-ochre text-ink">
-          <div className={`${shell} pb-14 md:pb-20`}>
-            <p className="text-eyebrow pt-16 uppercase sm:pt-24">
-              Voor mbo, hbo en wo
-            </p>
+        {/*
+          The hero. `overflow-x-clip` is the safety net under the two floating
+          cards: they hang outside the photo from lg up, and a stray pixel of
+          theirs may never make the whole page scroll sideways.
+        */}
+        <section className="relative overflow-x-clip pt-12 pb-12 lg:pt-21 lg:pb-18">
+          <HeroLines />
 
-            <h1 className="text-display mt-5 max-w-[13ch] font-extrabold">
-              Een goede studiekeuze maken. Lastig hè?
-            </h1>
-
-            <div className="mt-12 grid items-start gap-x-16 gap-y-12 lg:mt-16 lg:grid-cols-[minmax(0,1fr)_minmax(280px,400px)]">
-              <div className="flex flex-col items-start gap-8">
-                <p className="text-lead max-w-[46ch]">
-                  Je moet kiezen uit duizenden opleidingen, en overal krijg je de
-                  vraag wat je later wilt worden. Je hoeft dat niet alleen uit te
-                  zoeken. Samen met een vaste coach ontdek je wie je bent, waar
-                  je goed in bent en welke studies daarbij passen.
+          <Container className="relative">
+            {/* `minmax(0,…)` on both tracks, because a grid column defaults to
+                a minimum of its content and the photo's own 1024px would then
+                push the text column narrow. */}
+            <div className="grid items-center gap-10 lg:grid-cols-[minmax(0,1.3fr)_minmax(0,1fr)] lg:gap-14">
+              <div>
+                <p className="inline-flex items-center gap-2 rounded-full bg-lavender px-4.5 py-2 text-small font-semibold text-violet-dark">
+                  <span
+                    aria-hidden="true"
+                    className="h-2 w-2 rounded-full bg-coral"
+                  />
+                  Voor scholieren, studenten én hun ouders
                 </p>
 
-                <div className="flex flex-wrap items-center gap-x-8 gap-y-4">
-                  <a
-                    className="bg-ink px-8 py-4 text-eyebrow uppercase text-paper transition-colors duration-150 ease-out-quart hover:bg-ochre-deep"
-                    href="#contact"
+                <h1 className="text-hero mt-6 font-bold">
+                  Samen kiezen voor een studie die écht past.
+                </h1>
+
+                <p className="text-lead mt-5 max-w-[31.25rem] text-muted">
+                  Kiezen uit honderden opleidingen is lastig, voor jou én voor
+                  je ouders. In vier sessies met een vaste coach ontdek je wie
+                  je bent, wat je kunt en welke studie daarbij hoort. De
+                  gesprekken zijn 1-op-1, en de keuze is uiteindelijk aan jou.
+                </p>
+
+                <div className="mt-8 flex flex-wrap gap-3">
+                  <Button
+                    className="max-[420px]:w-full"
+                    href="/studiekeuzecoaches"
+                    size="lg"
                   >
-                    Begin met een gesprek
-                  </a>
-                  <a
-                    className="font-medium underline decoration-ink/40 decoration-2 underline-offset-4 transition-colors duration-150 ease-out-quart hover:decoration-ink"
-                    href="#aanpak"
+                    Plan gratis intake bij een coach
+                  </Button>
+                  <Button
+                    className="max-[420px]:w-full"
+                    href="#traject"
+                    size="lg"
+                    variant="outline"
                   >
-                    Eerst lezen hoe het werkt
-                  </a>
+                    Zo werkt het
+                  </Button>
                 </div>
+
+                {/*
+                  The client puts five amber stars and "8,8 gemiddeld · 1.000+
+                  trajecten per jaar" here. Both are the old site's numbers,
+                  earned by coaches who are mostly not ours, so the slot keeps
+                  its place and holds four things we can prove today.
+                */}
+                <p className="mt-7 text-small text-muted">
+                  Gratis intake · MBO, HBO en WO · online of op locatie · daarna
+                  één vaste prijs
+                </p>
               </div>
 
-              {/*
-                A generated scene, not a generated person. The hero used to be a
-                generated face under "Je vaste coach, bij jou in de buurt", and
-                the caption is what made it a claim about somebody who does not
-                exist. Nobody here is named, and the caption is about the traject,
-                so the picture promises only what we can keep. The rule and its
-                limits stand in app/site-config.ts, next to the text itself.
-
-                `sizes` follows the slot in three steps: 400px from lg up, where
-                the grid column caps it; 420px in the single column above the
-                telephone, where max-w-[420px] caps it; and the gutter width of
-                the shell below that. Without those steps a telephone downloads
-                a file made for a laptop, and this is the LCP image.
-              */}
-              <figure className="flex w-full max-w-[420px] flex-col gap-3 lg:max-w-none">
+              <div className="relative">
                 <Image
                   alt={heroImage.alt}
-                  className="w-full"
+                  className="aspect-[4/3] w-full rounded-photo border border-photo-line object-cover sm:aspect-[4/4.3]"
                   placeholder="blur"
                   priority
-                  sizes="(min-width: 1024px) 400px, (min-width: 480px) 420px, 100vw"
+                  sizes="(min-width: 1024px) 460px, 100vw"
                   src={heroPhoto}
                 />
-                <figcaption className="text-eyebrow uppercase">
-                  {heroImage.caption}
-                </figcaption>
-              </figure>
-            </div>
-          </div>
-        </section>
 
-        {/* The old site had three unprovable numbers here. Now it holds the coach. */}
-        <section className="bg-paper" id="coaches">
-          <div className={`${shell} py-20 md:py-28`}>
-            <h2 className="text-section max-w-[24ch] font-extrabold">
-              Eén vaste coach die je leert kennen
-            </h2>
-            <div className="mt-10 grid gap-x-16 gap-y-6 border-t border-hairline pt-10 md:grid-cols-2">
-              <p>
-                Geen wisselend team en geen wachtrij. Je krijgt één coach die
-                met je meeloopt, van het eerste gesprek tot je keuze. Iemand die
-                jaren met jongeren werkt en die niet oordeelt over wat je zegt.{" "}
-                <Link
-                  className="font-medium underline decoration-ochre-line decoration-2 underline-offset-4 transition-colors duration-150 ease-out-quart hover:decoration-ink"
-                  href="/studiekeuzecoaches"
-                >
-                  Maak kennis met de coaches
-                </Link>
-                .
-              </p>
-              <p>
-                In vier gesprekken kijken we naar wie je bent, wat je kunt en wat
-                je wilt. Tussen de gesprekken door ga je zelf aan de slag, en je
-                bezoekt open dagen om te voelen of een opleiding klopt.{" "}
-                <Link
-                  className="font-medium underline decoration-ochre-line decoration-2 underline-offset-4 transition-colors duration-150 ease-out-quart hover:decoration-ink"
-                  href="/studiekeuzetraject"
-                >
-                  Zo ziet het traject eruit
-                </Link>
-                .
-              </p>
-            </div>
-          </div>
-        </section>
+                {/* The quote card. Ger's line is the client's paraphrase and
+                    theirs to write; the month behind it is the one fact the
+                    archive can prove, so it is printed with it.
 
-        {/* A short ochre band. It breaks the long paper run and it stops the
-            locations from disappearing between two quiet sections. */}
-        <section className="bg-ochre text-ink" id="locaties">
-          <div className={`${shell} py-14 md:py-16`}>
-            <div className="grid gap-x-16 gap-y-8 lg:grid-cols-[minmax(0,20rem)_minmax(0,1fr)]">
-              <h2 className="text-section font-extrabold">Waar we nu zitten</h2>
-              <div className="flex flex-col gap-6">
-                <ul className="flex flex-wrap gap-x-12 gap-y-2">
-                  {citiesWithCoach.map((city) => (
-                    <li className="text-title font-bold" key={city.slug}>
-                      <Link
-                        className="underline decoration-ink/30 decoration-2 underline-offset-4 transition-colors duration-150 ease-out-quart hover:decoration-ink"
-                        href={`/locaties/${city.slug}`}
-                      >
-                        {city.name}
-                      </Link>
-                    </li>
-                  ))}
-                </ul>
-                <p className="max-w-[62ch]">
-                  We noemen alleen steden waar echt een coach werkt. Staat jouw
-                  stad er nog niet bij? Een coach in de buurt werkt vaak ook in
-                  de steden eromheen, dus kijk bij{" "}
-                  <Link
-                    className="font-medium underline decoration-ink/40 decoration-2 underline-offset-4 transition-colors duration-150 ease-out-quart hover:decoration-ink"
-                    href="/locaties"
-                  >
-                    alle locaties
-                  </Link>
-                  .
+                    Below `sm` it is a block under the photo and not a card on
+                    it: at 390px a floating card covers half the picture, and
+                    the picture is the reason the photo is there. */}
+                <figure className="mt-4 rounded-box bg-ink px-5 py-4 text-paper shadow-quote sm:absolute sm:bottom-5 sm:left-4 sm:mt-0 sm:max-w-[15.625rem] lg:bottom-8 lg:-left-6">
+                  <blockquote className="font-display text-[0.90625rem] leading-[1.4] font-semibold">
+                    &ldquo;Eindelijk weet ik wat ik wil, en waarom.&rdquo;
+                  </blockquote>
+                  <figcaption className="mt-1.5 text-[0.75rem] text-lavender-ink">
+                    Ger (18), traject afgerond in november 2023
+                  </figcaption>
+                </figure>
+
+                {/* The client's badge reads "92% kiest goed". We cannot prove
+                    it, so the badge keeps its shape and says something that is
+                    true of every reader who arrives here.
+
+                    The label is ink and not the client's white: white on this
+                    coral is 2.82:1, and ink on it is 5.67:1. */}
+                <p className="absolute top-5 right-3 rotate-3 rounded-field bg-coral px-4 py-2.5 font-display text-small font-bold text-ink shadow-[0_10px_26px_rgba(255,107,74,0.35)] lg:-right-4">
+                  Gratis intake
                 </p>
-
-                {/* Under the names and under the sentence, in that order, on
-                    every screen. The names are the answer to "waar", the
-                    sentence is the nuance, and the map is the picture of both.
-                    It carries no pins, so it says nothing on its own: the list
-                    above it is its legend. app/components/maps.tsx says why the
-                    pins are not there. */}
-                <WorkAreaMap cities={citiesWithCoach} />
               </div>
             </div>
-          </div>
+          </Container>
         </section>
 
-        {/* Three doors as an index: the numeral hangs in the margin, the title
-            and the answer sit in their own columns. A card grid is banned here. */}
-        <section className="bg-paper" id="aanpak">
-          <div className={`${shell} py-20 md:py-28`}>
-            <h2 className="text-section max-w-[18ch] font-extrabold">
-              Waar sta jij nu?
-            </h2>
-            <ul className="mt-12 border-b border-hairline">
-              {situations.map((item) => (
-                <li
-                  className="grid grid-cols-[auto_minmax(0,1fr)] items-start gap-x-8 gap-y-3 border-t border-hairline py-10 md:py-14 lg:grid-cols-[5rem_minmax(0,20rem)_minmax(0,1fr)] lg:items-baseline lg:gap-x-16"
-                  key={item.number}
+        <HomeTicker />
+
+        {/* ------------------------------------------------ Het traject --- */}
+        <Section
+          className="pt-14 pb-8 lg:pt-22 lg:pb-10"
+          id="traject"
+          space="none"
+        >
+          <Container>
+            <Reveal>
+              <div className="flex flex-wrap items-end justify-between gap-x-8 gap-y-3">
+                <h2 className="text-h2-lg max-w-[30rem] font-bold">
+                  Van &ldquo;geen idee&rdquo; naar een keuze die klopt
+                </h2>
+                <p className="font-mono text-[0.8125rem] text-violet">
+                  4 stappen · ± 4 weken · online of dichtbij
+                </p>
+              </div>
+
+              <div className="mt-5 flex flex-wrap gap-2.5">
+                <Pill>
+                  <span aria-hidden="true">✓</span> Incl. persoonlijkheidstest
+                </Pill>
+                <Pill>
+                  <span aria-hidden="true">✓</span> Incl. studie-interessetest
+                </Pill>
+              </div>
+            </Reveal>
+
+            {/*
+              The 01-04 columns. The client's hover animates padding, which is
+              layout; this one moves transform and shadow only, so the row
+              beside it never shifts. The dividers are vertical from lg, where
+              the four columns exist; below that they are spacing.
+            */}
+            <ol className="mt-10 grid border-t-[1.5px] border-ink pt-5 sm:grid-cols-2 lg:mt-12 lg:grid-cols-4">
+              {steps.map((step) => (
+                <Reveal
+                  as="li"
+                  className="rounded-[18px] py-6 transition-[transform,box-shadow,background-color] duration-[350ms] ease-reveal hover:-translate-y-1.5 hover:bg-white hover:shadow-[0_0_0_2px_#6d4aff,0_18px_44px_rgba(109,74,255,0.25)] motion-reduce:hover:translate-y-0 lg:px-6.5 lg:pt-7 lg:pb-6 lg:first:-ml-6.5 lg:[&:not(:last-child)]:border-r lg:[&:not(:last-child)]:border-hairline"
+                  key={step.number}
                 >
                   <span
                     aria-hidden="true"
-                    className="text-numeral font-normal tabular-nums text-ink-soft"
+                    className={`block font-display text-numeral font-bold ${
+                      step.number === "04" ? "text-violet" : "text-sand-line"
+                    }`}
                   >
-                    {item.number}
+                    {step.number}
                   </span>
-                  <h3 className="text-title font-bold">
-                    {item.href ? (
-                      <Link
-                        className="underline decoration-ochre-line decoration-2 underline-offset-[6px] transition-colors duration-150 ease-out-quart hover:decoration-ink"
-                        href={item.href}
-                      >
-                        {item.title}
-                      </Link>
-                    ) : (
-                      item.title
-                    )}
+                  <h3 className="text-title-sm mt-2.5 font-semibold">
+                    {step.title}
                   </h3>
-                  <p className="col-start-2 max-w-[62ch] lg:col-start-3 lg:row-start-1">
-                    {item.body}
-                  </p>
-                </li>
+                  <p className="text-card mt-2.5 text-muted">{step.body}</p>
+                </Reveal>
               ))}
-            </ul>
-          </div>
-        </section>
+            </ol>
 
-        {/* Second ochre zone. Half of the old customers came in through this door. */}
-        <section className="bg-ochre text-ink">
-          <div className={`${shell} py-20 md:py-28`}>
-            <div className="grid gap-x-16 gap-y-8 lg:grid-cols-[minmax(0,20rem)_minmax(0,1fr)]">
-              <h2 className="text-section font-extrabold">
-                Helaas de verkeerde studie gekozen?
-              </h2>
-              <div className="flex flex-col items-start gap-8">
-                <p className="text-lead max-w-[58ch]">
-                  Ben je dit jaar begonnen aan een studie die niet bij je past?
-                  Je bent niet de enige, en je hoeft niet te wachten tot
-                  september. Hoe eerder je begint, hoe rustiger je volgende
-                  keuze wordt.
+            {/* The price panel. The client hides an alternative "losse strip"
+                behind a setting; the panel is their default and the only one
+                built. */}
+            <Card
+              as={Reveal}
+              className="mt-13 grid gap-9 p-6 sm:p-10 lg:grid-cols-[minmax(0,1.15fr)_minmax(0,1fr)] lg:gap-13 lg:px-13 lg:py-12"
+              pad="none"
+              radius="panel"
+              variant="indigo"
+            >
+              <div>
+                <Eyebrow color="lavender-ink">En wat kost dat?</Eyebrow>
+                <h3 className="text-h3 mt-3.5 font-bold">
+                  Eén vaste prijs.
+                  <br />
+                  Alles zit erin.
+                </h3>
+                <p className="mt-3.5 max-w-[25rem] text-lavender-ink">
+                  Geen uurtarieven, geen kosten achteraf. Je weet vooraf precies
+                  waar je aan toe bent, en je beslist pas ná het gratis
+                  intakegesprek.
                 </p>
-                <a
-                  className="bg-ink px-8 py-4 text-eyebrow uppercase text-paper transition-colors duration-150 ease-out-quart hover:bg-ochre-deep"
-                  href="#contact"
-                >
-                  Begin met een gesprek
-                </a>
+                <ul className="mt-5.5 flex flex-col gap-2.5">
+                  {included.map((line) => (
+                    <Check key={line} tone="amber">
+                      {line}
+                    </Check>
+                  ))}
+                </ul>
               </div>
-            </div>
-          </div>
-        </section>
 
-        {/*
-          These two quotes come from the old site, and the right to use them is
-          settled: the rights to the whole archive are bought (2026-08-06, see
-          PRODUCT.md). The TODO that stood here said the opposite and was out of
-          date. They are the two with a real completion date, which is why the
-          home page shows these two and not the other eight. All ten stand on
-          /ervaringen, and they are written down once, in app/site-config.ts.
-        */}
-        <section className="bg-paper-shade">
-          <div className={`${shell} py-20 md:py-28`}>
-            <h2 className="text-section max-w-[20ch] font-extrabold">
-              Wat studiekiezers zeggen
-            </h2>
-            <div className="mt-12 grid gap-x-16 gap-y-10 md:grid-cols-2">
-              {legacyQuotes.map((item) => (
-                <figure
-                  className="flex flex-col gap-6 border-t border-hairline pt-8"
-                  key={item.person}
+              <div className="rounded-inner bg-paper p-7 text-ink shadow-price-inner sm:p-9">
+                <p className="text-title-sm font-display font-bold">
+                  Het studiekeuzetraject
+                </p>
+                <p className="mt-3 flex items-baseline gap-2.5">
+                  <span className="text-price font-display font-bold">
+                    {traject.label}
+                  </span>
+                  <span className="text-small text-muted">compleet</span>
+                </p>
+
+                {/* `md` and not `lg`: at 320px the long label needs the six
+                    pixels of padding that `lg` would eat, or the pill grows
+                    into a two-line lozenge. */}
+                <Button className="mt-5 w-full" href="/studiekeuzecoaches">
+                  Plan gratis intake bij een coach
+                </Button>
+                <p className="text-micro mt-2.5 text-center text-muted">
+                  Gratis en vrijblijvend. Je beslist daarna pas.
+                </p>
+
+                <p className="mt-4.5 border-t border-hairline pt-4 text-small text-muted">
+                  Liever alleen de tests, met één gesprek erover?{" "}
+                  <Link
+                    className="font-bold text-violet hover:text-violet-dark"
+                    href="/tarieven"
+                  >
+                    Studiekeuzescan · {scan.label} →
+                  </Link>
+                </p>
+              </div>
+            </Card>
+          </Container>
+        </Section>
+
+        {/* ----------------------------------------- Voor jou / voor ouders */}
+        <Section
+          className="py-10 lg:py-16"
+          id="tweegesprekken"
+          space="none"
+        >
+          <Container>
+            <Reveal className="grid overflow-hidden rounded-panel md:grid-cols-2">
+              <div className="bg-violet p-7 text-white sm:p-11 lg:px-12 lg:py-13">
+                <Eyebrow color="lavender-soft">Voor jou</Eyebrow>
+                <h3 className="text-h4 mt-4 font-bold">
+                  Jouw keuze, jouw tempo. Met één vaste coach.
+                </h3>
+                <ul className="mt-6 flex flex-col gap-3">
+                  {forYou.map((line) => (
+                    <Check key={line} mark="→" tone="amber">
+                      {line}
+                    </Check>
+                  ))}
+                </ul>
+                <Button
+                  className="mt-7"
+                  href="/studiekeuzetraject"
+                  variant="light"
                 >
-                  <blockquote className="text-lead max-w-[46ch]">
-                    {item.quote}
-                  </blockquote>
-                  <figcaption className="text-ink-soft">
-                    <span className="font-medium text-ink">{item.person}</span>,{" "}
-                    {item.meta}
-                  </figcaption>
-                </figure>
-              ))}
-            </div>
-            <p className="mt-10">
-              <Link className={linkOnPaper} href="/ervaringen">
-                Lees alle ervaringen van studiekiezers
-              </Link>
-            </p>
-          </div>
-        </section>
+                  Zo werkt het voor jou
+                </Button>
+              </div>
 
-        <ContactSection />
+              {/* The client wrote this half in "u", to the parent who reads
+                  over the chooser's shoulder. It is their wording, so it
+                  stays exactly as they wrote it. */}
+              <div className="bg-ink p-7 text-paper sm:p-11 lg:px-12 lg:py-13">
+                <Eyebrow color="lavender-ink">Voor ouders</Eyebrow>
+                <h3 className="text-h4 mt-4 font-bold">
+                  Inzicht en zekerheid, óók voor u.
+                </h3>
+                <ul className="mt-6 flex flex-col gap-3">
+                  {forParents.map((line) => (
+                    <Check key={line} mark="→" tone="coral">
+                      {line}
+                    </Check>
+                  ))}
+                </ul>
+                <Button
+                  className="mt-7"
+                  href="/voor-wie"
+                  variant="outline-on-ink"
+                >
+                  Informatie voor ouders
+                </Button>
+              </div>
+            </Reveal>
+          </Container>
+        </Section>
+
+        {/* -------------------------------------------------- Testimonial - */}
+        <Section className="py-12 lg:py-18" id="verhalen" space="none">
+          <Container>
+            <Reveal className="max-w-[40rem]">
+              {/* The client sets a stock portrait beside this quote. There is
+                  no photograph of Moya, so the coral mark carries the block
+                  and nobody's face is borrowed for it. */}
+              <p
+                aria-hidden="true"
+                className="font-display text-[clamp(3.5rem,2.5rem+4vw,5.625rem)] leading-none font-bold text-coral"
+              >
+                &ldquo;
+              </p>
+              <blockquote className="mt-3 font-display text-[clamp(1.375rem,1.05rem+1.7vw,2rem)] leading-[1.3] font-semibold tracking-[-0.02em]">
+                Mijn coach oordeelde niet, maar vroeg door. Nu weet ik zeker wat
+                ik wil, en waarom.
+              </blockquote>
+              <p className="text-card mt-6 text-muted">
+                <strong className="font-semibold text-ink">Moya (22)</strong>,
+                traject afgerond in maart 2024
+              </p>
+
+              <div className="mt-7 flex flex-wrap gap-x-6 gap-y-3 text-small font-semibold">
+                <Link
+                  className="border-b-2 border-violet pb-0.5 hover:text-violet"
+                  href="/ervaringen"
+                >
+                  Meer ervaringen
+                </Link>
+                <Link className="text-muted hover:text-violet" href="/artikelen">
+                  Alle artikelen →
+                </Link>
+                <Link className="text-muted hover:text-violet" href="/voor-wie">
+                  Voor wie is het traject? →
+                </Link>
+              </div>
+            </Reveal>
+          </Container>
+        </Section>
+
+        {/* ------------------------------------------------- Eén vaste coach */}
+        <Section className="pt-2 pb-12 lg:pt-6 lg:pb-20" id="coaches" space="none">
+          <Container>
+            <Reveal className="grid items-center gap-8 rounded-panel bg-lavender p-6 sm:p-10 lg:grid-cols-[minmax(0,1.2fr)_minmax(0,1fr)] lg:gap-12 lg:p-13">
+              <div>
+                <h2 className="text-h2 font-bold">
+                  Eén vaste coach.
+                  <br />
+                  Van eerste twijfel tot definitieve keuze.
+                </h2>
+                <p className="mt-4 max-w-[27.5rem] text-muted">
+                  Het traject werkt op elk niveau (mbo, hbo en wo) en bij elke
+                  twijfel. Ook met ADD, ADHD of autisme ben je op de juiste
+                  plek: structuur en overzicht zitten in de methode ingebakken.
+                </p>
+                <div className="mt-6 flex flex-wrap gap-2.5">
+                  <Pill tone="white">Niet oordelen, wél doorvragen</Pill>
+                  <Pill tone="white">MBO · HBO · WO</Pill>
+                  <Pill tone="white">Extra ondersteuning</Pill>
+                </div>
+                <Button
+                  className="mt-7"
+                  href="/studiekeuzecoaches"
+                  size="lg"
+                  variant="dark"
+                >
+                  Ontmoet de coaches
+                </Button>
+              </div>
+
+              {/*
+                The client's slot holds a stock photo of "het team". No such
+                photograph exists and the generated scene is the hero's, so the
+                slot holds the map instead: the same true statement in a
+                picture, and every pin is a city where somebody really works.
+              */}
+              <div className="rounded-inner bg-white p-4 shadow-map">
+                <NlMap
+                  cities={mapCities}
+                  title="Kaart van Nederland met de steden waar een coach werkt"
+                />
+              </div>
+            </Reveal>
+          </Container>
+        </Section>
+
+        {/* ------------------------------------------------- Regio-kiezer -- */}
+        <Section className="pb-14 lg:pb-20" id="regio" space="none">
+          <Container>
+            <div className="grid items-center gap-10 lg:grid-cols-[minmax(0,1fr)_minmax(0,1.1fr)] lg:gap-14">
+              <Reveal>
+                <Eyebrow>Begin met een gesprek. Het kost je niets</Eyebrow>
+                <h2 className="text-h2 mt-3.5 font-bold">
+                  Kies je regio en kom bij de juiste coach terecht
+                </h2>
+                <p className="mt-4 max-w-[27.5rem] text-muted">
+                  Je vraagt een gesprek aan bij de coach in jouw stad. Niet bij
+                  een centraal punt, maar bij de persoon die je straks écht
+                  spreekt.
+                </p>
+                <ol className="mt-6 flex flex-col gap-2.5">
+                  {regioSteps.map((line, index) => (
+                    <li className="flex gap-3" key={line}>
+                      <span aria-hidden="true" className="font-bold text-violet">
+                        {index + 1}.
+                      </span>
+                      <span>{line}</span>
+                    </li>
+                  ))}
+                </ol>
+              </Reveal>
+
+              <Reveal>
+                <RegionPicker options={regionOptions} />
+              </Reveal>
+            </div>
+          </Container>
+        </Section>
+
+        <CtaBand
+          accent="Zet hem samen, met een gratis intake."
+          mark
+          primary={{
+            href: "/studiekeuzecoaches",
+            label: "Plan gratis intake bij een coach",
+          }}
+          secondary={{ href: "/tarieven", label: "Bekijk tarieven" }}
+          text="Vrijblijvend kennismaken: samen, of eerst alleen. Online of op locatie bij een coach in de buurt."
+          title="Elke goede keuze begint met één stap."
+        />
       </main>
 
       <SiteFooter />

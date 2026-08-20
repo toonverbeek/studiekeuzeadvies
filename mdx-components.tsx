@@ -1,14 +1,16 @@
 import type { MDXComponents } from "mdx/types";
 import type { ReactNode } from "react";
 import { headingId } from "@/app/articles";
-import { linkOnPaper } from "@/app/shell";
+import { linkOnPaper } from "@/app/components/ui";
 
 /**
  * How an article looks. The .mdx files hold text and nothing else: no classes,
  * no components, no layout. Everything visual is decided once, here, so 63
  * articles cannot drift apart.
  *
- * The reading room lives on paper, never on ochre. See DESIGN.md.
+ * The reading room lives on paper. The column around this text sets the size
+ * and the colour (17px on 1.75, muted-read); this file sets the rhythm and the
+ * hierarchy inside it. See docs/redesign/design-spec.md, section 6.2.
  */
 
 /** The plain text inside a heading, so a heading with a link still gets an id. */
@@ -33,7 +35,7 @@ const components: MDXComponents = {
    */
   h2: ({ children }) => (
     <h2
-      className="text-title mt-14 scroll-mt-8 border-t border-hairline pt-6 font-bold first:mt-0 md:mt-16"
+      className="text-h4 mt-14 scroll-mt-8 border-t border-hairline pt-6 font-bold text-ink first:mt-0 md:mt-16"
       id={headingId(textOf(children))}
     >
       {children}
@@ -43,7 +45,7 @@ const components: MDXComponents = {
   /* A step inside a section. No rule, so it cannot be mistaken for a section. */
   h3: ({ children }) => (
     <h3
-      className="mt-9 scroll-mt-8 text-[1.3125rem] leading-snug font-bold"
+      className="text-title mt-9 scroll-mt-8 font-bold text-ink"
       id={headingId(textOf(children))}
     >
       {children}
@@ -56,7 +58,7 @@ const components: MDXComponents = {
 
   /* A numbered list keeps the browser's own marker, and drops the square. */
   ol: ({ children }) => (
-    <ol className="mt-5 list-decimal space-y-3 pl-6 marker:font-medium marker:text-ochre-deep [&_.bullet]:hidden [&>li]:pl-0">
+    <ol className="mt-5 list-decimal space-y-3 pl-6 marker:font-medium marker:text-violet [&_.bullet]:hidden [&>li]:pl-0">
       {children}
     </ol>
   ),
@@ -70,7 +72,7 @@ const components: MDXComponents = {
     <li className="relative pl-6">
       <span
         aria-hidden="true"
-        className="bullet absolute top-[0.72em] left-1 h-1.5 w-1.5 bg-ochre-deep"
+        className="bullet absolute top-[0.72em] left-1 h-1.5 w-1.5 bg-violet"
       />
       {children}
     </li>
@@ -89,11 +91,14 @@ const components: MDXComponents = {
     );
   },
 
-  strong: ({ children }) => <strong className="font-bold">{children}</strong>,
+  strong: ({ children }) => (
+    <strong className="font-bold text-ink">{children}</strong>
+  ),
 
-  /* An aside inside the running text. A tone change, not a card and not a stripe. */
+  /* An aside inside the running text: the client's soft info box, not a card
+     and not a coloured stripe. */
   blockquote: ({ children }) => (
-    <div className="mt-8 border-t border-b border-hairline bg-paper-shade px-6 py-6 text-ink-soft">
+    <div className="rounded-box mt-8 bg-lavender px-6 py-6 sm:px-7 [&>:first-child]:mt-0">
       {children}
     </div>
   ),
@@ -110,7 +115,9 @@ export function Lead({ children }: { children: ReactNode }) {
   // A div, not a p: MDX wraps the text between the tags in its own paragraph,
   // and a p inside a p is invalid HTML that breaks hydration.
   return (
-    <div className="text-lead max-w-[54ch] [&>p]:mt-0">{children}</div>
+    <div className="text-lead max-w-[54ch] font-medium text-ink [&>p]:mt-0">
+      {children}
+    </div>
   );
 }
 

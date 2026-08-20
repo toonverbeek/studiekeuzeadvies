@@ -1,6 +1,7 @@
 import type { MetadataRoute } from "next";
 import { articles } from "@/app/articles";
-import { citySlugs } from "@/app/cities";
+import { cities } from "@/app/cities";
+import { coaches } from "@/app/coaches";
 import { legacyRedirects } from "@/app/redirects";
 
 /**
@@ -58,6 +59,8 @@ export const canonicalOrigin = "https://www.studiekeuzeadvies.nl";
 const staticPaths = [
   "/",
   "/studiekeuzetraject",
+  "/voor-wie",
+  "/tarieven",
   "/eerste-studiekeuze",
   "/verkeerde-studiekeuze",
   "/studiekeuze-met-add-adhd",
@@ -69,18 +72,38 @@ const staticPaths = [
   "/veelgestelde-vragen",
   "/locaties",
   "/artikelen",
+  "/over-ons",
+  "/coach-worden",
 ];
 
 /**
- * Every path the site answers with a 200. The city pages and the articles are
- * read from the same two lists that `generateStaticParams` reads, so a city or
- * an article can never be in the sitemap without a page, or on the site without
- * a line in the sitemap.
+ * Every path the site answers with a 200 AND wants indexed. The city pages, the
+ * coach profiles and the articles are read from the same lists that
+ * `generateStaticParams` reads, so a city, a coach or an article can never be
+ * in the sitemap without a page, or on the site without a line in the sitemap.
+ *
+ * A stand-in coach is the one exception, and it is not an exception to the rule
+ * above but to the second half of the sentence. `app/studiekeuzecoaches/[coach]/
+ * page.tsx` gives a coach with `isPlaceholder: true` a `robots: { index: false }`
+ * tag, because that person does not exist. A sitemap line for a noindex page is
+ * the same contradiction as a sitemap line for a redirect: the file says "index
+ * this" and the page says "do not". So the roster is filtered here, and the day
+ * a stand-in becomes a real coach the line appears by itself.
+ *
+ * A city page whose coach is a stand-in is the same page in another shape: it
+ * prints that person's name, photo and intake button. It is filtered on the
+ * same field, and for the same reason. A city with no coach at all is honest
+ * about it in its own copy, so that one stays in.
  */
 function allPaths(): string[] {
   return [
     ...staticPaths,
-    ...citySlugs.map((slug) => `/locaties/${slug}`),
+    ...coaches
+      .filter((coach) => !coach.isPlaceholder)
+      .map((coach) => `/studiekeuzecoaches/${coach.slug}`),
+    ...cities
+      .filter((city) => !city.coach?.isPlaceholder)
+      .map((city) => `/locaties/${city.slug}`),
     ...articles.map((article) => `/${article.slug}`),
   ];
 }

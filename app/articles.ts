@@ -141,8 +141,3 @@ export function formatDate(iso: string): string {
   const [year, month, day] = iso.split("-");
   return `${Number(day)} ${months[Number(month) - 1]} ${year}`;
 }
-
-/** "2025-10-29" becomes "2025". The hub groups on this. */
-export function yearOf(iso: string): string {
-  return iso.slice(0, 4);
-}

@@ -56,9 +56,10 @@ export function ArticleIndex({ sections }: { sections: Section[] }) {
   return (
     <nav
       aria-label="In dit artikel"
-      className="sticky top-10 max-h-[calc(100vh-5rem)] overflow-y-auto"
+      className="sticky top-24 max-h-[calc(100vh-8rem)] overflow-y-auto"
     >
-      <p className="text-eyebrow uppercase text-ink-soft">In dit artikel</p>
+      <p className="eyebrow text-muted">In dit artikel</p>
+
       <ul className="mt-4 border-b border-hairline">
         {sections.map((section) => {
           const active = section.id === activeId;
@@ -66,15 +67,17 @@ export function ArticleIndex({ sections }: { sections: Section[] }) {
             <li className="border-t border-hairline" key={section.id}>
               <a
                 aria-current={active ? "true" : undefined}
-                className={`relative block py-3 pl-6 transition-colors duration-150 ease-out-quart ${
-                  active ? "font-bold text-ink" : "text-ink-soft hover:text-ink"
+                className={`text-card relative block py-3.5 pl-6 transition-colors duration-150 ease-out-quart ${
+                  active
+                    ? "font-bold text-violet"
+                    : "text-muted hover:text-violet"
                 }`}
                 href={`#${section.id}`}
               >
                 {active && (
                   <span
                     aria-hidden="true"
-                    className="absolute top-[1.35rem] left-0 h-[3px] w-4 bg-ink"
+                    className="absolute top-[1.35rem] left-0 h-[3px] w-4 bg-violet"
                   />
                 )}
                 {section.label}

@@ -91,7 +91,7 @@ export const cities: City[] = [
     ],
 
     wrongChoice: [
-      "Je begon vol goede moed aan een studie aan de UvA, de VU, de HvA of Inholland, en onderweg ging het mis. Je bent gestopt, of je denkt erover. Dat is balen, en het zegt niets over jou. Ongeveer de helft van de mensen die bij ons aanklopt is gestopt, of denkt erover om te stoppen. Je bent dus niet de enige, en je bent zeker niet de eerste.",
+      "Je begon vol goede moed aan een studie aan de UvA, de VU, de HvA of Inholland, en onderweg ging het mis. Je bent gestopt, of je denkt erover. Dat is balen, en het zegt niets over jou. Je bent niet de enige, en je bent zeker niet de eerste: stoppen of twijfelen is een van de gewoonste redenen waarom iemand hier aanklopt.",
       "Je weet nu iets wat je een jaar geleden nog niet wist: hoe studeren echt gaat, en wat er niet bij je past. Soms lag dat aan de opleiding zelf, soms aan alles eromheen: de reistijd, het wonen, of hoe groot en druk zo'n instelling is. We kijken naar allebei. Dat is bruikbare informatie, en daar beginnen we mee. Wachten tot september hoeft niet.",
     ],
   },
@@ -160,7 +160,7 @@ export function cityCopy(city: City) {
     ],
 
     wrongChoice: city.wrongChoice ?? [
-      `Ben je begonnen aan een studie die niet blijkt te passen? Dat is balen, en het zegt niets over jou. Ongeveer de helft van de mensen die bij ons aanklopt is gestopt, of denkt erover om te stoppen. Je bent dus niet de enige, en je bent zeker niet de eerste.`,
+      `Ben je begonnen aan een studie die niet blijkt te passen? Dat is balen, en het zegt niets over jou. Je bent niet de enige, en je bent zeker niet de eerste: stoppen of twijfelen is een van de gewoonste redenen waarom iemand hier aanklopt.`,
       `Je weet nu iets wat je een jaar geleden nog niet wist: hoe studeren echt gaat, en wat er niet bij je past. Dat is bruikbare informatie, en daar beginnen we mee. Wachten tot september hoeft niet. Hoe eerder je begint, hoe rustiger je volgende keuze wordt.`,
     ],
   };
