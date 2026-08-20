@@ -1,9 +1,14 @@
-Copyright 2013 The Alegreya Sans Project Authors (https://github.com/huertatipografica/Alegreya-Sans)
+Copyright 2022 The Bricolage Grotesque Project Authors (https://github.com/ateliertriay/bricolage)
+Copyright 2022 The Figtree Project Authors (https://github.com/erikdkennedy/figtree)
 
-This Font Software is licensed under the SIL Open Font License, Version 1.1.
-This license is copied below, and is also available with a FAQ at:
+Both files in this folder are licensed under the SIL Open Font License,
+Version 1.1. The licence is copied below, and is also available with a FAQ at:
 http://scripts.sil.org/OFL
 
+They are here for one reason: app/opengraph-image.tsx renders with Satori,
+which cannot use next/font and cannot read a stylesheet. A build must never
+depend on the network, so the two weights the share image needs live in the
+repo. Everything a browser loads comes from next/font instead (app/layout.tsx).
 
 -----------------------------------------------------------
 SIL OPEN FONT LICENSE Version 1.1 - 26 February 2007

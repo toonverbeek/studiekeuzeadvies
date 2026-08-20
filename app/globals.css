@@ -1,57 +1,190 @@
 @import "tailwindcss";
 
-/* Design tokens. See DESIGN.md.
-   Committed ochre on warm paper. Every neutral is tinted toward the brand hue (82)
-   so no grey is a pure grey and no black is a pure black. */
+/* ==========================================================================
+   Design tokens: the client's redesign (docs/redesign/design-spec.md).
+   Violet and indigo on warm paper, with coral and amber as the two accents.
+   Every value below is read from the client's export, not invented. The ochre
+   system that stood here until 2026-08-20 is gone; see docs/decisions.md.
+   ========================================================================== */
 @theme {
-  --color-ochre: oklch(78% 0.145 82);
-  --color-ochre-deep: oklch(58% 0.125 74);
-  --color-ochre-line: oklch(70% 0.11 80);
-  --color-paper: oklch(96.5% 0.008 82);
-  --color-paper-shade: oklch(93.5% 0.011 82);
-  --color-ink: oklch(22% 0.021 82);
-  --color-ink-soft: oklch(42% 0.02 82);
-  --color-hairline: oklch(84% 0.013 82);
-  /* The one semantic colour. Only for form errors, and only on paper:
-     on ochre it would not reach 4.5:1. */
-  --color-error: oklch(45% 0.16 32);
+  /* --- Surfaces ------------------------------------------------------- */
+  /* The page. Every section sits on it unless it says otherwise. */
+  --color-paper: #faf8f4;
+  /* The dark surface: panels, the footer, the cookie bar, the featured card. */
+  --color-ink: #1e1b4b;
 
-  --font-sans: var(--font-alegreya-sans), ui-sans-serif, system-ui, sans-serif;
+  /* --- Brand ---------------------------------------------------------- */
+  --color-violet: #6d4aff; /* primary button, links, eyebrows, active nav */
+  --color-violet-dark: #5a38e6; /* hover, and violet text on lavender (5.6:1) */
+  --color-violet-light: #8f75ff; /* the logo path on ink, map dots */
 
-  /* One family, hierarchy from size and weight. Steps are 1.25 or wider. */
-  --text-eyebrow: 0.8125rem;
+  /* --- Soft violet surfaces and the text that lives on them ----------- */
+  --color-lavender: #efebff; /* soft panels, pills, tags */
+  --color-lavender-ink: #b9b3e8; /* body text on ink (7.9:1) */
+  --color-lavender-soft: #f3f0ff; /* eyebrow on a violet surface (4.6:1) */
+
+  /* --- Coral: the warm accent. Never text on paper below 18px --------- */
+  --color-coral: #ff6b4a; /* dots, pins, borders, display numerals */
+  --color-coral-text: #b8381a; /* the same accent where it has to be read
+                                 (5.5:1 on paper, 5.3:1 on the tint) */
+  --color-coral-soft: #ffb3a0; /* error text on ink (8.9:1) */
+  --color-coral-tint: #fff1ec; /* coral pill background */
+
+  /* --- Amber: the second accent -------------------------------------- */
+  --color-amber: #ffc94d; /* check marks on ink, badges, accent borders */
+  --color-amber-tint: #fff7e0; /* amber pill background */
+  --color-amber-ink: #7d5c00; /* amber pill text (5.8:1 on the tint) */
+
+  /* --- Text ----------------------------------------------------------- */
+  --color-muted: #4d4a6b; /* secondary text on paper (7.6:1) */
+  --color-muted-read: #3a3760; /* long reading columns */
+
+  /* --- Lines ---------------------------------------------------------- */
+  --color-hairline: #eae6dc; /* card borders, dividers, the nav rule */
+  --color-hairline-ink: #322e63; /* the same rule on an ink surface */
+  --color-chip-border: #d9d0f5; /* chips, dashed cards, violet outlines */
+  --color-sand-line: #d9d3c7; /* decorative numerals, warm outline buttons */
+  --color-photo-line: #e2dcf2; /* 1px frame around a photo */
+  --color-photo-line-warm: #f5d9d0; /* the same frame, warm */
+
+  /* The one semantic colour. Only for form errors on paper; on ink a form
+     uses coral-soft, which is the readable one there. */
+  --color-error: #c0341a;
+
+  /* --- Families ------------------------------------------------------- */
+  /* Bricolage Grotesque carries every heading, numeral and price; Figtree
+     every sentence; IBM Plex Mono every label. Wired in app/layout.tsx. */
+  --font-display: var(--font-bricolage), ui-sans-serif, system-ui, sans-serif;
+  --font-body: var(--font-figtree), ui-sans-serif, system-ui, sans-serif;
+  --font-mono:
+    var(--font-plex-mono), ui-monospace, SFMono-Regular, Menlo, monospace;
+  /* So that a stray `font-sans` cannot fall back to the browser default. */
+  --font-sans: var(--font-body);
+
+  /* --- Type scale ------------------------------------------------------
+     Display roles are fluid (clamp), text roles are fixed: PRODUCT.md asks
+     for 17px body on a telephone, so the body floor never scales down.
+     Old name -> new name, for anybody reading an old diff:
+     display -> hero, headline -> h1, section -> h2. */
+  --text-eyebrow: 0.78125rem; /* 12.5px mono label */
   --text-eyebrow--line-height: 1.2;
   --text-eyebrow--letter-spacing: 0.1em;
   --text-eyebrow--font-weight: 500;
 
-  --text-body: 1.0625rem;
-  --text-body--line-height: 1.65;
+  --text-eyebrow-sm: 0.71875rem; /* 11.5px, inside a card */
+  --text-eyebrow-sm--line-height: 1.2;
+  --text-eyebrow-sm--letter-spacing: 0.08em;
+  --text-eyebrow-sm--font-weight: 500;
 
-  --text-lead: clamp(1.125rem, 1.05rem + 0.3vw, 1.3125rem);
-  --text-lead--line-height: 1.55;
+  --text-hero: clamp(2.375rem, 1.6rem + 3.9vw, 3.625rem); /* 38 -> 58 */
+  --text-hero--line-height: 1.04;
+  --text-hero--letter-spacing: -0.028em;
 
-  --text-title: clamp(1.375rem, 1.15rem + 0.9vw, 1.75rem);
+  --text-h1: clamp(2.125rem, 1.5rem + 3.2vw, 3.125rem); /* 34 -> 50 */
+  --text-h1--line-height: 1.07;
+  --text-h1--letter-spacing: -0.028em;
+
+  --text-h2-lg: clamp(1.75rem, 1.3rem + 2.4vw, 2.5rem); /* 28 -> 40 */
+  --text-h2-lg--line-height: 1.08;
+  --text-h2-lg--letter-spacing: -0.025em;
+
+  --text-h2: clamp(1.625rem, 1.25rem + 2vw, 2.25rem); /* 26 -> 36 */
+  --text-h2--line-height: 1.1;
+  --text-h2--letter-spacing: -0.022em;
+
+  --text-h3: clamp(1.5rem, 1.2rem + 1.6vw, 2rem); /* 24 -> 32 */
+  --text-h3--line-height: 1.12;
+  --text-h3--letter-spacing: -0.02em;
+
+  --text-h4: clamp(1.375rem, 1.1rem + 1.5vw, 1.875rem); /* 22 -> 30 */
+  --text-h4--line-height: 1.15;
+  --text-h4--letter-spacing: -0.02em;
+
+  --text-title-lg: clamp(1.25rem, 1.1rem + 0.7vw, 1.5rem); /* 20 -> 24 */
+  --text-title-lg--line-height: 1.2;
+  --text-title-lg--letter-spacing: -0.015em;
+
+  --text-title: 1.3125rem; /* 21px card and panel titles */
   --text-title--line-height: 1.25;
 
-  --text-section: clamp(1.875rem, 1.3rem + 2.4vw, 3rem);
-  --text-section--line-height: 1.08;
-  --text-section--letter-spacing: -0.015em;
+  --text-title-sm: 1.1875rem; /* 19px coach name, step title */
+  --text-title-sm--line-height: 1.25;
 
-  /* The title of an article. Display is built for one or two words and is far
-     too large for a sentence; section is a heading inside a page, not the top
-     of one. This step sits between them and opens a reading page. */
-  --text-headline: clamp(2.5rem, 1.6rem + 3.8vw, 4.25rem);
-  --text-headline--line-height: 1.03;
-  --text-headline--letter-spacing: -0.02em;
+  --text-price: clamp(2.25rem, 1.8rem + 2.2vw, 2.875rem); /* 36 -> 46 */
+  --text-price--line-height: 1;
+  --text-price--letter-spacing: -0.03em;
 
-  --text-display: clamp(2.875rem, 1.2rem + 7.2vw, 6.5rem);
-  --text-display--line-height: 0.97;
-  --text-display--letter-spacing: -0.025em;
-
-  --text-numeral: clamp(2.25rem, 1.5rem + 3vw, 3.75rem);
+  --text-numeral: clamp(2.25rem, 2rem + 1.2vw, 2.75rem); /* 36 -> 44 */
   --text-numeral--line-height: 1;
+  --text-numeral--letter-spacing: -0.03em;
 
+  --text-lead: 1.09375rem; /* 17.5px the sentence under an h1 */
+  --text-lead--line-height: 1.62;
+
+  --text-body: 1.0625rem; /* 17px the floor for anything read */
+  --text-body--line-height: 1.65;
+
+  --text-read: 1.0625rem; /* 17px, but a long column breathes wider */
+  --text-read--line-height: 1.75;
+
+  --text-card-lg: 1rem; /* 16px card heading, and the ticker's own label */
+  --text-card-lg--line-height: 1.45;
+
+  --text-card: 0.9375rem; /* 15px inside a card, which is short */
+  --text-card--line-height: 1.6;
+
+  --text-note: 0.875rem; /* 14px mono line, caption under a photo */
+  --text-note--line-height: 1.5;
+
+  /* The two button steps. They are their own role and not a card size: a pill
+     that is 14.5px inside a card and 15.5px in a hero has to say so once, or
+     every hand-written pill beside a Button has to copy the literal to be the
+     same height. */
+  --text-button: 0.90625rem; /* 14.5px, in a card or a panel */
+  --text-button-lg: 0.96875rem; /* 15.5px, in a hero or a CTA band */
+
+  --text-small: 0.84375rem; /* 13.5px pills, captions, footer links */
+  --text-small--line-height: 1.55;
+
+  --text-micro: 0.78125rem; /* 12.5px legal line, form helper */
+  --text-micro--line-height: 1.5;
+
+  /* --- Radii ---------------------------------------------------------- */
+  --radius-panel: 28px; /* the big panels */
+  --radius-photo: 26px; /* photos, the map frame */
+  --radius-card: 24px; /* price, situation and form cards */
+  --radius-card-sm: 22px; /* coach and article cards */
+  --radius-inner: 20px; /* a card inside a panel */
+  --radius-box: 16px; /* info boxes, the quote card */
+  --radius-row: 14px; /* list rows */
+  --radius-field: 12px; /* inputs, selects, textareas */
+
+  /* --- Shadows -------------------------------------------------------- */
+  --shadow-violet: 0 8px 24px rgb(109 74 255 / 0.3);
+  --shadow-violet-strong: 0 8px 24px rgb(109 74 255 / 0.35);
+  --shadow-ink-card: 0 18px 44px rgb(30 27 75 / 0.25);
+  --shadow-ink-form: 0 18px 48px rgb(30 27 75 / 0.22);
+  --shadow-portrait: 0 18px 48px rgb(30 27 75 / 0.16);
+  --shadow-price-inner: 0 18px 44px rgb(0 0 0 / 0.22);
+  --shadow-quote: 0 14px 34px rgb(30 27 75 / 0.25);
+  --shadow-map: 0 14px 40px rgb(30 27 75 / 0.1);
+  --shadow-card-hover: 0 12px 32px rgb(30 27 75 / 0.1);
+
+  /* --- Layout --------------------------------------------------------- */
+  /* The container of every section. `max-w-shell` in a class.
+     1160px of CONTENT plus the 48px gutter on each side. The client's export
+     writes `max-width: 1160px` on an inner div and `padding: 0 48px` on the
+     section around it, so the text column is 1160px and the box is 1256px.
+     This token held 1160px including the padding until 2026-08-20, which left
+     a 1064px column and wrapped four page titles one line further than the
+     client's design. */
+  --container-shell: 1256px;
+  /* The reading column of an article. */
+  --container-read: 68ch;
+
+  /* --- Motion --------------------------------------------------------- */
   --ease-out-quart: cubic-bezier(0.25, 1, 0.5, 1);
+  --ease-reveal: cubic-bezier(0.22, 1, 0.36, 1);
 }
 
 @layer base {
@@ -60,17 +193,16 @@
     scroll-behavior: smooth;
   }
 
-  /* Every jump link on this site points at an id. Without this the target
-     stops hard against the top edge of the window, with its rule and its
-     eyebrow cut off by the browser chrome. */
+  /* The nav is sticky and about 72px high, so a jump link has to stop below
+     it or the heading it points at lands behind the bar. */
   [id] {
-    scroll-margin-top: 2.5rem;
+    scroll-margin-top: calc(72px + 1rem);
   }
 
   body {
     background-color: var(--color-paper);
     color: var(--color-ink);
-    font-family: var(--font-sans);
+    font-family: var(--font-body);
     font-size: var(--text-body);
     line-height: 1.65;
     font-kerning: normal;
@@ -78,7 +210,9 @@
 
   h1,
   h2,
-  h3 {
+  h3,
+  h4 {
+    font-family: var(--font-display);
     text-wrap: balance;
   }
 
@@ -86,22 +220,44 @@
     text-wrap: pretty;
   }
 
-  /* Thick enough to find at night, in the ink so it works on paper and on ochre. */
+  /* The client's rule: a link is ink and it turns violet under the pointer.
+     A utility beats this (utilities is the later layer), so a button keeps its
+     own colour and only a bare link follows the rule. */
+  a {
+    color: inherit;
+    text-decoration: none;
+  }
+
+  a:hover {
+    color: var(--color-violet);
+  }
+
+  /* A form control inherits nothing by default, and a select in Figtree next
+     to an input in the system font is the kind of detail that reads as cheap. */
+  input,
+  select,
+  textarea,
+  button {
+    font-family: inherit;
+  }
+
+  /* Thick, violet, and offset, so it is visible on paper, on lavender and on
+     white alike. */
   :focus-visible {
-    outline: 3px solid var(--color-ink);
+    outline: 3px solid var(--color-violet);
     outline-offset: 3px;
   }
 
-  /* On an ink surface an ink ring is a ring you cannot see. There are two such
-     surfaces, the footer and the cookie bar, and both hold controls a keyboard
-     reaches. The class that paints the surface is the hook, so a third ink
-     surface is covered the day it exists. */
-  .bg-ink :focus-visible {
+  /* On an ink surface a violet ring is nearly invisible. The class that paints
+     the surface is the hook, so the footer, the cookie bar, the form card and
+     any ink panel built later are all covered. */
+  .bg-ink :focus-visible,
+  .bg-violet :focus-visible {
     outline-color: var(--color-paper);
   }
 
   ::selection {
-    background-color: var(--color-ochre);
+    background-color: var(--color-lavender);
     color: var(--color-ink);
   }
 
@@ -111,8 +267,7 @@
      when the browser scrolls to a jump link or to the element the keyboard just
      reached: no focus ring may end up behind the bar. :has() means the rule
      leaves together with the bar, and the bar leaves the moment the visitor has
-     answered. The two values are the height of the bar stacked on a telephone
-     and side by side from sm up. */
+     answered. */
   html:has([data-consent-bar]) {
     scroll-padding-bottom: 13rem;
   }
@@ -123,11 +278,39 @@
     }
   }
 
-  /* The bar arrives, it does not appear. One short move of transform and
-     opacity, nothing of the layout. The prefers-reduced-motion block at the end
-     of this file flattens it to nothing. */
   [data-consent-bar] {
     animation: consent-bar-in 260ms var(--ease-out-quart) both;
+  }
+}
+
+/* ==========================================================================
+   The three utilities Tailwind cannot express on its own.
+   ========================================================================== */
+
+/* 1. Scroll reveal (app/components/reveal.tsx).
+   The hidden state lives behind `scripting: enabled`, so a reader without
+   JavaScript never has a block hidden by a script that cannot run, and behind
+   `prefers-reduced-motion: no-preference`, so a reader who asked for less
+   motion sees the page at rest. A browser that does not know `scripting` skips
+   the whole block and shows everything, which is the right way to fail. */
+@keyframes reveal-rise {
+  from {
+    opacity: 0;
+    transform: translateY(24px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) and (scripting: enabled) {
+  .reveal {
+    opacity: 0;
+  }
+
+  .reveal.on {
+    animation: reveal-rise 700ms var(--ease-reveal) forwards;
   }
 }
 
@@ -135,6 +318,31 @@
   from {
     opacity: 0;
     transform: translateY(0.75rem);
+  }
+}
+
+/* 2. The mono label. Three properties that always travel together. */
+@utility eyebrow {
+  font-family: var(--font-mono);
+  font-size: var(--text-eyebrow);
+  font-weight: 500;
+  letter-spacing: 0.1em;
+  line-height: 1.2;
+  text-transform: uppercase;
+}
+
+/* 3. A hover that only touch-free devices get. A lift under a finger is a
+   flicker, and it fires on tap. */
+@utility hover-lift {
+  @media (hover: hover) {
+    transition:
+      transform 350ms var(--ease-reveal),
+      box-shadow 350ms var(--ease-reveal);
+
+    &:hover {
+      transform: translateY(-4px);
+      box-shadow: var(--shadow-card-hover);
+    }
   }
 }
 
