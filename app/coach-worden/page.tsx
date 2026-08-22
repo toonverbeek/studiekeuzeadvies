@@ -25,9 +25,10 @@ import { CoachApplicationForm } from "./application-form";
  * not move with the name: four old vacancy URLs redirect into it and it is in
  * the sitemap, and a rename that breaks those buys nothing.
  *
- * THE LICENCE IS DECIDED NOW, row W5: €750 a year. It used to be an indication
- * of a one-off amount and said so in the same breath. app/pricing.ts holds the
- * figure and the term, so this page never types either.
+ * THE LICENCE IS DECIDED NOW, row W5: a yearly amount. It used to be an
+ * indication of a one-off one and said so in the same breath. app/pricing.ts
+ * holds the figure and the term, so this page never types either, and neither
+ * does this comment.
  *
  * WHICH REGIONS ARE TAKEN IS READ FROM THE ROSTER, never typed. The client's
  * export names six cities by hand; the roster in app/coaches.ts now holds five
@@ -143,7 +144,7 @@ export default function CoachWordenPage() {
                     step of text-h1, so the title drops one step there
                     (decision 2026-08-05). */}
                 <h1 className="text-h1 max-w-[16ch] font-bold max-[380px]:text-h2-lg">
-                  Sluit je aan als StudieKeuzeCoach.
+                  Sluit je aan als coach.
                 </h1>
 
                 <p className="text-lead mt-5 max-w-[34rem] text-muted">

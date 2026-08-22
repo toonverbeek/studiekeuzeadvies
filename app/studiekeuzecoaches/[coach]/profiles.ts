@@ -57,7 +57,8 @@ export type Profile = {
 };
 
 /**
- * Janneke, the only real coach (`isPlaceholder: false`).
+ * Janneke. She was the only real coach until the client's mail of 21 August
+ * named the other four; all five are real now.
  *
  * This is the client's copy, word for word, with two changes the house rules
  * ask for: the em dash in the lede is a comma, and nothing was added. She

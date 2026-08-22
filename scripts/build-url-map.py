@@ -89,6 +89,10 @@ CITY_SPECIAL = {
     "/deventer-2/": "deventer",
     "/locaties/arnhem-2/": "arnhem",
     "/locaties/studiekeuzeadvies-apeldoorn/": "apeldoorn",
+    # The town kept its name on the old site and lost it in the merger with
+    # Geleen. Without this row all three Sittard URLs park at /locaties and
+    # wait for a /locaties/sittard that app/cities.ts will never hold.
+    "/locaties/sittard/": "sittard-geleen",
 }
 
 # Every page that is not a city page, mapped by hand.

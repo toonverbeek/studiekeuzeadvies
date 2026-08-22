@@ -47,8 +47,8 @@ export type Meeting = {
  * `homeworkTitle` is new. Three meetings say "Daarna, thuis" and the third one
  * says "Daarna, thuis en erop uit", because that is the week the reader
  * actually leaves the house. The fourth says "Daarna, inschrijven!" and it is
- * the one card that has a line after it at all, so `homework` is no longer
- * null on the last meeting.
+ * the one card whose heading is the whole message: `homework` stays null there
+ * and the heading carries it alone.
  */
 export const meetings: Meeting[] = [
   {
@@ -102,7 +102,7 @@ export const tests = {
   heading: "Betrouwbare tests, gericht op betere keuzes",
   body: [
     "Een studie kiezen betekent je verdiepen in een wereld die vaak nog grotendeels onbekend is. Er zijn veel opleidingen, richtingen en mogelijkheden. Onze tests helpen om daarin structuur aan te brengen. Ze zijn ontwikkeld vanuit meer dan 30 jaar ervaring met assessments, studiekeuze, coaching en testontwikkeling en zijn gericht op het verkrijgen van betrouwbare inzichten in persoonlijkheid en interesses.",
-    "Zo wordt duidelijker waar je voorkeuren liggen, wat bij je past en welke richtingen het meest interessant zijn om verder te onderzoeken. De testuitslagen vormen daarbij het vertrekpunt. Samen met de StudieKeuzeCoach geef je betekenis aan de resultaten, leg je verbanden en vertaal je de inzichten naar concrete opleidingen en keuzes. Zo ontstaat stap voor stap overzicht in een zoektocht die aan het begin vaak nog heel breed en onbekend is.",
+    "Zo wordt duidelijker waar je voorkeuren liggen, wat bij je past en welke richtingen het meest interessant zijn om verder te onderzoeken. De testuitslagen vormen daarbij het vertrekpunt. Samen met de studiekeuzeadviseur geef je betekenis aan de resultaten, leg je verbanden en vertaal je de inzichten naar concrete opleidingen en keuzes. Zo ontstaat stap voor stap overzicht in een zoektocht die aan het begin vaak nog heel breed en onbekend is.",
   ],
   pills: [
     "Persoonlijkheidstest",

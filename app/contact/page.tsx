@@ -28,7 +28,7 @@ export const metadata: Metadata = {
 };
 
 const paragraphs = [
-  "Heb je een vraag? Wil je meer weten over onze StudieKeuzeTrajecten, heb je een opmerking of wil je iets met ons delen? Stuur ons gerust een bericht via het contactformulier hieronder. Een van onze coaches neemt binnen twee werkdagen contact met je op.",
+  "Heb je een vraag? Wil je meer weten over onze StudieKeuzeTrajecten, heb je een opmerking of wil je iets met ons delen? Stuur ons gerust een bericht via het contactformulier hieronder of mail naar info@studiekeuzeadvies.nl. Een van onze coaches neemt binnen twee werkdagen contact met je op.",
   "Heb je een klacht? Ook dan horen we graag van je. We nemen je bericht serieus en zoeken samen naar een passende oplossing.",
   "Twijfel je of je vraag wel bij ons past? Gewoon insturen. We denken graag met je mee.",
 ];

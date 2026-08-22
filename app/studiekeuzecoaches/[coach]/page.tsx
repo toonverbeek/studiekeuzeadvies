@@ -30,7 +30,7 @@ import { getProfile, type ProfileBlock } from "./profiles";
  * elsewhere.
  */
 
-/** The six people of the roster, and nobody else. An unknown slug is a 404. */
+/** The five people of the roster, and nobody else. An unknown slug is a 404. */
 export function generateStaticParams() {
   return coaches.map((coach) => ({ coach: coach.slug }));
 }

@@ -41,8 +41,9 @@ const CONSENT = process.env.CONSENT ?? "granted";
  * that only differs in content is never shot and never checked. The rule for
  * adding one is therefore "does this page have a layout no other route has":
  * /locaties/bergen-op-zoom is the city without a coach, and
- * /studiekeuzecoaches/hanneke is a stand-in profile, which the sitemap leaves
- * out on purpose. Both were invisible to both scripts until 2026-08-20.
+ * /studiekeuzecoaches/tamara is the profile without a photograph. Both were
+ * invisible to both scripts until 2026-08-20. The stand-in profile that used
+ * to stand here went with the stand-ins themselves.
  */
 export const ROUTES = [
   "/",

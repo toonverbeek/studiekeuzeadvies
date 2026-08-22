@@ -8,8 +8,9 @@ import { meetings } from "@/app/traject";
  * Each card is three columns on a wide screen: the numeral, what you do in the
  * meeting, and what you do at home before the next one. The rhythm answers the
  * question the reader really has, which is how much work this is. The last
- * card has no homework, so its third column stands empty, exactly as the
- * client drew it.
+ * card has no homework. Its third column is not empty, though: row T5 of the
+ * client's mail gave it "Daarna, inschrijven!" and a party mark, and that
+ * heading stands there on its own.
  *
  * Responsive (ours, the client's export keeps three columns at 390px): one
  * column on a telephone with the numeral above the title, two from `sm` with

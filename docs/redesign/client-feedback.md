@@ -42,7 +42,7 @@ reason follows it. Every open row is also a GitHub issue.
 
 | ID | Asked | Done |
 |---|---|---|
-| A1 | Every "Studiekeuze…" gets the inner capitals: *StudieKeuzeAdvies*, *StudieKeuzeCoach*, *StudieKeuzeTraject*. | Done, 48 lines in 18 files. `app/site-config.ts` carries the brand string; the sweep covers prose, headings, metadata titles and descriptions. **Four things keep their small letters, and each is an address rather than a sentence**: a URL (`/studiekeuzecoaches`), an anchor (`#studiekeuzescan`), an e-mail address (`info@studiekeuzeadvies.nl`) and the domain itself. A capital in any of those is a different address. The drawn wordmark in the header and the footer also stays as the client drew it: it is a logo, not a word in a sentence. |
+| A1 | Every "Studiekeuze…" gets the inner capitals: *StudieKeuzeAdvies*, *StudieKeuzeCoach*, *StudieKeuzeTraject*. | Done, 48 lines in 18 files. `app/site-config.ts` carries the brand string; the sweep covers prose, headings, metadata titles and descriptions. **Four things keep their small letters, and each is an address rather than a sentence**: a URL (`/studiekeuzecoaches`), an anchor (`#studiekeuzescan`), an e-mail address (`info@studiekeuzeadvies.nl`) and the domain itself. A capital in any of those is a different address. The drawn wordmark in the header and the footer also stays as the client drew it: it is a logo, not a word in a sentence. Its `aria-label` and `<title>` are not, though, and a review caught them in small letters; they are swept now. |
 | A2 | *KeuzeScan* is always *StudieKeuzeScan*. | Done. Swept over the traject page, the tarieven page, the home page, the footer and the pricing data. |
 | A3 | Pictures: colour only, photographs only, and inclusive. Offer to shoot real young people. | Partly done. The five generated coach portraits are gone, replaced by the coaches' own photographs. The remaining generated pictures are listed in the open question Q2. |
 | A4 | A few pages are still missing. Shall Lau design them? | Open, question Q7. The two the mail names itself (Contact, Samenwerken) are built here. |
@@ -60,12 +60,12 @@ reason follows it. Every open row is also a GitHub issue.
 | H7 | The scan line gets new wording and must point at the StudieKeuzeScan block on the traject page, not at the tarieven page. | Done. It links to `/studiekeuzetraject#studiekeuzescan`. |
 | H8 | "Jouw keuze, jouw tempo. Met één vaste coach." over two lines. | Done. |
 | H9 | "Ook als je gestopt bent of vastloopt" becomes "… gestopt bent met of vastloopt in je huidige studie". | Done. |
-| H10 | The parents' test line ends with ", afgerond in een rapportage". | Done. |
+| H10 | The test line ends with ", afgerond in een rapportage". | Done. The client files this under "Kader voor jou", and the sentence they quote has always stood in the box beside it, "Voor ouders" (`forParents` in `app/page.tsx`). It is edited where it stands rather than moved: the client asked for the ending, not for the line to change boxes. Say the word and it moves. |
 | H11 | Moya's caption becomes "koos na haar herstart voor de opleiding Toegepaste Psychologie". | Done. |
 | H12 | The "één vaste coach" paragraph is rewritten and names deaf and hard-of-hearing readers, and Tamara's sign language. | Done. |
 | H13 | Drop the small "Sterk in …" box under a coach. Put the work area there instead, for the SEO. | Done. The chip under a coach now lists that coach's own towns, and the city list beside it is alphabetical. |
 | H14 | New closing one-liner and new line under it. | Done, and "35+ locaties" became "onze vaste locaties". |
-| H15 | Footer: "Keuzecheck herstarters" becomes "StudieKeuzeScan" and points at the traject page. Drop "Extra ondersteuning". "Contactformulier" points at a new Contact page. | Done, `app/components/site-footer.tsx` and the new `app/contact`. |
+| H15 | Footer: "Keuzecheck herstarters" becomes "StudieKeuzeScan" and points at the traject page. Drop "Extra ondersteuning". "Contactformulier" points at a new Contact page. | Done, `app/components/site-footer.tsx` and the new `app/contact`. The page carries the client's paragraph word for word, including "of mail naar info@studiekeuzeadvies.nl", which a review found missing from the sentence it belongs in. |
 | H16 | Add "Scholen" beside "Decanen"; both point at a new page "Samenwerken". Keep the page switched off at launch. | Done. `app/samenwerken` exists and is complete; `showSamenwerken` in `app/site-config.ts` is `false`, so the page answers 404 and the two links stay out of the footer. One flag turns it on. |
 
 ## T. Het traject
@@ -77,9 +77,9 @@ reason follows it. Every open row is also a GitHub issue.
 | T3 | Add "✓ Incl. rapportage" beside the two tests. | Done. |
 | T4 | The four steps get the long new texts. | Done. |
 | T5 | The orange "Daarna, thuis" column is rewritten; step 3 is headed "Daarna, thuis en erop uit"; step 4 reads "Daarna, inschrijven!" with a festive mark. | Done. The mark is 🎉, and it carries `aria-hidden`. |
-| T6 | The tests panel loses the TalentDrives badge for "Betrouwbare tests, gericht op betere keuzes", gets the long new text, and names "matrix + rapportage". | Done. |
+| T6 | The tests panel loses the TalentDrives badge for "Betrouwbare tests, gericht op betere keuzes", gets the long new text, and names "matrix + rapportage". | Done. The mail says the mention "moet er nog bij", so it joins the three pills instead of replacing one. Two notes from a review: the client writes "Samen met de studiekeuzeadviseur" and a first pass had swept that common noun into "StudieKeuzeCoach" — the client's word is back. The pill reads "Matrix + rapportage" and not the client's lower-case "matrix + rapportage", because every pill beside it starts with a capital. |
 | T7 | The scan block: rename to StudieKeuzeScan, button "Boek hier je StudieKeuzeScan" to a form that reaches info@, three new steps, and drop the closing sentence. | Done. The form is `/studiekeuzescan`. |
-| T8 | New closing one-liner and text. "Kies je stad" points at the coaches page. Drop "Bekijk alle coaches". | Done, in `app/components/closing-band.tsx`. The client wrote the same four lines twice, once here and once under VOOR WIE, so they are one component: two copies of a text the client will edit again is two chances to edit only one of them. |
+| T8 | New closing one-liner and text. "Kies je stad" points at the coaches page. Drop "Bekijk alle coaches". | Done, in `app/components/closing-band.tsx`. **Two deviations, both flagged by a review, both easy to undo.** The client asks only that the link point elsewhere, and the button is also renamed "Kies je coach": a button that says "Kies je stad" and opens a list of people asks the reader to trust the label or the page, not both. And the client's sentence reads "en beslis of het traject bij je past", which is missing its subject; it reads "en beslis je of" here. The client wrote the same four lines twice, once here and once under VOOR WIE, so they are one component: two copies of a text the client will edit again is two chances to edit only one of them. |
 
 ## V. Voor wie
 
@@ -145,11 +145,11 @@ reason follows it. Every open row is also a GitHub issue.
 
 | ID | Asked | Done |
 |---|---|---|
-| W1 | "Word coach" becomes "Sluit je aan als coach". | Done on the page (h1, eyebrow, title tag) and in the footer, in full. In the top navigation it is shortened to "Sluit je aan": the client's sentence is 22 characters in a bar that already carries six links and a button. The verb is theirs. The address `/coach-worden` does not move, so the four old vacancy redirects and the ranking stay. |
+| W1 | "Word coach" becomes "Sluit je aan als coach". | Done. The h1 and the footer carry the client's sentence exactly: "Sluit je aan als coach." It first read "als StudieKeuzeCoach", which a review called out and which was wrong: row A1 capitalises the brand, it does not put the brand where the client wrote the plain word. The eyebrow ("Werken als StudieKeuzeCoach") and the title tag still name the brand, because a search engine reads those and neither is the kop the client named. In the top navigation it is shortened to "Sluit je aan": the client's sentence is 22 characters in a bar that already carries six links and a button. The verb is theirs. The address `/coach-worden` does not move, so the four old vacancy redirects and the ranking stay. |
 | W2 | The form must carry a CV. | Done. One file, PDF or Word, at most 5 MB, delivered as a real attachment on the application mail. It is **optional**: the client asked that a CV *can* be sent, and somebody reading this page on a telephone has their CV on a laptop. Three things had to move together: `Mail` in `app/lib/mail.ts` now carries attachments, `serverActions.bodySizeLimit` in `next.config.ts` is 6mb (a server action refuses a body over 1MB by default, and multipart adds its own bytes), and nothing is written to disk: the file is read once, encoded, sent and forgotten. |
 | W3 | "Wat krijg je" gains a yearly intervisie meeting. | Done. |
 | W4 | "Wat verwachten we" gains "en hanteert dezelfde tarieven". | Done. |
-| W5 | The licence is "een jaarlijkse licentie van €750". | Done in `app/pricing.ts`, which is the only place the figure is written. It was "± € 750, eenmalig, een indicatie". The amount did not move; the term did, and the hedge is gone, because the client has now decided it. |
+| W5 | The licence is "een jaarlijkse licentie van €750". | Done in `app/pricing.ts`, which is the only place the figure is written. A review found the page's own header comment typing it as well, which made that sentence false; the comment no longer names an amount. It was "± € 750, eenmalig, een indicatie". The amount did not move; the term did, and the hedge is gone, because the client has now decided it. |
 | W6 | New text for "Hoe het verder gaat". | Done. |
 
 ---
@@ -175,6 +175,40 @@ added there as a comment rather than filed twice.
 | Q10 | #76 | Tamara's photograph. The one in the Drive folder is 192×192 pixels, which is too small for the 640px slot on her own page and shows it. Her card and her page are built to stand without a portrait, so nothing is broken, but she is the only coach without a face. A photograph at 1000px or more fixes it. |
 
 ---
+
+## Where the page does not say exactly what the mail says
+
+A review of this change read every request against the mail and found the
+places where the built copy and the written copy differ. None of them is a
+disagreement; they are slips in the mail, or a house rule that the mail did not
+speak to. **All of them are the client's to overrule.** Each is one edit.
+
+Slips in the mail, corrected in silence until this list:
+
+| Mail | Page | Why |
+|---|---|---|
+| "Ben je doof **op** slechthorend" (twice: H12 and V1) | "doof **of** slechthorend" | The sentence needs "of". |
+| "hoe jij je toekomst voor je **zit**" (T4) | "voor je **ziet**" | Same word, one letter. |
+| "De testresultaten **ontvang** in een rapportage" (T7) | "**ontvang je** in een rapportage" | The subject is missing. |
+| "door **jouw** samengestelde lijst" (H4) | "door **jou** samengestelde lijst" | |
+| "Kies hiernaast **stad** … en **vraagt** het" (C3) | "kies hiernaast **een** stad … en **vraag** het" | |
+| "MBO, HBO, **HBO**" (C5) | "MBO · HBO · **WO**" | The mail writes "mbo, hbo en wo" on the home page, so the third is a slip. |
+| "**30 Jaar** ervaring", "**Gebaarvaardig**", "stage oriëntatie" (C6) | "30 jaar", "Gebarenvaardig", "stage-oriëntatie" | |
+| "vak.Toen" (O3) | Two sentences, three paragraphs | |
+| "beslis of het traject bij je past" (T8) | "beslis **je** of" | |
+
+House rules the mail did not speak to, applied for consistency:
+
+- **"✓ incl rapportage" is written "✓ Incl. rapportage"** (T3), because every
+  tick beside it is capitalised and abbreviated the same way.
+- **"matrix + rapportage" is a pill reading "Matrix + rapportage"** (T6), for
+  the same reason.
+- **The orange column writes the two tests in small letters** (T5) where the
+  mail capitalises them mid-sentence.
+- **The new contact form says "Je naam" and "Bericht (mag je leeg laten)"**
+  where the mail sketches "Naam" and "Bericht (optioneel)" (H16). Every other
+  form on the site asks in those words. This is the one on the list that is a
+  real choice rather than a spelling, so it is the one most worth a word back.
 
 ## What was deliberately not changed
 

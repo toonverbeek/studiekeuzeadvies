@@ -81,13 +81,13 @@ export function CoachApplicationForm({ className = "" }: { className?: string })
   const undeliverable =
     state.status === "not-configured" || state.status === "provider-error";
 
+  // No encType here although this form carries a file. React sets it itself for
+  // a form whose action is a function, and it overrides and warns about one that
+  // is written down. See react-dom, "Cannot specify a encType or method ...".
   return (
     <form
       action={formAction}
       className={cardBase}
-      /* ROW W2. Without this a browser posts the name of the file and not the
-         file, and the CV would arrive as the word "cv.pdf". */
-      encType="multipart/form-data"
       noValidate
     >
       <h2 className="text-title font-display font-bold">Meld je aan als coach</h2>
@@ -304,9 +304,13 @@ export function CoachApplicationForm({ className = "" }: { className?: string })
           ) : (
             <p className="text-micro text-lavender-ink" id={`${id}-cv-hint`}>
               PDF of Word, maximaal {cvMaxLabel}.
-              {state.status === "invalid"
-                ? " Kies je bestand opnieuw: een browser mag het niet voor je onthouden."
-                : ""}
+              {/* Every state that lands here again empties the file input, not
+                  just an invalid one: a provider error returns the typed
+                  answers and no file either. "sent" never reaches this, it
+                  returns above. */}
+              {state.status === "idle"
+                ? ""
+                : " Kies je bestand opnieuw: een browser mag het niet voor je onthouden."}
             </p>
           )}
         </div>

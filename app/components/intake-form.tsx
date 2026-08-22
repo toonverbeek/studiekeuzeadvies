@@ -15,8 +15,11 @@ import {
  * with paper fields, one violet pill to submit, and a confirmation that
  * replaces the whole card.
  *
- * The form always knows where it sends to, because there is no central mailbox
- * to fall back on (issue #7).
+ * The form always knows where it sends to. It used to have to: issue #7 said
+ * there was no central mailbox to fall back on. The client's mail of 21 August
+ * brought one back, so `unassignedIntakeInbox` now answers for a city with no
+ * coach yet. A request that names nobody at all is still archived and not
+ * delivered, which is issue #17.
  *
  * `route` is the encoded destination of app/intake.ts and it travels in a
  * hidden field. `coachName` is the same destination in words, for the reader.
@@ -36,7 +39,7 @@ import {
  *  - "Waar loop je tegenaan?" is gone. It was the one open question on the
  *    card and the client asked for it to go. A reader now says what is going
  *    on in the intake conversation itself, which is what that conversation is
- *    for, and the form is four short rows instead of a small essay;
+ *    for, and the card asks short questions instead of a small essay;
  *  - "Hoe kunnen we je bereiken?" is new, and WhatsApp is one of the three
  *    answers. The telephone field came back with it, because two of the three
  *    channels cannot work without a number. It is optional for the third, and

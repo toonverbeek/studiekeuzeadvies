@@ -157,8 +157,8 @@ export const legacyRedirects: LegacyRedirect[] = [
   { source: "/locaties/roosendaal/angelina-muller-1", destination: "/locaties", temporary: true }, // waits for /locaties/roosendaal
   { source: "/locaties/rotterdam", destination: "/locaties", temporary: true }, // waits for /locaties/rotterdam
   { source: "/locaties/singel-331-3311-hl-dordrecht", destination: "/locaties" },
-  { source: "/locaties/sittard", destination: "/locaties", temporary: true }, // waits for /locaties/sittard
-  { source: "/locaties/sittard/lisa-2", destination: "/locaties", temporary: true }, // waits for /locaties/sittard
+  { source: "/locaties/sittard", destination: "/locaties/sittard-geleen" },
+  { source: "/locaties/sittard/lisa-2", destination: "/locaties/sittard-geleen" },
   { source: "/locaties/student-getting-help-from-tutor-in-library", destination: "/locaties" },
   { source: "/locaties/studiekeuzeadvies-apeldoorn", destination: "/locaties", temporary: true }, // waits for /locaties/apeldoorn
   { source: "/locaties/utrecht/b-m", destination: "/locaties/utrecht" },
@@ -223,7 +223,7 @@ export const legacyRedirects: LegacyRedirect[] = [
   { source: "/product/studiekeuzeadvies-traject-mbo-zonder-gesprekken-opnieuw-kiezer", destination: "/tarieven" },
   { source: "/product/studiekeuzeadvies-traject-mbo-zonder-gesprekken", destination: "/tarieven" },
   { source: "/roosendaal", destination: "/locaties", temporary: true }, // waits for /locaties/roosendaal
-  { source: "/sittard", destination: "/locaties", temporary: true }, // waits for /locaties/sittard
+  { source: "/sittard", destination: "/locaties/sittard-geleen" },
   { source: "/spoedcursus-studeren-1-wat-je-moet-weten-voor-je-gaat-studeren", destination: "/artikelen", temporary: true }, // waits for /spoedcursus-studeren-1-wat-je-moet-weten-voor-je-gaat-studeren
   { source: "/spoedcursus-studeren-2-voorbereiden-op-je-studie", destination: "/artikelen", temporary: true }, // waits for /spoedcursus-studeren-2-voorbereiden-op-je-studie
   { source: "/spoedcursus-studeren-3-hoe-zit-een-studie-in-elkaar", destination: "/artikelen", temporary: true }, // waits for /spoedcursus-studeren-3-hoe-zit-een-studie-in-elkaar

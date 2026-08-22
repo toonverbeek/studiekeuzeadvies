@@ -332,6 +332,25 @@ export async function requestIntake(
 }
 
 /**
+ * A file name a mail client can be handed.
+ *
+ * Three things happen to it. A line break or a slash goes, because either can
+ * make a mail header say something the sender did not write. The stem is cut to
+ * length, never the suffix: a .pdf that arrives called `cv` opens in nothing.
+ * And the cut counts characters the way a person reads them, so it cannot land
+ * in the middle of an emoji and leave half of one behind.
+ */
+function safeFilename(name: string): string {
+  const clean = oneLine(name).replace(/[/\\]/g, "-");
+  const dot = clean.lastIndexOf(".");
+  const stem = dot > 0 ? clean.slice(0, dot) : clean;
+  const suffix = dot > 0 ? clean.slice(dot) : "";
+  const room = Math.max(1, 120 - suffix.length);
+  const cut = [...stem].slice(0, room).join("");
+  return `${cut}${suffix}`;
+}
+
+/**
  * Read the CV off the application form.
  *
  * It answers with exactly one of two things: an attachment, or a sentence for
@@ -370,8 +389,10 @@ async function readCv(
       content: Buffer.from(await file.arrayBuffer()).toString("base64"),
       contentType: file.type || undefined,
       // The reader's own file name, minus anything that could confuse a mail
-      // client about what kind of file it is looking at.
-      filename: oneLine(file.name).replace(/[/\\]/g, "-").slice(0, 120),
+      // client about what kind of file it is looking at. The length cap takes
+      // it out of the stem and never out of the suffix: a .pdf that arrives
+      // called `cv` opens in nothing.
+      filename: safeFilename(file.name),
     },
   };
 }
