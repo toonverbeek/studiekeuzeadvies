@@ -15,6 +15,8 @@ import {
   type IntakeState,
   situaties,
   situatieLabel,
+  voorkeuren,
+  voorkeurLabel,
   spamGuard,
 } from "./intake";
 import { archiveInbox, type MailFailure, sendMail } from "./lib/mail";
@@ -143,6 +145,7 @@ export async function requestIntake(
     email: String(formData.get("email") ?? "").trim(),
     telefoon: String(formData.get("telefoon") ?? "").trim(),
     situatie: String(formData.get("situatie") ?? "").trim(),
+    voorkeur: String(formData.get("voorkeur") ?? "").trim(),
     bericht: String(formData.get("bericht") ?? "").trim(),
     voor: String(formData.get("voor") ?? "").trim(),
   };
@@ -161,6 +164,11 @@ export async function requestIntake(
   }
   if (!situaties.some((s) => s.value === values.situatie)) {
     errors.situatie = "Kies wat het beste bij je past.";
+  }
+  // Optional, so empty passes. Anything else has to be one of our three
+  // values: the select cannot produce another, so another means a script.
+  if (values.voorkeur && !voorkeuren.some((v) => v.value === values.voorkeur)) {
+    errors.voorkeur = "Kies online, op locatie, of geen voorkeur.";
   }
   if (values.naam.length > MAX_SHORT) errors.naam = TOO_LONG_SHORT;
   if (values.email.length > MAX_SHORT) errors.email = TOO_LONG_SHORT;
@@ -253,6 +261,14 @@ export async function requestIntake(
       `E-mail:   ${values.email}`,
       `Telefoon: ${values.telefoon || "niet ingevuld"}`,
       `Situatie: ${situatieLabel(values.situatie)}`,
+      `Voorkeur: ${
+        values.voorkeur
+          ? voorkeurLabel(
+              values.voorkeur,
+              destination.coach?.town ?? destination.cityName,
+            )
+          : "niet ingevuld"
+      }`,
       "",
       "Bericht:",
       values.bericht || "(geen bericht)",

@@ -110,6 +110,7 @@ export function ContactSection({ city }: { city?: string }) {
               coachName={coach.name}
               helper={`${coach.name} neemt binnen twee werkdagen contact op.`}
               lede={`Vrijblijvend kennismaken, online of in ${known.name}. ${coach.name} leest zelf wat je invult, en je beslist daarna pas of je start.`}
+              place={known.name}
               route={encodeIntakeRoute({ kind: "stad", slug: known.slug })}
               title={`Plan je gratis intake bij ${coach.name}`}
             />

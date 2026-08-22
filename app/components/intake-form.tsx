@@ -2,7 +2,12 @@
 
 import { useActionState, useEffect, useId, useRef } from "react";
 import { requestIntake } from "../actions";
-import { intakeInitialState, situaties, spamGuard } from "../intake";
+import {
+  intakeInitialState,
+  situaties,
+  spamGuard,
+  voorkeuren,
+} from "../intake";
 
 /**
  * The intake card of the client's design (design-spec 3.19): an indigo card
@@ -20,12 +25,13 @@ import { intakeInitialState, situaties, spamGuard } from "../intake";
  *
  * THE FIELDS ARE THE CLIENT'S, WITH ONE SUBSTITUTION. The client's card asks
  * for a name, an e-mail, "voor wie is de intake", a preference (online or in
- * the city) and a message. The first, the second and the last are the same
- * here. "Voor wie" becomes the `situatie` select, because that is the field
- * `requestIntake` validates and mails, and its four options carry the same
- * answer (one of them is "Ik ben ouder of verzorger"). The preference select
- * is not built: no field of the server action carries it, so it would be a
- * question with no reader. See sharedNeeds.
+ * the city) and a message. The first, the second, the fourth and the last are
+ * the same here. "Voor wie" becomes the `situatie` select, because that is the
+ * field `requestIntake` validates and mails, and its four options carry the
+ * same answer (one of them is "Ik ben ouder of verzorger"). The preference
+ * select is the client's "Voorkeur: online of in Amsterdam?", with `place`
+ * standing in for Amsterdam; it is optional, as it is in the client's export,
+ * and it is printed in the mail so the coach can open with the right offer.
  *
  * THE TELEPHONE FIELD IS GONE. The client's card does not ask for a number,
  * `requestIntake` has always treated it as optional, and the card is sticky on
@@ -47,6 +53,7 @@ const errorBase = "text-[0.8125rem] text-coral-soft";
 export function IntakeForm({
   coachName,
   route,
+  place = null,
   title,
   lede,
   helper,
@@ -54,6 +61,9 @@ export function IntakeForm({
 }: {
   coachName: string | null;
   route: string;
+  /** The town the coach works in, for "online of in Amsterdam?". Without it
+   *  the question says "op locatie". */
+  place?: string | null;
   /** The heading of the card. A coach page names the coach in it. */
   title?: string;
   /** The sentence under the heading. */
@@ -271,6 +281,46 @@ export function IntakeForm({
           {state.errors.situatie && (
             <p className={errorBase} id={errorId("situatie")}>
               {state.errors.situatie}
+            </p>
+          )}
+        </div>
+
+        <div className="flex flex-col gap-1.5">
+          <label className={labelBase} htmlFor={field("voorkeur")}>
+            Voorkeur: online of {place ? `in ${place}` : "op locatie"}?
+          </label>
+          <div className="relative">
+            <select
+              aria-describedby={
+                state.errors.voorkeur ? errorId("voorkeur") : undefined
+              }
+              aria-invalid={Boolean(state.errors.voorkeur)}
+              className={`${fieldBase} appearance-none pr-11`}
+              defaultValue={state.values.voorkeur}
+              id={field("voorkeur")}
+              name="voorkeur"
+            >
+              <option value="">Kies wat je liever hebt</option>
+              {voorkeuren.map((v) => (
+                <option key={v.value} value={v.value}>
+                  {v.label(place)}
+                </option>
+              ))}
+            </select>
+            <svg
+              aria-hidden="true"
+              className="pointer-events-none absolute top-1/2 right-4 -translate-y-1/2 text-ink"
+              fill="none"
+              height="8"
+              viewBox="0 0 14 8"
+              width="14"
+            >
+              <path d="M1 1l6 6 6-6" stroke="currentColor" strokeWidth="1.75" />
+            </svg>
+          </div>
+          {state.errors.voorkeur && (
+            <p className={errorBase} id={errorId("voorkeur")}>
+              {state.errors.voorkeur}
             </p>
           )}
         </div>

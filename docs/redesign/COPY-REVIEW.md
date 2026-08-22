@@ -171,6 +171,8 @@ Matches: eyebrow, h1, lede, `Meld je aan`, `Bekijk onze methode`, `In het kort` 
 
 ## DRIFT: fix instructions, most visible first
 
+All three were applied on 2026-08-22, in the commit after the one that added this report. The form question is the `voorkeur` field in `app/intake.ts`; it is optional, the select takes its town from the coach or the city the form sends to, and the mail prints it as `Voorkeur: In Amsterdam` or `Voorkeur: niet ingevuld`.
+
 1. **Janneke's intake form lost the client's second question.** `app/components/intake-form.tsx` (with `app/intake.ts` for the values and `app/actions.ts` for validation and the mail body): add the select `Voorkeur: online of in Amsterdam?` with options `Online`, `In Amsterdam`, `Geen voorkeur`, where "Amsterdam" is the coach's town (`coach.town`), so the form that says "online of in Amsterdam" in its lede also asks it. If the question is left out on purpose, add a row to `docs/decisions.md`.
 2. **"een van de vijf eigenaren" became "een van de eigenaren".** `app/coach-worden/page.tsx` lines 262-263: restore `met een van de vijf eigenaren`. The client's number also stands on `/studiekeuzecoaches/janneke` ("met z'n vijven"). If the count was dropped on purpose (REVIEW §3.7, the four others are unnamed), record it, and then Janneke's page is the one that disagrees.
 3. **"Praktijkgericht & betrouwbaar" became "Praktijkgericht en betrouwbaar".** `app/traject.ts` line 83: restore `Praktijkgericht & betrouwbaar`, or write the ampersand rule into DESIGN.md and then also change the caption `psycholoog & studiekeuzecoach` in `app/studiekeuzecoaches/[coach]/profiles.ts` line 77.

@@ -9,6 +9,7 @@ export type IntakeField =
   | "email"
   | "telefoon"
   | "situatie"
+  | "voorkeur"
   | "bericht"
   | "voor";
 
@@ -52,6 +53,8 @@ export type IntakeState = {
     email: string;
     telefoon: string;
     situatie: string;
+    /** Online, in the coach's town, or no preference. See `voorkeuren`. */
+    voorkeur: string;
     bericht: string;
     /** Where the request must go. See `IntakeRoute` below. */
     voor: string;
@@ -68,6 +71,7 @@ export const intakeInitialState: IntakeState = {
     email: "",
     telefoon: "",
     situatie: "",
+    voorkeur: "",
     bericht: "",
     voor: "",
   },
@@ -141,4 +145,24 @@ export const situaties = [
 
 export function situatieLabel(value: string): string {
   return situaties.find((s) => s.value === value)?.label ?? value;
+}
+
+/**
+ * The client's second question on the intake card: "Voorkeur: online of in
+ * Amsterdam?". The town is not in the label here, because the form fills it
+ * in from the coach or the city it sends to; `voorkeurLabel` does the same
+ * for the mail. The question is optional, as it is in the client's export:
+ * only the name and the e-mail stop a request.
+ */
+export const voorkeuren = [
+  { value: "online", label: () => "Online" },
+  {
+    value: "locatie",
+    label: (place: string | null) => (place ? `In ${place}` : "Op locatie"),
+  },
+  { value: "geen-voorkeur", label: () => "Geen voorkeur" },
+] as const;
+
+export function voorkeurLabel(value: string, place: string | null): string {
+  return voorkeuren.find((v) => v.value === value)?.label(place) ?? value;
 }

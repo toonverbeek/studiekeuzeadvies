@@ -80,7 +80,7 @@ export const tests = {
   pills: [
     "Persoonlijkheidstest",
     "Studie-interessetest",
-    "Praktijkgericht en betrouwbaar",
+    "Praktijkgericht & betrouwbaar",
   ],
 } as const;
 

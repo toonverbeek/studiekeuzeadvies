@@ -227,6 +227,7 @@ export default async function CoachProfilePage(
                     : `${coach.name} neemt contact met je op.`
                 }
                 lede={profile.formLede}
+                place={coach.town}
                 route={encodeIntakeRoute({ kind: "coach", slug: coach.slug })}
                 title={profile.formTitle}
               />

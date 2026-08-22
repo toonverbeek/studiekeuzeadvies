@@ -260,7 +260,7 @@ export default function CoachWordenPage() {
                   <p className="font-display font-bold">Hoe het verder gaat</p>
                   <p className="text-card mt-2 text-muted-read">
                     Na je aanmelding plannen we een kennismakingsgesprek met een
-                    van de eigenaren. Klikt het van beide kanten? Dan bespreken
+                    van de vijf eigenaren. Klikt het van beide kanten? Dan bespreken
                     we de licentie, je regio en de onboarding in de methode.
                   </p>
                 </div>
