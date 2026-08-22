@@ -27,12 +27,31 @@ an answer, two reverse a decision below (the tests, and the central contact
 point), and four are build items. The plan that answers it holds the email in
 full: `~/grill-client-feedback-round-1-plan.html`.
 
+## Client feedback, round 2
+
+Arrived on **2026-08-21**, one mail from Mirjam, page by page and box by box.
+Every request is a numbered row in
+[docs/redesign/client-feedback.md](redesign/client-feedback.md), and the mail
+itself is kept word for word beside it in `client-feedback-email.md`.
+
+**The client leads.** Where a request contradicts PRODUCT.md, the request wins.
+This mail reverses three things that are written down below, and each reversal
+is in the table with its date:
+
+1. the central mailbox is back, for everything except an intake;
+2. "8,8 gemiddeld" goes back on the home page;
+3. the coach licence is a yearly price, and a decided one.
+
 ---
 
 ## The table
 
 | Decision | When |
 |---|---|
+| **A central mailbox exists again, for everything except an intake.** This reverses the row of 2026-08-15 in part, not in whole. The client's mail names `info@studiekeuzeadvies.nl` as "het emailadres waar we straks allemaal bij moeten kunnen en waar alle centrale vragen op binnen moeten komen", so the four forms that are not an intake go there: Contact, Samenwerken, the StudieKeuzeScan and online begeleiding (`app/central.ts`). **An intake still goes to the one coach the reader picked**, which is what the original decision was actually protecting: a study chooser writes to a person, not to a queue | 2026-08-21 |
+| **"8,8 gemiddeld" goes back on the home page**, which reverses that half of the row of 2026-08-20. The rebuild removed it under PRODUCT.md principle 5. The client put it back and dropped "1.000+ trajecten per jaar" beside it in the same breath, so the choice is theirs, considered, and about a number they hold. The other four numbers named in that row stay off the site | 2026-08-21 |
+| **The coach licence is €750 a year, decided.** It was "± € 750" once, printed as an indication because GESPREK.md listed it as open. The client's mail closes it: "En het wordt: Een jaarlijkse licentie van €750." The figure did not move; the term did, and the hedge is gone. `app/pricing.ts` is the only place it is written | 2026-08-21 |
+| **The five owners are named on the site.** /over-ons told the story in "we" because only one coach was a confirmed person. The mail names all five — Tamara, Aart, Mirjam, Regula and Janneke — with their own texts, work areas, experience and slogans, so the five stand-ins are gone from `app/coaches.ts` and their generated portraits are deleted. Four of the five have a photograph; Tamara's is 192×192 and too small to use (question Q10) | 2026-08-21 |
 | Home page and city pages are high fidelity, not production ready | 2026-08-04 |
 | **The client's own design replaces the ochre system.** The client designed the whole site in Claude Design and asked us to rebuild every page to it (`docs/redesign/`). So: violet `#6d4aff` and indigo `#1e1b4b` on the same warm paper, with coral `#ff6b4a` and amber `#ffc94d` as the two accents; Bricolage Grotesque for every heading, Figtree for every sentence, IBM Plex Mono for every label; pills instead of blocks, rounded cards, real shadows, and one restrained motion (a 24px rise on scroll). Every ochre token is gone from `app/globals.css`. DESIGN.md is rewritten from the extracted spec, `docs/redesign/design-spec.md`, and the desktop rendering of the client's export is the target; the responsive behaviour is ours, because the client's 390px rendering overflows sideways | 2026-08-20 |
 | PRODUCT.md's anti-reference "purple accent" is overruled by the client's choice, and only that line. Everything else in PRODUCT.md stands, including principle 5: a number goes on a page only when it is true of us. So "8,8 gemiddeld", "1000+ trajecten per jaar", "92% studeert met plezier door", "92% kiest goed" and "35+ locaties" do not get printed, however the client's export writes them. The slot stays and true statements fill it: gratis intake, MBO, HBO en WO, online of op locatie, and the real number of cities in `app/cities.ts` | 2026-08-20 |

@@ -30,7 +30,7 @@ import { getProfile, type ProfileBlock } from "./profiles";
  * elsewhere.
  */
 
-/** The six people of the roster, and nobody else. An unknown slug is a 404. */
+/** The five people of the roster, and nobody else. An unknown slug is a 404. */
 export function generateStaticParams() {
   return coaches.map((coach) => ({ coach: coach.slug }));
 }
@@ -46,7 +46,7 @@ export async function generateMetadata(
   const profile = getProfile(coach);
 
   return {
-    title: `${profile.fullName}, studiekeuzecoach in ${coach.town} | StudieKeuzeAdvies`,
+    title: `${profile.fullName}, StudieKeuzeCoach in ${coach.town} | StudieKeuzeAdvies`,
     description: profile.description,
     alternates: { canonical: `/studiekeuzecoaches/${coach.slug}` },
     /*
@@ -180,21 +180,17 @@ export default async function CoachProfilePage(
 
             <Reveal className="relative lg:col-start-2 lg:row-start-1">
               {coach.portrait ? (
-                <>
-                  <Image
-                    alt={coach.portraitAlt}
-                    className="rounded-photo aspect-4/5 w-full max-w-[17.5rem] object-cover shadow-portrait sm:max-w-[20rem] lg:max-w-none"
-                    placeholder="blur"
-                    sizes="(min-width: 1024px) 400px, (min-width: 640px) 320px, 280px"
-                    src={coach.portrait}
-                  />
-                  {/* Over the photo where the photo is wide enough to carry it,
-                      under it on a telephone, where a line of text on a 280px
-                      picture covers a face. */}
-                  <p className="text-small mt-3 font-semibold sm:absolute sm:bottom-5 sm:left-5 sm:mt-0 sm:max-w-[calc(100%-2.5rem)] sm:rounded-row sm:bg-paper/95 sm:px-4.5 sm:py-3 sm:backdrop-blur-[6px]">
-                    {profile.caption}
-                  </p>
-                </>
+                // ROW P4: the photograph and nothing on it. A small card used
+                // to sit in the corner with the name and the role; the client
+                // asked for it to go, for every coach. The name is the h1 two
+                // columns to the left, so nothing was lost.
+                <Image
+                  alt={coach.portraitAlt}
+                  className="rounded-photo aspect-4/5 w-full max-w-[17.5rem] object-cover shadow-portrait sm:max-w-[20rem] lg:max-w-none"
+                  placeholder="blur"
+                  sizes="(min-width: 1024px) 400px, (min-width: 640px) 320px, 280px"
+                  src={coach.portrait}
+                />
               ) : (
                 <p className="rounded-photo border border-photo-line bg-white p-6 text-card text-muted">
                   {coach.name} heeft nog geen foto gestuurd. Je ziet elkaar in

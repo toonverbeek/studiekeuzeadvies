@@ -24,7 +24,11 @@ const nav: NavItem[] = [
   { href: "/artikelen", label: "Artikelen" },
   { href: "/tarieven", label: "Tarieven" },
   { href: "/over-ons", label: "Over ons" },
-  { href: "/coach-worden", label: "Word coach" },
+  // ROW W1. "Word coach" is renamed everywhere, and here it is renamed
+  // short: the client's own "Sluit je aan als coach" is 22 characters in a bar
+  // that already carries six other links and a pill. The verb is theirs, the
+  // page and the footer carry the whole sentence.
+  { href: "/coach-worden", label: "Sluit je aan" },
 ];
 
 const intakeCta: NavItem = {
@@ -33,7 +37,7 @@ const intakeCta: NavItem = {
 };
 
 export function SiteHeader({
-  /** A coach page points the pill at its own form; Word coach at its own. */
+  /** A coach page points the pill at its own form; the coach page at its own. */
   cta = intakeCta,
 }: {
   cta?: NavItem;
@@ -44,7 +48,7 @@ export function SiteHeader({
           the sections inside the page are held to 1160px. */}
       <div className="flex items-center gap-4 px-5 py-3.5 sm:px-7">
         <Link
-          aria-label="StudiekeuzeAdvies, naar de homepagina"
+          aria-label="StudieKeuzeAdvies, naar de homepagina"
           className="flex shrink-0 items-center gap-2.5"
           href="/"
         >

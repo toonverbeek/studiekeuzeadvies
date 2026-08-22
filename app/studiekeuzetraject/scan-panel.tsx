@@ -9,15 +9,16 @@ import {
 import { scanPrice, scanSteps } from "@/app/traject";
 
 /**
- * The short road, next to the long one (design-spec 4.2, "KeuzeScan").
+ * The short road, next to the long one (design-spec 4.2, row T7).
  *
- * Two things differ from the client's export, and both on purpose:
- *  - the product is called "Studiekeuzescan" here, the name /tarieven and the
- *    home page print. The client wrote "KeuzeScan" on this page only, and one
- *    product with two names is a defect a reader pays for;
- *  - the price stands on the page. It is the client's own price, and the
- *    parent reading over the chooser's shoulder should not have to leave the
- *    page to learn what the cheaper road costs.
+ * THE HOME PAGE LINKS STRAIGHT AT THIS BLOCK. `#studiekeuzescan` on the
+ * section below is that anchor, and row H7 is why: the scan line in the price
+ * panel used to open /tarieven, and the client wants the reader here, where
+ * the scan is explained, before they see a price list.
+ *
+ * The product is called StudieKeuzeScan, everywhere, from row A2 on. The price
+ * stands on the page because the parent reading over the chooser's shoulder
+ * should not have to leave it to learn what the cheaper road costs.
  *
  * The card is white on paper with a hairline, at panel radius: it is the one
  * surface on this page that is neither lavender nor ink, which is how a
@@ -39,21 +40,20 @@ export function ScanPanel() {
             </Eyebrow>
 
             <h2 className="text-h3 font-bold">
-              Snel inzicht met de Studiekeuzescan
+              Snel inzicht met de StudieKeuzeScan
             </h2>
 
             <p className="mt-4 text-muted">
-              De Studiekeuzescan is een kort traject voor wie snel inzicht wil
+              De StudieKeuzeScan is een kort traject voor wie snel inzicht wil
               in welke studie past. Je maakt dezelfde twee testen als in het
               volledige traject: de persoonlijkheidstest en de interessetest.
             </p>
             <p className="mt-3.5 text-muted">
-              Daarna heb je één online sessie met een studiekeuzecoach. Je
+              Daarna heb je één online sessie met een StudieKeuzeCoach. Je
               bespreekt samen de resultaten, voor je uitgewerkt in een
-              overzichtelijke matrix, krijgt toelichting op je antwoorden en
-              denkt na over vervolgstappen. Ideaal als je snel duidelijkheid
-              wilt of behoefte hebt aan een eerste verkenning van je
-              mogelijkheden.
+              rapportage, krijgt toelichting op je antwoorden en denkt na over
+              vervolgstappen. Ideaal als je snel duidelijkheid wilt of behoefte
+              hebt aan een eerste verkenning van je mogelijkheden.
             </p>
 
             <p className="mt-6 flex flex-wrap items-baseline gap-x-3 gap-y-1">
@@ -65,9 +65,11 @@ export function ScanPanel() {
               </span>
             </p>
 
+            {/* Row T7: the button books the scan now, at the central
+                mailbox, instead of sending the reader off to pick a coach. */}
             <div className="mt-6 flex flex-wrap items-center gap-x-5 gap-y-3">
-              <Button href="/studiekeuzecoaches" variant="dark">
-                Kies een coach voor de scan
+              <Button href="/studiekeuzescan" variant="dark">
+                Boek hier je StudieKeuzeScan
               </Button>
               <Button href="/tarieven" variant="ghost">
                 Bekijk tarieven →
@@ -103,10 +105,9 @@ export function ScanPanel() {
               ))}
             </ol>
 
-            <p className="text-card mt-4.5 border-t border-hairline pt-3.5 text-muted">
-              Wil je daarna toch volledige begeleiding? Dan stap je over op het
-              studiekeuzetraject.
-            </p>
+            {/* ROW T7: "Wil je daarna toch volledige begeleiding? Dan stap je
+                over op het StudieKeuzeTraject." stood here. "Deze zin helemaal
+                weglaten", so it is gone and nothing replaced it. */}
           </div>
         </Card>
       </Container>

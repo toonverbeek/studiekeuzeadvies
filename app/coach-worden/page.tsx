@@ -16,35 +16,41 @@ import { coachLicence } from "@/app/pricing";
 import { CoachApplicationForm } from "./application-form";
 
 /**
- * "Word coach", the client's page (design-spec 4.9). The third reader of
- * PRODUCT.md: without coaches there is no product, so this page has to make a
- * good coach want to write to us.
+ * "Sluit je aan als coach", the client's page (design-spec 4.9). The third
+ * reader of PRODUCT.md: without coaches there is no product, so this page has
+ * to make a good coach want to write to us.
  *
- * THE LICENCE AMOUNT IS AN INDICATION AND SAYS SO, which is how the client
- * printed it (GESPREK.md section 5 lists the final price as still open). It is
- * one constant here, so the day it is fixed one line changes.
+ * ROW W1 RENAMED IT. It was "Word coach"; the client's mail says "De kop 'word
+ * coach' moet worden: sluit je aan als coach". The address /coach-worden does
+ * not move with the name: four old vacancy URLs redirect into it and it is in
+ * the sitemap, and a rename that breaks those buys nothing.
  *
- * WHICH REGIONS ARE TAKEN IS READ FROM THE ROSTER, never typed, and only the
- * coaches who exist count. The client's export names six cities by hand; five
- * of the six coaches in app/coaches.ts carry `isPlaceholder: true`, so the
- * sentence and the pills below are generated from the real coaches and grow by
- * themselves the day a stand-in becomes a person.
+ * THE LICENCE IS DECIDED NOW, row W5: a yearly amount. It used to be an
+ * indication of a one-off one and said so in the same breath. app/pricing.ts
+ * holds the figure and the term, so this page never types either, and neither
+ * does this comment.
+ *
+ * WHICH REGIONS ARE TAKEN IS READ FROM THE ROSTER, never typed. The client's
+ * export names six cities by hand; the roster in app/coaches.ts now holds five
+ * real coaches, so the sentence and the pills below are generated from it and
+ * grow by themselves the day a sixth signs.
  */
 export const metadata: Metadata = {
-  title: "Word studiekeuzecoach van jouw regio | StudieKeuzeAdvies",
+  title: "Sluit je aan als StudieKeuzeCoach in jouw regio | StudieKeuzeAdvies",
   description:
-    "StudiekeuzeAdvies is van de coaches zelf. Per stad of regio sluit precies één coach aan: eigen profielpagina, aanvragen rechtstreeks bij jou, een eenmalige licentie en geen maandelijkse afdracht.",
+    "StudieKeuzeAdvies is van de coaches zelf. Per stad of regio sluit precies één coach aan: eigen profielpagina, aanvragen rechtstreeks bij jou, een jaarlijkse licentie en geen omzetafdracht.",
   alternates: { canonical: "/coach-worden" },
 };
 
-/** The one-off licence, as an indication. See app/pricing.ts. */
+/** The yearly licence. See app/pricing.ts, row W5. */
 const licentie = coachLicence.label;
 
 /**
- * The coaches who really work here. The five stand-ins in the roster carry
- * `isPlaceholder: true`, and a region is only taken when a real person covers
- * it: telling a coach from Rotterdam that the city is gone, because an invented
- * colleague sits there, is the one thing this page may not do.
+ * The coaches who really work here. A region is only taken when a real person
+ * covers it: telling a coach from Rotterdam that the city is gone, because a
+ * stand-in sits there, is the one thing this page may not do. Every coach in
+ * the roster is a real person today, so the filter passes all five; it stays
+ * because the guard is what makes that safe to change.
  */
 const echteCoaches = coaches.filter((coach) => !coach.isPlaceholder);
 
@@ -89,8 +95,8 @@ const inHetKort = [
     line: "Eigen profielpagina, vindbaar via de kaart en het regiofilter.",
   },
   {
-    title: "Eenmalige licentie",
-    line: `Eenmalig ${licentie} (indicatie), geen maandelijkse afdracht.`,
+    title: "Jaarlijkse licentie",
+    line: `${licentie} ${coachLicence.term}, en geen afdracht over je omzet.`,
   },
   {
     title: "Eén vaste methode",
@@ -98,17 +104,22 @@ const inHetKort = [
   },
 ];
 
+/* ROW W3 added the last line: "In het kader 'wat krijg je' toevoegen: Een
+   jaarlijkse intervisie bijeenkomst." */
 const krijgJe = [
-  "Een eigen, exclusieve regio: jij bent daar de enige coach van StudiekeuzeAdvies",
+  "Een eigen, exclusieve regio: jij bent daar de enige coach van StudieKeuzeAdvies",
   "Zichtbaarheid op de website: eigen profielpagina, plek op de kaart en in het regiofilter",
   "Aanvragen uit jouw regio komen rechtstreeks bij jou binnen",
   "Eén uitgewerkte methode: het complete traject, de twee testen en alle materialen",
   "Een hecht team van collega-coaches: het bedrijf is van de coaches zelf",
+  "Een jaarlijkse intervisie bijeenkomst",
 ];
 
+/* ROWS W4 and W5. The methode line gained "en hanteert dezelfde tarieven", and
+   the licence is a year's licence at a decided price. */
 const vragenWe = [
-  `Een eenmalige licentie van ${licentie}: een indicatie, de definitieve prijs stemmen we samen af`,
-  "Je werkt volgens de methode zoals die op deze website staat beschreven",
+  `Een jaarlijkse licentie van ${licentie}`,
+  "Je werkt volgens de methode zoals die op deze website staat beschreven en hanteert dezelfde tarieven",
   "Ervaring met jongeren, coaching of loopbaanbegeleiding",
   "Je bent zelfstandig ondernemer (of wilt dat worden)",
 ];
@@ -126,19 +137,20 @@ export default function CoachWordenPage() {
           <Container>
             <div className="grid items-center gap-10 lg:grid-cols-[1.2fr_1fr] lg:gap-14">
               <div>
-                <Eyebrow className="mb-4">Werken als studiekeuzecoach</Eyebrow>
+                <Eyebrow className="mb-4">Werken als StudieKeuzeCoach</Eyebrow>
 
-                {/* "studiekeuzecoach" is 16 letters and it does not fit on a
-                    320px line at the smallest step of text-h1, so the title
-                    drops one step there (decision 2026-08-05). */}
+                {/* ROW W1, the client's own words. "StudieKeuzeCoach" is 16
+                    letters and does not fit on a 320px line at the smallest
+                    step of text-h1, so the title drops one step there
+                    (decision 2026-08-05). */}
                 <h1 className="text-h1 max-w-[16ch] font-bold max-[380px]:text-h2-lg">
-                  Word dé studiekeuzecoach van jouw regio.
+                  Sluit je aan als coach.
                 </h1>
 
                 <p className="text-lead mt-5 max-w-[34rem] text-muted">
-                  StudiekeuzeAdvies is van de coaches zelf. We groeien met zorg:
+                  StudieKeuzeAdvies is van de coaches zelf. We groeien met zorg:
                   per stad of regio sluit precies één coach aan, die daar het
-                  gezicht van StudiekeuzeAdvies wordt.
+                  gezicht van StudieKeuzeAdvies wordt.
                 </p>
 
                 <div className="mt-8 flex flex-wrap gap-3.5">
@@ -256,12 +268,17 @@ export default function CoachWordenPage() {
                   </Pill>
                 </div>
 
+                {/* ROW W6, the client's own text. It is more precise than
+                    ours was, and the precision is the point: five people read
+                    it, two of them do the interview. */}
                 <div className="mt-7 max-w-[32rem] rounded-box bg-lavender p-6 sm:px-7">
                   <p className="font-display font-bold">Hoe het verder gaat</p>
                   <p className="text-card mt-2 text-muted-read">
-                    Na je aanmelding plannen we een kennismakingsgesprek met een
-                    van de vijf eigenaren. Klikt het van beide kanten? Dan bespreken
-                    we de licentie, je regio en de onboarding in de methode.
+                    Na je aanmelding bekijken we je profiel met z&rsquo;n vijven.
+                    Zien we een mogelijke match? Dan nodigen twee van ons je uit
+                    voor een kennismakingsgesprek. Tijdens dit gesprek maken we
+                    kennis en bespreken we de samenwerking en verdere
+                    mogelijkheden.
                   </p>
                 </div>
               </Reveal>

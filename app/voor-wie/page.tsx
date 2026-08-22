@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { citiesWithCoach } from "@/app/cities";
+import { ClosingBand } from "@/app/components/closing-band";
 import { SiteFooter } from "@/app/components/site-footer";
 import { SiteHeader } from "@/app/components/site-header";
 import {
@@ -8,7 +9,6 @@ import {
   Card,
   Check,
   Container,
-  CtaBand,
   Eyebrow,
   Reveal,
   Section,
@@ -34,7 +34,7 @@ import {
  */
 
 export const metadata: Metadata = {
-  title: "Voor wie is het studiekeuzetraject? | StudieKeuzeAdvies",
+  title: "Voor wie is het StudieKeuzeTraject? | StudieKeuzeAdvies",
   description:
     "Voor wie voor het eerst kiest, voor wie gestopt is met een studie en voor wie meer overzicht nodig heeft. Lees welk keuze-type bij je past en hoe wij je helpen.",
   alternates: { canonical: "/voor-wie" },
@@ -57,13 +57,17 @@ const chooserTypes = [
 ];
 
 /**
- * The three doors, in the client's order and in the client's words. Each one
- * points at the page that answers it, which the client's export could not do
- * because those pages were not in the design.
+ * The doors, in the client's order and in the client's words. Each one points
+ * at the page that answers it, which the client's export could not do because
+ * those pages were not in the design.
  *
  * The third card names autisme, and the page it opens does not. That is the
  * decision of 2026-08-05: autisme is named on the doors that lead there, and
  * the page keeps the scope its source copy can carry (ADD and ADHD).
+ *
+ * The fourth is row V1 and it is new. It opens a coach and not a subject page,
+ * because there is no page about being deaf and there does not need to be: the
+ * answer is one person who signs.
  */
 const situations = [
   {
@@ -90,6 +94,19 @@ const situations = [
     body: "Dan helpt overzicht meer dan nóg meer opties: vaste stappen, één ding per keer, dezelfde coach elke afspraak en vooraf weten wat er gaat gebeuren. Zeg het in het intakegesprek, dan houdt je coach er rekening mee.",
     link: "Extra structuur in je keuze",
     surface: "border-[1.5px] border-ink bg-white text-ink",
+    text: "text-muted",
+    linkColor: "text-violet",
+  },
+  {
+    // ROW V1, and it is the client's own text. It is a fourth door and not a
+    // line inside the third, because being deaf is not a variant of ADHD. It
+    // opens the coach who can actually keep the promise: Tamara is
+    // gebarenvaardig, and the promise is hers to keep.
+    href: "/studiekeuzecoaches/tamara",
+    title: "Doof of slechthorend",
+    body: "Ben je doof of slechthorend, ook dan zit je bij ons goed. We hebben 1 coach die jou online of thuis in gebarentaal kan begeleiden.",
+    link: "Maak kennis met Tamara",
+    surface: "border-[1.5px] border-ink bg-lavender text-ink",
     text: "text-muted",
     linkColor: "text-violet",
   },
@@ -213,10 +230,12 @@ export default function VoorWiePage() {
               </ul>
             </Reveal>
 
-            {/* The three doors. Each card is one situation, and the link goes
-                to the page that answers it in full. */}
+            {/* The four doors. Each card is one situation, and the link goes
+                to the page that answers it in full. Two by two from md, and
+                not three across: the fourth door is row V1, and four columns
+                of this much text is four narrow columns. */}
             <Reveal>
-              <div className="mt-6 grid gap-5.5 md:mt-8 lg:grid-cols-3">
+              <div className="mt-6 grid gap-5.5 md:mt-8 md:grid-cols-2">
                 {situations.map((situation) => (
                   <div
                     className={`flex flex-col gap-3 rounded-card p-8 lg:p-9 ${situation.surface}`}
@@ -308,37 +327,34 @@ export default function VoorWiePage() {
                 </h2>
               </Reveal>
 
+              {/* Row V2, the client's own text, split in two where they
+                  changed the subject: first what the choice does, then what
+                  begeleiding does about it. */}
               <Reveal className="flex flex-col gap-3.5 text-muted">
                 <p>
-                  De keuze voor een vervolgstudie is één van de belangrijkste
-                  keuzes die je tot nu toe hebt gemaakt. Tegelijk is de uitval
-                  en de switch in het eerste jaar van het mbo, hbo en wo hoog.
-                  Het grootste deel van de studenten die uitvallen, valt uit
-                  omdat de studie niet bleek te passen.
+                  De keuze voor een studie heeft invloed op hoe je je
+                  studententijd ervaart en op de stappen die daarna komen. Toch
+                  blijkt uit onderzoek dat heel veel studenten in het eerste
+                  jaar stoppen of overstappen, bijvoorbeeld omdat de opleiding
+                  niet goed bij hen past. Een goede studiekeuze begint daarom
+                  niet bij de vraag &ldquo;Welke studie moet ik
+                  kiezen?&rdquo;, maar bij de vraag &ldquo;Wat past bij
+                  mij?&rdquo;
                 </p>
                 <p>
-                  Veel scholieren stellen het kiezen uit en maken op het laatste
-                  moment snel een keuze. Een verkeerde studiekeuze kost niet
-                  alleen geld, maar geeft ook stress, doordat je toekomst
-                  onzeker lijkt. Goede begeleiding helpt je een overwogen keuze
-                  te maken. Dat scheelt frustratie, teleurstelling en een hoop
-                  geld.
+                  Met de juiste begeleiding krijg je beter zicht op jezelf, je
+                  mogelijkheden en wat je nodig hebt om ergens goed op je plek
+                  te zijn. Zo maak je een keuze waar je met vertrouwen aan kunt
+                  beginnen. Dat kan een hoop frustratie, teleurstelling en geld
+                  schelen.
                 </p>
               </Reveal>
             </div>
           </Container>
         </Section>
 
-        <CtaBand
-          accent="Het kost je niets."
-          primary={{ href: "/locaties", label: "Kies je stad" }}
-          secondary={{
-            href: "/studiekeuzecoaches",
-            label: "Bekijk eerst alle coaches",
-          }}
-          text="In het intakegesprek vertel je wat er speelt, en horen we of dit traject bij je past. Daarna zeg je gewoon nee als het niet klopt."
-          title="Begin met een gesprek."
-        />
+        {/* Row V3, which is row T8 word for word. See ClosingBand. */}
+        <ClosingBand />
       </main>
 
       <SiteFooter />

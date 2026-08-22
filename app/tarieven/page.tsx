@@ -23,14 +23,16 @@ import { extraGesprek, intakeIsFree, scan, traject } from "@/app/pricing";
  * get, never a claim about how many people bought it: the client's "Meest
  * gekozen" badge is a sales claim we cannot prove, so it reads "Aanbevolen".
  *
- * Every button lands on /studiekeuzecoaches, because that is where a reader
- * meets the person who reads their request. There is no central contact point
- * (decision 2026-08-15), so "koop nu" does not exist on this site: you pick a
- * coach and the intake is free.
+ * WHERE THE BUTTONS GO. The traject button lands on /studiekeuzecoaches,
+ * because a traject begins with one named coach and a free intake: "koop nu"
+ * does not exist on this site. The scan button is the exception the client's
+ * mail asked for (row TA2): it opens /studiekeuzescan, a form that reaches the
+ * central mailbox, because a scan does not need you to pick a person first.
+ * That splits decision 2026-08-15; app/central.ts says why.
  */
 export const metadata: Metadata = {
-  title: `Tarieven | Studiekeuzescan ${scan.label}, studiekeuzetraject ${traject.label} | StudieKeuzeAdvies`,
-  description: `${intakeIsFree} Daarna kies je: de studiekeuzescan voor ${scan.label} of het volledige traject met een vaste coach voor ${traject.label}.`,
+  title: `Tarieven | StudieKeuzeScan ${scan.label}, StudieKeuzeTraject ${traject.label} | StudieKeuzeAdvies`,
+  description: `${intakeIsFree} Daarna kies je: de StudieKeuzeScan voor ${scan.label} of het volledige traject met een vaste coach voor ${traject.label}.`,
   alternates: { canonical: "/tarieven" },
 };
 
@@ -117,20 +119,28 @@ export default function TarievenPage() {
         <Section className="pt-2 pb-14 lg:pb-18" space="none">
           <Container>
             <Reveal className="grid gap-6 pt-4 lg:grid-cols-3 lg:gap-[22px]">
+              {/* ROWS TA1 and TA2. The rapportage is now a fourth tick, and
+                  the button is the client's own label on the client's own
+                  destination: a form, not a coach. */}
               <PriceCard
                 action={
-                  <Button className="w-full" href={intake} variant="outline">
-                    Kies een coach voor de scan
+                  <Button
+                    className="w-full"
+                    href="/studiekeuzescan"
+                    variant="outline"
+                  >
+                    Boek hier je StudieKeuzeScan
                   </Button>
                 }
                 body="Snel inzicht: je maakt de tests en bespreekt de uitkomsten in één gesprek met een coach."
                 checks={[
                   "Persoonlijkheidstest",
                   "Studie-interessetest",
+                  "Rapportage",
                   "Eén begeleidend gesprek over de uitkomsten",
                 ]}
                 figure={scan.label}
-                name="Studiekeuzescan"
+                name="StudieKeuzeScan"
                 suffix="eenmalig"
                 tone="paper"
               />
@@ -147,25 +157,29 @@ export default function TarievenPage() {
                   </Badge>
                 }
                 body="Het volledige traject: vier gesprekken met één vaste coach, van eerste twijfel tot definitieve keuze."
+                /* ROW TA3: "+ rapportage" behind the tests, and the home
+                   work line spelled out in full. */
                 checks={[
                   "Vier 1-op-1 gesprekken met je eigen coach",
-                  "Persoonlijkheidstest en studie-interessetest",
-                  "Opdrachten voor thuis, elk gesprek bouwt verder",
+                  "Persoonlijkheidstest en studie-interessetest + rapportage",
+                  "Opdrachten voor thuis, elk gesprek bouwt voort op het vorige gesprek",
                   "Op locatie bij jou in de buurt of online",
                 ]}
                 figure={traject.label}
-                name="Studiekeuzetraject"
+                name="StudieKeuzeTraject"
                 suffix="compleet traject"
                 tone="ink"
               />
 
               <PriceCard
-                /* Not a button: there is nothing to click. Extra coaching is
-                   not a product you can buy on its own, so the slot says what
-                   it is instead of pretending to be an action. */
+                /* ROW TA6. Not a button, and now it does not look like one
+                   either: the client wrote "NB. Dit moet geen link zijn, enkel
+                   tekst", and a bordered pill under two real buttons reads as a
+                   third button. So the ring is gone and the line is a line. */
                 action={
-                  <p className="text-card flex min-h-11 w-full items-center justify-center rounded-full border-[1.5px] border-ink px-5 text-center font-bold text-ink">
-                    Bij te boeken na scan of traject
+                  <p className="text-card w-full text-center font-bold text-ink">
+                    Bij te boeken na afloop van het StudieKeuzeTraject of de
+                    StudieKeuzeScan bij je coach
                   </p>
                 }
                 badge={
@@ -176,10 +190,11 @@ export default function TarievenPage() {
                     Aanvullend
                   </Badge>
                 }
-                body="Geen los product, maar een aanvulling: een extra gesprek kan alleen als je eerst de scan of het traject hebt gedaan."
+                /* ROW TA5, the client's own two sentences. */
+                body="Mocht je behoefte hebben aan een extra gesprek, dat kan. Dit is geen los product, maar een aanvulling op het traject of de scan."
                 checks={[
                   "1-op-1 met je eigen coach",
-                  "Alleen ná de scan of het traject",
+                  "Alleen ná de StudieKeuzeScan of het StudieKeuzeTraject",
                   "Op locatie of online",
                 ]}
                 figure={extraGesprek.label}
@@ -200,16 +215,20 @@ export default function TarievenPage() {
                 <h2 className="text-title-lg font-display font-bold">
                   Eerst weten of het bij je past?
                 </h2>
+                {/* ROW TA7. Only the last sentence changed: the client
+                    answers "scan of traject?" on the telephone, before the
+                    intake, and not inside it. */}
                 <p className="text-card mt-2.5 text-muted">
                   Begin met het gratis intakegesprek. Je vertelt wat er speelt,
                   wij vertellen hoe we kunnen helpen. Daarna zeg je gewoon nee
                   als het niet klopt. Twijfel je tussen de scan en het traject?
-                  Dat bespreek je in de intake.
+                  Dat kan telefonisch besproken worden voorafgaand aan de
+                  intake.
                 </p>
               </div>
 
               <Button className="max-[420px]:w-full" href={intake} size="lg">
-                Plan gratis intake bij een coach
+                Kom in contact met een coach
               </Button>
             </Reveal>
           </Container>

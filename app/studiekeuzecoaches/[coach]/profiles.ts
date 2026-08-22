@@ -14,8 +14,8 @@ import type { PillTone } from "@/app/components/ui";
  * profile below is the client's own copy (docs/redesign/client/coach-janneke/,
  * design-spec 4.5); she is the client and she wrote it about herself, so it is
  * hers to print. Nobody else has a record here, and `fallbackProfile` builds
- * their page out of `intro`, `bio`, `focus` and `region`, which are the fields
- * app/coaches.ts already carries. Nothing is invented here, ever: a stand-in
+ * their page out of `selfIntro`, `bio`, `levels` and `regionTowns`, which are
+ * the fields app/coaches.ts already carries. Nothing is invented here, ever: a stand-in
  * with a written profile would read as a real person with a real history.
  */
 
@@ -31,9 +31,9 @@ export type ProfileBlock =
   | { kind: "area"; title: string; text: string };
 
 export type Profile = {
-  /** The name as this page prints it. Janneke's own page carries her surname,
-   *  because she wrote the page; every other page keeps the first name only
-   *  (decision 2026-08-06). It is used in the title and in the photo caption. */
+  /** The name in the title and in the metadata. The h1 uses the first name
+   *  only, because the client asked for one headline for everybody:
+   *  "Hoi, ik ben '...'" (row P1). */
   fullName: string;
   /** The mono line above the h1. */
   eyebrow: string;
@@ -43,8 +43,10 @@ export type Profile = {
   lede: string;
   /** The "oog voor" chips: what this coach is and who they see. */
   pills: { label: string; tone: PillTone }[];
-  /** The line over the portrait, or under it on a narrow screen. */
-  caption: string;
+  /* ROW P4: there is no caption. A small card sat on every portrait with the
+     name and the role on it, and the client's line about it was flat: "Deze
+     kadertjes mogen helemaal weg bij iedereen, dus enkel de foto." The field
+     is gone, so no profile can bring it back by accident. */
   /** The reading column. */
   blocks: ProfileBlock[];
   /** The heading and the sentence of the intake card. */
@@ -55,7 +57,8 @@ export type Profile = {
 };
 
 /**
- * Janneke, the only real coach (`isPlaceholder: false`).
+ * Janneke. She was the only real coach until the client's mail of 21 August
+ * named the other four; all five are real now.
  *
  * This is the client's copy, word for word, with two changes the house rules
  * ask for: the em dash in the lede is a comma, and nothing was added. She
@@ -66,19 +69,18 @@ export type Profile = {
  */
 const janneke: Profile = {
   fullName: "Janneke van den Brand",
-  eyebrow: "Studiekeuzecoach in Amsterdam en omgeving",
-  heading: "Hoi, ik ben Janneke van den Brand.",
-  lede: "Ik ben psycholoog en studiekeuzecoach, en samen met vier collega-coaches trotse eigenaar van StudiekeuzeAdvies.",
+  eyebrow: "StudieKeuzeCoach in Amsterdam en omgeving",
+  heading: "Hoi, ik ben Janneke.",
+  lede: "Ik ben psycholoog en StudieKeuzeCoach en samen met vier collega-coaches trotse eigenaar van StudieKeuzeAdvies.",
   pills: [
     { label: "Amsterdam + online", tone: "lavender" },
     { label: "Psycholoog", tone: "coral" },
-    { label: "10 jaar bij StudiekeuzeAdvies", tone: "amber" },
+    { label: "10 jaar bij StudieKeuzeAdvies", tone: "amber" },
   ],
-  caption: "Janneke van den Brand · psycholoog & studiekeuzecoach",
   blocks: [
     {
       kind: "p",
-      text: "Vanaf het prille begin ben ik betrokken bij StudiekeuzeAdvies. In de afgelopen 10 jaar heb ik actief meegewerkt aan de ontwikkeling en vormgeving van het studiekeuzetraject. In diezelfde periode heb ik StudiekeuzeAdvies een aantal keer van eigenaar zien veranderen. Toen de laatste eigenaar besloot de samenwerking met de coaches te stoppen, kregen wij de mogelijkheid aangeboden om het over te nemen. Samen met vier collega-coaches heb ik die kans gegrepen. Inmiddels zijn we met z'n vijven de trotse eigenaar.",
+      text: "Ik ben Janneke van den Brand. Vanaf het prille begin ben ik betrokken bij StudieKeuzeAdvies. In de afgelopen 10 jaar heb ik naast het coachen actief meegewerkt aan de ontwikkeling en vormgeving van het StudieKeuzeTraject. In diezelfde periode heb ik StudieKeuzeAdvies een aantal keer van eigenaar zien veranderen. Toen de laatste eigenaar besloot de samenwerking met de coaches te stoppen, kregen wij de mogelijkheid aangeboden om het over te nemen. Samen met vier collega-coaches heb ik die kans gegrepen. Inmiddels zijn we met z'n vijven de trotse eigenaar.",
     },
     {
       kind: "p",
@@ -109,56 +111,67 @@ const janneke: Profile = {
     {
       kind: "area",
       title: "Werkgebied",
-      text: "Ik ontvang je in Amsterdam, maar begeleid ook studiekiezers uit onder andere Amstelveen, Abcoude, Zaandam, Haarlem, Purmerend, Diemen, Hoofddorp, Heemstede, Uithoorn en Aalsmeer. Liever vanuit huis? Online kan natuurlijk ook!",
+      text: "Ik ontvang je in Amsterdam, maar begeleid ook studiekiezers uit onder andere Amstelveen, Abcoude, Zaandam, Wormerveer, Haarlem, Purmerend, Diemen, Hoofddorp, Heemstede, Uithoorn en Aalsmeer. Liever vanuit huis? Online kan natuurlijk ook!",
     },
   ],
   formTitle: "Plan je gratis intake bij Janneke",
   formLede:
     "Vrijblijvend kennismaken, online of in Amsterdam. Je beslist daarna pas of je start.",
   description:
-    "Janneke van den Brand is psycholoog en studiekeuzecoach in Amsterdam en omgeving. Lees hoe zij werkt en vraag een gratis intakegesprek aan.",
+    "Janneke van den Brand is psycholoog en StudieKeuzeCoach in Amsterdam en omgeving. Lees hoe zij werkt en vraag een gratis intakegesprek aan.",
 };
 
 /** Written profiles, by slug. One entry today, and that is the honest number. */
 const profiles: Record<string, Profile> = { janneke };
 
+/** "a, b en c". A Dutch list, with the last comma spoken instead of printed. */
+function listTowns(towns: string[]): string {
+  if (towns.length === 0) return "de omgeving";
+  if (towns.length === 1) return towns[0];
+  return towns.slice(0, -1).join(", ") + " en " + towns[towns.length - 1];
+}
+
 /**
- * The page of a coach who has no written profile.
+ * The page of a coach who has no written profile of their own.
  *
- * Every sentence below is already in app/coaches.ts, in the third person, so
- * this builds a real page without one new claim: `intro` becomes the lede,
- * `bio` becomes the reading column, `focus` becomes a chip and `region`
- * becomes the work area box. A stand-in therefore reads as a stand-in, and a
- * real coach who joins tomorrow already has a page before she writes a word.
+ * Every sentence below is already in app/coaches.ts, so this builds a real
+ * page without one new claim: `selfIntro` becomes the lede, `bio` becomes the
+ * reading column, `levels` becomes a chip and `regionTowns` becomes the work
+ * area box. It is the first person throughout, because the client asked for
+ * one headline on every coach page and that headline is "Hoi, ik ben ..."
+ * (row P1): under it, the coach speaks.
+ *
+ * Four of the five coaches are rendered by this function today, from the texts
+ * they wrote themselves and sent to the client.
  */
 function fallbackProfile(coach: Coach): Profile {
+  const others = coach.regionTowns.filter((town) => town !== coach.town);
+
   return {
-    fullName: coach.name,
-    eyebrow: `Studiekeuzecoach in ${coach.region}`,
-    heading: `Maak kennis met ${coach.name}.`,
-    lede: coach.intro,
-    // `specialties` is app/coaches.ts's own list of two or three short labels,
-    // and every one of them points at something the same file already says.
-    // Nothing here is a new claim about a person.
+    fullName: coach.fullName,
+    eyebrow: `StudieKeuzeCoach in ${coach.town} en omgeving`,
+    heading: `Hoi, ik ben ${coach.name}.`,
+    lede: coach.selfIntro,
+    // Two chips, and neither is a claim this file makes up: where the coach
+    // works, and the levels every coach does (row C5).
     pills: [
       { label: `${coach.town} + online`, tone: "lavender" as const },
-      ...coach.specialties.map((label, index) => ({
-        label,
-        tone: index === 0 ? ("coral" as const) : ("amber" as const),
-      })),
+      { label: coach.levels, tone: "coral" as const },
     ],
-    caption: `${coach.name}, studiekeuzecoach in ${coach.town}`,
     blocks: [
       ...coach.bio.map((text): ProfileBlock => ({ kind: "p", text })),
       {
         kind: "area",
         title: "Werkgebied",
-        text: `${coach.name} werkt in ${coach.region}. Liever vanuit huis? Online kan ook.`,
+        // The big town first and the smaller ones under it. That is the shape
+        // the client asked about in the mail ("Is dat SEO goed?"), and the
+        // answer is yes: it is the town a reader searches for.
+        text: `Ik ontvang je in ${coach.town}, en ik begeleid ook studiekiezers uit ${listTowns(others)}. Liever vanuit huis? Online kan ook.`,
       },
     ],
     formTitle: `Plan je gratis intake bij ${coach.name}`,
     formLede: `Vrijblijvend kennismaken, online of in ${coach.town}. Je beslist daarna pas of je start.`,
-    description: `${coach.name} is studiekeuzecoach in ${coach.region}. Lees wie ${coach.name} is en vraag een gratis intakegesprek aan.`,
+    description: `${coach.fullName} is StudieKeuzeCoach in ${coach.region}. Lees wie ${coach.name} is en vraag een gratis intakegesprek aan.`,
   };
 }
 

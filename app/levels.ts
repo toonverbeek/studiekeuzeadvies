@@ -31,7 +31,7 @@
  *   Universiteit van Tilburg. It belongs to the seller, and this site does not
  *   sell it. Qompas and the Keuzegids go with it.
  * - The whole closing section about the coaches ("De coaches van
- *   StudieKeuzeAdvies" and "De studiekeuzecoaches van StudieKeuzeAdvies").
+ *   StudieKeuzeAdvies" and "De StudieKeuzeCoaches van StudieKeuzeAdvies").
  *   Every sentence in it is a claim about the people who worked for the seller:
  *   that they all finished a university degree, that they are young
  *   professionals, and that they have years of experience with this age group.
@@ -45,7 +45,7 @@
  *   hebben gespecialiseerd". We cannot prove any of them.
  * - No price was on these three pages, and none is added.
  * - The remaining sentences that only pointed at ourselves: "Ben jij iemand die
- *   wel wat advies kan gebruiken? De studiekeuzecoaches van StudieKeuzeAdvies
+ *   wel wat advies kan gebruiken? De StudieKeuzeCoaches van StudieKeuzeAdvies
  *   staan voor je klaar" (mbo), and "Wij helpen je graag met het beantwoorden
  *   van de vraag: welke hbo opleiding past bij mij?" (hbo). That last question
  *   is not lost: it is the heading of the first section on the hbo page, which

@@ -39,6 +39,21 @@ export type MailFailure =
 
 export type MailResult = { ok: true; id: string } | { ok: false; reason: MailFailure };
 
+/**
+ * A file that travels with the message. One reader sends one: the coach who
+ * attaches a CV to their application (client's mail, row W2). `content` is the
+ * file base64-encoded, which is what Resend's API takes, and it is never logged
+ * and never written to disk: it is read from the request, encoded, handed over
+ * and forgotten.
+ */
+export type MailAttachment = {
+  filename: string;
+  /** The bytes, base64-encoded. */
+  content: string;
+  /** "application/pdf" and the like. Optional: Resend guesses from the name. */
+  contentType?: string;
+};
+
 export type Mail = {
   to: string;
   /** The archive copy. Dropped when it is the same address as `to`. */
@@ -47,11 +62,13 @@ export type Mail = {
   replyTo: string;
   subject: string;
   text: string;
+  /** Files to send along. Left out when there are none. */
+  attachments?: MailAttachment[];
 };
 
 /** The sender. A domain we own has to be verified with Resend before this
  *  passes DKIM and SPF, and that waits on the DNS move (issues #17 and #23). */
-const DEFAULT_FROM = "StudiekeuzeAdvies <intake@studiekeuzeadvies.nl>";
+const DEFAULT_FROM = "StudieKeuzeAdvies <intake@studiekeuzeadvies.nl>";
 
 const ENDPOINT = "https://api.resend.com/emails";
 
@@ -75,6 +92,18 @@ export function archiveInbox(): string | null {
 async function deliver(mail: Mail, apiKey: string): Promise<MailResult> {
   const cc = mail.cc && mail.cc !== mail.to ? [mail.cc] : undefined;
 
+  // Resend names the field `attachments` and each file `{ content, filename,
+  // content_type }`, content being base64. The key is left out entirely when
+  // there is nothing to attach, so an ordinary message is the same request it
+  // always was.
+  const attachments = mail.attachments?.length
+    ? mail.attachments.map((file) => ({
+        content: file.content,
+        filename: file.filename,
+        ...(file.contentType ? { content_type: file.contentType } : {}),
+      }))
+    : undefined;
+
   const body = JSON.stringify({
     from: process.env.MAIL_FROM?.trim() || DEFAULT_FROM,
     to: [mail.to],
@@ -82,6 +111,7 @@ async function deliver(mail: Mail, apiKey: string): Promise<MailResult> {
     reply_to: mail.replyTo,
     subject: mail.subject,
     text: mail.text,
+    ...(attachments ? { attachments } : {}),
   });
 
   for (let attempt = 0; attempt < 2; attempt++) {
@@ -158,6 +188,11 @@ export async function sendMail(mail: Mail): Promise<MailResult> {
         `  cc:       ${mail.cc ?? "(geen)"}`,
         `  reply-to: ${mail.replyTo}`,
         `  subject:  ${mail.subject}`,
+        // The name and the size, never the bytes.
+        ...(mail.attachments?.map(
+          (file) =>
+            `  bijlage:  ${file.filename} (${Math.round(file.content.length * 0.75)} bytes)`,
+        ) ?? []),
         mail.text.replace(/^/gm, "  "),
       ].join("\n"),
     );

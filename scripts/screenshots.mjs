@@ -41,8 +41,9 @@ const CONSENT = process.env.CONSENT ?? "granted";
  * that only differs in content is never shot and never checked. The rule for
  * adding one is therefore "does this page have a layout no other route has":
  * /locaties/bergen-op-zoom is the city without a coach, and
- * /studiekeuzecoaches/hanneke is a stand-in profile, which the sitemap leaves
- * out on purpose. Both were invisible to both scripts until 2026-08-20.
+ * /studiekeuzecoaches/tamara is the profile without a photograph. Both were
+ * invisible to both scripts until 2026-08-20. The stand-in profile that used
+ * to stand here went with the stand-ins themselves.
  */
 export const ROUTES = [
   "/",
@@ -51,9 +52,18 @@ export const ROUTES = [
   "/tarieven",
   "/studiekeuzecoaches",
   "/studiekeuzecoaches/janneke",
-  "/studiekeuzecoaches/hanneke",
+  // Tamara has no photograph yet (open question Q10), so hers is the profile
+  // whose hero has to hold without one. It replaces /studiekeuzecoaches/hanneke:
+  // the stand-ins are gone from the roster, so that address is a 404 now.
+  "/studiekeuzecoaches/tamara",
   "/over-ons",
   "/coach-worden",
+  // The three pages the client's mail asked for that are switched on.
+  // /samenwerken is deliberately absent: `showSamenwerken` is false, so it
+  // answers 404 on purpose (row H16) and both scripts would call that a fault.
+  "/contact",
+  "/studiekeuzescan",
+  "/online-begeleiding",
   "/artikelen",
   "/de-1-februariregeling",
   "/locaties",

@@ -122,7 +122,7 @@ export default function StoriesPage() {
               <div className="mt-4 flex flex-col gap-4 text-muted-read">
                 <p>
                   Deze verhalen zijn niet van gisteren. Ze zijn geschreven door
-                  studiekiezers die een traject bij StudiekeuzeAdvies deden, in
+                  studiekiezers die een traject bij StudieKeuzeAdvies deden, in
                   de jaren voordat wij deze site overnamen. Daarom staat er bij
                   elk verhaal een jaartal.
                 </p>

@@ -3,47 +3,61 @@
  * file: /studiekeuzecoaches shows the whole roster, a city page shows the one
  * coach who works there, and the home page and the footer count them.
  *
- * WARNING: READ `isPlaceholder` BEFORE YOU PUBLISH ANYTHING FROM THIS FILE.
+ * EVERY COACH IN THIS FILE IS A REAL PERSON. That was not true until the
+ * client's mail of 21 August 2026 (docs/redesign/client-feedback.md, row C0).
+ * Before it the roster held Janneke and five stand-ins, and `isPlaceholder`
+ * was the field that kept the stand-ins off the live site. The stand-ins are
+ * gone; the field stays, because the next coach may again be typed in before
+ * the contract is signed, and every guard that hangs off it (the noindex on a
+ * profile, the sitemap filter, the banner in development) still works.
  *
- * `isPlaceholder: true` means the person does not exist. The name, the history,
- * the work region and the portrait are stand-ins, so the pages can be judged at
- * full length before a coach is under contract. NONE OF THOSE MAY GO LIVE.
+ * WHERE THE TEXTS COME FROM. Each coach wrote their own, and each one is on the
+ * client's Drive in "Delen met Toon/Coachpagina teksten". `bio` and `selfIntro`
+ * are their own words, in the first person, shortened but not rewritten.
+ * `experience` and `quote` are the client's own two lines from the mail, rows
+ * C6 and C7. Nothing here is invented, ever: this file describes people who can
+ * read it.
  *
- * `isPlaceholder: false` means a real coach. Janneke is the first one. Her
- * facts and her photo come from the archive, `../studiekeuzeadvies archive/
- * markdown/janneke-van-den-brand.md`, and the rights to that archive are bought,
- * so they may go live. See PRODUCT.md, section "Inherited Content and Open
- * Questions".
- *
- * VOICE. Every text here is in the third person. The old site let each coach
- * write their own introduction, and twelve people who all begin with "Hoi! Ik
- * ben ..." and end with "Ik kijk ernaar uit!" read as one voice, not twelve.
- * Third person also keeps the register of the rest of the site, where a city
- * page introduces the coach before the reader has met them.
+ * TWO VOICES, ON PURPOSE. `selfIntro` and `bio` are first person, because they
+ * stand on the coach's own page under "Hoi, ik ben ..." and there the coach
+ * speaks. `intro` is third person, because it stands on a city page and in the
+ * region chooser on the home page, where the site introduces somebody the
+ * reader has not met yet.
  */
 
 import type { StaticImageData } from "next/image";
+import portraitAart from "@/public/images/coach-aart.jpg";
 import portraitJanneke from "@/public/images/coach-janneke.jpg";
-import portraitOne from "@/public/images/coach-placeholder.png";
-import portraitTwo from "@/public/images/coach-placeholder-2.png";
-import portraitThree from "@/public/images/coach-placeholder-3.png";
-import portraitFour from "@/public/images/coach-placeholder-4.png";
-import portraitFive from "@/public/images/coach-placeholder-5.png";
+import portraitMirjam from "@/public/images/coach-mirjam.jpg";
+import portraitRegula from "@/public/images/coach-regula.jpg";
 
 export type Coach = {
   /** Also the anchor on /studiekeuzecoaches. */
   slug: string;
   /**
-   * true means this person does not exist and may not go live. It is the one
-   * field that decides that, so it is required on every coach: adding someone
-   * without an answer to "is this a real person" must not compile.
+   * true means this person does not exist and may not go live. Every coach in
+   * this file is false today; the field is required so that adding somebody
+   * without an answer to "is this a real person" does not compile.
    */
   isPlaceholder: boolean;
+  /** The first name. Every page but their own uses this one. */
   name: string;
+  /** The name on their own page and in its title. */
+  fullName: string;
   /** The town they work from. It is the first word of `region`. */
   town: string;
   /** The whole work area, in the words a reader would use. */
   region: string;
+  /**
+   * The towns of `region`, one by one and in alphabetical order.
+   *
+   * The client asked for this in row H13: the small "Sterk in …" card under a
+   * coach was a made-up speciality, and the work area belongs there instead,
+   * because a reader searches for their own town and because those towns are
+   * what a search engine can see. `region` reads as a sentence, this reads as
+   * a list, and both say the same thing.
+   */
+  regionTowns: string[];
   /**
    * The city page to link to, or null when that city has no page. More coaches
    * than city pages is on purpose: a coach can start before their city page is
@@ -54,49 +68,39 @@ export type Coach = {
    * The address that receives an intake request for this coach.
    * TODO: null for everybody until a real address is confirmed per coach.
    *
-   * There is no central mailbox any more (issue #7), so this field is the whole
-   * delivery route of a request. It is required, not optional, for the same
-   * reason as `isPlaceholder`: adding a coach without an answer to "where does
-   * their post go" must not compile.
+   * The client's mail brought back a central mailbox for the general forms
+   * (`centralInbox` in app/site-config.ts), but not for an intake: an intake
+   * still ends at the coach the reader picked. So this field is still the whole
+   * delivery route of a request, it is still required and not optional, and it
+   * still blocks going live. See docs/redesign/client-feedback.md, question Q9.
    */
   email: string | null;
-  /** Two or three sentences. A city page shows this and nothing else. */
+  /** Two or three sentences, third person. A city page shows this and nothing else. */
   intro: string;
-  /** The long text. Only /studiekeuzecoaches shows it. */
+  /** One sentence, first person. It stands under "Hoi, ik ben ..." on their page. */
+  selfIntro: string;
+  /** The long text, first person, in the coach's own words. */
   bio: string[];
   /**
-   * Who this coach sees most. It helps a reader pick a person instead of a
-   * postcode, and over the whole roster it names the three groups of PRODUCT.md.
+   * The one line under a coach on the roster: what this person did before, in
+   * the client's own words (row C6). It replaced `oneLiner` and `specialties`,
+   * two fields that between them printed a speciality nobody had claimed.
    */
-  focus: string;
+  experience: string;
+  /** The coach's own motto, printed under `experience` (row C7). */
+  quote: string;
+  /** Who said it, where the coach quotes somebody else. null when it is theirs. */
+  quoteSource: string | null;
   /**
    * The levels the roster card prints, as one line. It says the same thing for
-   * every coach on purpose. It is a fact about the traject and not a claim
-   * about the person: every city page already says that mbo, hbo or wo makes
-   * no difference to the way we work, so nobody is presented here as a
-   * specialist in a level they were never asked about.
+   * every coach, and the client confirmed that in the mail: "Alle coaches doen
+   * MBO, HBO, WO" (row C5).
    */
   levels: string;
   /**
-   * The one line on the roster card. Not a shortened `intro`: `intro` is three
-   * sentences of history, and this is the single thing a reader who is scanning
-   * six cards needs to know about this person. Every word of it is already said
-   * in `intro`, `bio` or `focus`.
-   */
-  oneLiner: string;
-  /**
-   * Two or three short labels, printed as pills on the card. Same rule as
-   * `oneLiner`: each one points at something this coach already says further
-   * down. Nothing is claimed here that is not written somewhere else in this
-   * file.
-   */
-  specialties: string[];
-  /**
    * How fast this coach answers an intake request, in their own words, or null
    * when nobody asked them. The promise is printed under the form, so it may
-   * only stand where the person confirmed it (design-spec open question 3).
-   * Generating "binnen twee werkdagen" for a stand-in printed a promise that
-   * nobody made.
+   * only stand where the person confirmed it.
    */
   responseTime: string | null;
   /** A coach can start before they send a photo. Then this stays null. */
@@ -104,18 +108,46 @@ export type Coach = {
   portraitAlt: string;
 };
 
+/** Every coach does every level, so the line is written once. */
+const alleNiveaus = "MBO · HBO · WO";
+
+export const mirjam: Coach = {
+  slug: "mirjam",
+  isPlaceholder: false,
+  responseTime: null,
+  name: "Mirjam",
+  fullName: "Mirjam Schmidt-Erftemeijer",
+  town: "Hilversum",
+  region: "'t Gooi en omstreken, Baarn, Weesp, Almere en Amersfoort",
+  regionTowns: ["Almere", "Amersfoort", "Baarn", "Bussum", "Hilversum", "Weesp"],
+  citySlug: "amersfoort",
+  email: null,
+  intro:
+    "Mirjam werkte in het bedrijfsleven, de media en het toerisme, en vond daarna haar plek in het voortgezet onderwijs als docent, mentor en coach. Juist in die rol ontdekte ze hoeveel voldoening het geeft om jongeren te begeleiden bij een belangrijke keuze. Als onafhankelijke coach kijkt ze zonder verwachtingen of belangen met je mee.",
+  selfIntro:
+    "Als StudieKeuzeCoach begeleid ik jongeren uit 't Gooi en omstreken, Almere en Amersfoort bij het maken van een studiekeuze die écht bij hen past.",
+  bio: [
+    "Mijn loopbaan is veelzijdig. Ik heb gewerkt in het bedrijfsleven, de media en het toerisme en daarnaast jarenlang lesgegeven. Later vond ik mijn plek in het voortgezet onderwijs als docent Performing Arts, mentor en coach. Juist in die rol ontdekte ik hoeveel voldoening het geeft om jongeren te begeleiden bij belangrijke keuzes in hun leven.",
+    "Iedere studiekiezer is uniek. Daarom neem ik de tijd om jou te leren kennen: wie ben je, waar word je blij van, wat zijn jouw talenten en welke toekomst zie jij voor je? Maar ook: wat heb je al meegemaakt en tot nu toe bereikt? Samen onderzoeken we welke studie en richting het beste aansluiten bij jouw persoonlijkheid, interesses en ambities.",
+    "Als onafhankelijke StudieKeuzeCoach kijk ik zonder verwachtingen of belangen met je mee. Waar familie, vrienden of school vaak, vanuit betrokkenheid, hun eigen ideeën of wensen hebben, bied ik een objectieve blik. Mijn enige doel is jou helpen ontdekken welke keuze het beste bij jou past, zodat je een beslissing neemt waar je zelf vol vertrouwen achter staat.",
+    "Ik geloof dat een goede keuze begint met inzicht in jezelf. Soms betekent dat nieuwe mogelijkheden ontdekken, soms juist de moed hebben om een andere weg te kiezen dan je omgeving van je verwacht. Uiteindelijk is er maar één persoon die de keuze kan maken: jij. Mijn rol is om je daarbij te begeleiden, uit te dagen en je het vertrouwen te geven om een keuze te maken waar jij achter staat.",
+  ],
+  experience:
+    "Gewerkt in het bedrijfsleven en in het voortgezet onderwijs als docent en coach.",
+  quote: "Twijfel is het begin van wijsheid.",
+  quoteSource: "René Descartes",
+  levels: alleNiveaus,
+  portrait: portraitMirjam,
+  portraitAlt:
+    "Mirjam Schmidt-Erftemeijer, StudieKeuzeCoach in 't Gooi, lachend in een gestreepte trui voor een lichte houten wand",
+};
+
 /**
- * The first real coach. Every fact below stands in the archive interview at
- * `../studiekeuzeadvies archive/markdown/janneke-van-den-brand.md`, but not one
- * sentence is copied from it: that text is her own, in the first person, in the
- * voice of the old site. What is written here is the same history in the voice
- * of this site. Nothing is added that she did not say herself.
- *
- * Her portrait is her own photo from the archive, so it is the only face on the
- * site that belongs to a person. It is black and white against a bare wall,
- * where the five stand-ins are warm colour at a table. That difference is real
- * and it stays until she sends a photo she likes better. Ask her for one: the
- * rights are not the reason, the photo is from 2019.
+ * The first coach this site ever carried, and the one whose text the client
+ * rewrote in the mail (row P5): a new sentence under the headline, a new first
+ * paragraph, and Wormerveer added to the work area. Her long text lives in
+ * app/studiekeuzecoaches/[coach]/profiles.ts, because hers is the one profile
+ * with a box in the middle of it.
  */
 export const janneke: Coach = {
   slug: "janneke",
@@ -123,180 +155,164 @@ export const janneke: Coach = {
   // Her own page in the archive makes this promise in the first person.
   responseTime: "binnen twee werkdagen",
   name: "Janneke",
+  fullName: "Janneke van den Brand",
   town: "Amsterdam",
-  // The region is written once and taken from the coach (decision 2026-08-06).
-  // Her own profile lists Abcoude, Zaandam, Haarlem, Purmerend, Diemen,
-  // Hoofddorp, Heemstede, Uithoorn en Aalsmeer, so the short "Amsterdam en
-  // Amstelveen" made the roster and the city page say less than her page did.
-  region: "Amsterdam, Amstelveen, Haarlem, Zaandam en omgeving",
+  region: "Amsterdam, Amstelveen, Haarlem, Zaandam, Wormerveer en omgeving",
+  regionTowns: [
+    "Aalsmeer",
+    "Abcoude",
+    "Amstelveen",
+    "Amsterdam",
+    "Diemen",
+    "Haarlem",
+    "Heemstede",
+    "Hoofddorp",
+    "Purmerend",
+    "Uithoorn",
+    "Wormerveer",
+    "Zaandam",
+  ],
   citySlug: "amsterdam",
-  // Janneke exists, so this one can be filled the day she says which address
-  // she wants. It is null because nobody asked her yet.
   email: null,
   intro:
-    "Janneke is psycholoog en werkt sinds 2015 als studiekeuzecoach in Amsterdam. In haar praktijk zag ze volwassenen vastlopen in werk dat nooit bij ze paste, en bij bijna iedereen kwam dezelfde vraag boven: hoe was het gelopen als er iemand had meegedacht toen de keuze nog open lag. Daarom zit ze nu naast mensen van jouw leeftijd.",
-  bio: [
-    "Ze studeerde psychologie aan de UvA en werkte daarna met zware doelgroepen: eerst in een huis van bewaring, later bij een ggz-instelling. Het werk zelf was goed, de omstandigheden niet, en op een dag stopte ze zonder te weten wat er dan wel moest komen.",
-    "Ze liet zich toen zelf coachen om dat uit te zoeken. Dat hielp zo goed dat ze de opleiding ging doen, en zo kwam ze bij een jongere doelgroep terecht. Naast dit werk is ze nog steeds parttime psycholoog, met jongeren in de verslavingszorg. Dat merk je: ze schrikt niet van wat je vertelt, en ze gaat niet harder praten als je stil valt.",
-    "Vraag je haar wat ze belangrijk vindt in een traject, dan begint ze bij vertrouwen. Ze werkt veel met studiekiezers bij wie thuis al een richting klaarligt, en met studiekiezers die weinig van zichzelf verwachten. Ouders hebben haar weleens apart gevraagd om hun kind richting de universiteit te duwen. Dat doet ze niet. De keuze is van jou, ook als iemand anders betaalt.",
-  ],
-  focus: "Kiezen terwijl thuis iets anders wordt verwacht",
-  levels: "MBO · HBO · WO",
-  oneLiner:
-    "Psycholoog. Werkt veel met studiekiezers bij wie thuis al een richting klaarligt.",
-  specialties: ["Psycholoog", "Verwachtingen van thuis", "Weinig van jezelf verwachten"],
+    "Janneke is psycholoog en werkt al jaren met jongeren, de afgelopen tien daarvan als StudieKeuzeCoach in Amsterdam. Daarnaast is ze psycholoog in de verslavingszorg. Dat merk je: ze schrikt niet van wat je vertelt, en ze gaat niet harder praten als je stil valt.",
+  selfIntro:
+    "Ik ben psycholoog en StudieKeuzeCoach en samen met vier collega-coaches trotse eigenaar van StudieKeuzeAdvies.",
+  bio: [],
+  experience:
+    "Werkt al jaren met jongeren en doet dat de afgelopen 10 jaar als StudieKeuzeCoach en als psycholoog in de verslavingszorg.",
+  quote: "Samen ontdekken wat bij je past, zodat jij met vertrouwen kunt kiezen.",
+  quoteSource: null,
+  levels: alleNiveaus,
   portrait: portraitJanneke,
   portraitAlt:
-    "Janneke, studiekeuzecoach in Amsterdam, zwart-witportret tegen een lichte muur",
+    "Janneke van den Brand, StudieKeuzeCoach in Amsterdam, met haar kin op haar hand voor een lichte muur",
 };
 
-export const hanneke: Coach = {
-  slug: "hanneke",
-  isPlaceholder: true,
-  // Nobody asked this person, because this person does not exist.
+export const aart: Coach = {
+  slug: "aart",
+  isPlaceholder: false,
   responseTime: null,
-  name: "Hanneke",
+  name: "Aart",
+  fullName: "Aart Smit",
+  town: "Maastricht",
+  region:
+    "Maastricht, Roermond, Sittard-Geleen, Heerlen en de Belgische grensregio",
+  regionTowns: [
+    "Geleen",
+    "Genk",
+    "Hasselt",
+    "Heerlen",
+    "Maasmechelen",
+    "Maastricht",
+    "Roermond",
+    "Sittard",
+  ],
+  citySlug: null,
+  email: null,
+  intro:
+    "Aart is psycholoog en begeleidt al meer dan tien jaar jongeren uit Zuid-Limburg bij hun studiekeuze. Hij werkte binnen de Universiteit Maastricht met studenten en daarna als psycholoog. Zijn begeleiding is persoonlijk, gestructureerd en onafhankelijk.",
+  selfIntro:
+    "Als StudieKeuzeCoach begeleid ik al meer dan tien jaar jongeren uit Zuid-Limburg bij het maken van een studiekeuze die bij hen past.",
+  bio: [
+    "Je weet dat je een studie wilt kiezen. Alleen weet je nog niet welke. Misschien heb je al opleidingen bekeken, open dagen bezocht en veel informatie verzameld, en kom je toch niet echt verder. Of misschien weet je juist niet goed waar je moet beginnen.",
+    "Dat is niet vreemd. Een studiekeuze gaat namelijk niet alleen over het vergelijken van opleidingen. Het gaat ook over jou. Over wie je bent, wat bij je past, waar je energie van krijgt en wat je nodig hebt om goed tot je recht te komen.",
+    "Iedere studiekiezer is anders. Door te luisteren, vragen te stellen en opdrachten te doen ontstaat er meer helderheid en overzicht. We kijken naar wie je bent en wat je kwaliteiten zijn, naar wat jou motiveert en wat jij belangrijk vindt in een studie, naar wat je nodig hebt om je prettig te voelen, en naar welke opleidingen en richtingen daarbij aansluiten.",
+    "Misschien twijfel je tussen verschillende opleidingen. Misschien weet je niet of je naar het hbo of de universiteit wilt, welke stad bij je past of wat je later met een opleiding kunt bereiken. Of misschien ben je al begonnen met een studie, maar merk je dat die toch niet goed bij je past. Daar is ruimte voor tijdens de begeleiding. Je hoeft niet al precies te weten wat je wilt.",
+    "Na mijn studie psychologie werkte ik binnen de Universiteit Maastricht, in verschillende functies waarin ik onder andere studenten begeleidde en ondersteunde binnen het onderwijs. Later ben ik als psycholoog gaan werken. In al die rollen merkte ik hoe waardevol het is om mensen te ondersteunen bij keuzes die richting geven aan hun toekomst.",
+    "Mijn rol is om je te begeleiden, vragen te stellen, nieuwe perspectieven te bieden en te helpen mogelijkheden tegen elkaar af te wegen. Soms ontdek je dat een opleiding beter aansluit dan je vooraf dacht. Een keuze waar jij achter staat en mee verder kunt.",
+  ],
+  experience:
+    "10 jaar ervaring als StudieKeuzeCoach, met een achtergrond in de psychologie en ruime ervaring met jongeren en studenten.",
+  quote: "Wie zichzelf beter kent, vindt gemakkelijker een weg die bij hem past.",
+  quoteSource: null,
+  levels: alleNiveaus,
+  portrait: portraitAart,
+  portraitAlt:
+    "Aart Smit, StudieKeuzeCoach in Maastricht, lachend in een spijkerblouse voor een lichtblauwe muur",
+};
+
+export const tamara: Coach = {
+  slug: "tamara",
+  isPlaceholder: false,
+  responseTime: null,
+  name: "Tamara",
+  fullName: "Tamara Pijnenburg",
+  town: "Den Bosch",
+  region: "Den Bosch, Vught, Eindhoven, Tilburg en omliggende gemeenten",
+  regionTowns: ["Den Bosch", "Eindhoven", "Tilburg", "Vught"],
+  citySlug: null,
+  email: null,
+  intro:
+    "Tamara is onderwijsprofessional en werkte als coach, trainer en stagecoördinator. Ze gelooft in de kracht van praktijkervaring: een stage of een bijbaan zegt vaak meer dan een brochure. Ze is gebarenvaardig (NGT/NmG) en daardoor ook toegankelijk voor dove en slechthorende jongeren.",
+  selfIntro:
+    "Vanuit mijn ervaring als coach, trainer en stagecoördinator begeleid ik jongeren bij het ontdekken van een studie- en loopbaanrichting die echt bij hen past.",
+  bio: [
+    "Je hebt opleidingen bekeken, open dagen bezocht of misschien zelfs al een studie gekozen. Toch blijft de vraag knagen: past dit eigenlijk wel bij mij? Of je nu een vervolgopleiding moet kiezen, twijfelt over je studie of overweegt om van richting te veranderen: je bent zeker niet de enige.",
+    "In de praktijk zie ik dat veel jongeren denken dat ze direct een antwoord moeten hebben op de vraag wat ze later willen doen. Maar een passende studiekeuze ontstaat meestal niet in één keer. Het is een proces van ontdekken, ervaren en steeds beter leren begrijpen wie je bent, wat je belangrijk vindt en waar jouw kwaliteiten liggen.",
+    "Juist daarom geloof ik in de kracht van praktijkervaring. Een stage, een project, een bijbaan of een kennismaking met een werkveld zegt vaak meer dan een brochure of opleidingsgids. Door ervaringen op te doen ontdek je niet alleen wat bij je past, maar ook wat minder goed aansluit. En juist die inzichten helpen bij het maken van een bewuste keuze.",
+    "Tijdens het StudieKeuzeTraject kijken we verder dan alleen opleidingen. Samen onderzoeken we jouw interesses, talenten, motivatie en toekomstwensen. We kijken naar wat jou energie geeft, hoe jij het liefst leert en wat je nodig hebt om tot je recht te komen.",
+    "Daarbij is er ook ruimte voor zaken die het kiezen soms ingewikkeld maken. Denk aan onzekerheid, perfectionisme, faalangst of persoonlijke omstandigheden zoals ADHD, autisme of dyslexie. Twijfelen betekent niet dat je niet kunt kiezen. Het betekent vaak dat je de keuze serieus neemt.",
+    "Mijn aanpak is persoonlijk, praktisch en zonder oordeel. Ik luister, stel vragen, spiegel en help je overzicht creëren. Niet om voor jou te bepalen welke studie je moet kiezen, maar om jou te helpen ontdekken welke mogelijkheden écht bij jou passen. Want een goede studiekeuze begint niet met het vinden van de perfecte opleiding. Die begint met het ontdekken van jezelf.",
+  ],
+  experience:
+    "Onderwijsprofessional en StudieKeuzeCoach met ruime ervaring in talentontwikkeling, stage-oriëntatie en toekomstkeuzes. Gebarenvaardig (NGT/NmG) en daardoor ook toegankelijk voor dove en slechthorende jongeren.",
+  quote: "Door te ervaren ontdek je wat bij je past.",
+  quoteSource: null,
+  levels: alleNiveaus,
+  // Her Drive photograph is 192 by 192 pixels, which is a quarter of what the
+  // smallest card asks for. The card and the profile both handle a coach
+  // without a photo, so she has none until she sends a bigger one. See
+  // docs/redesign/client-feedback.md, question Q10.
+  portrait: null,
+  portraitAlt: "",
+};
+
+export const regula: Coach = {
+  slug: "regula",
+  isPlaceholder: false,
+  responseTime: null,
+  name: "Regula",
+  fullName: "Regula Rexwinkel",
   town: "Utrecht",
-  region: "Utrecht, Nieuwegein, Houten en Zeist",
+  region: "Utrecht, Houten, Nieuwegein, Zeist, Bilthoven, Maarssen en Breukelen",
+  regionTowns: [
+    "Bilthoven",
+    "Breukelen",
+    "Houten",
+    "Maarssen",
+    "Nieuwegein",
+    "Utrecht",
+    "Zeist",
+  ],
   citySlug: "utrecht",
-  // No address: this person does not exist.
   email: null,
   intro:
-    "Hanneke werkt sinds 2016 met studiekiezers. Ze begon als decaan op een middelbare school, en daar merkte ze dat de gesprekken die echt hielpen nooit over roosters gingen. Ze werkt graag met mensen die twijfelen. Twijfel is meestal het begin van een goede keuze.",
+    "Regula werkte dertig jaar in het onderwijs, als docent maatschappijleer en als studieloopbaanbegeleider in het vo, het mbo en het hbo. Sinds twee jaar is ze StudieKeuzeCoach. Ze ziet het traject als een puzzel die jullie samen oplossen.",
+  selfIntro:
+    "Ik ben StudieKeuzeCoach en studieloopbaanbegeleider, en ik zie het traject als een puzzel die we samen oplossen.",
   bio: [
-    "Tien jaar stond ze op een school in Utrecht, eerst als docent aardrijkskunde en later als decaan. In dat decanaat voerde ze elk jaar honderden gesprekken van tien minuten. Dat is precies te kort om iemand te leren kennen, en het is de reden dat ze voor zichzelf begon.",
-    "Wat ze in een gesprek doet, is vooral vragen stellen en niets invullen. Zeg je iets waar je zelf van schrikt, dan blijft dat gewoon staan. Ze zegt er niet achteraan dat het vast goed komt.",
-    "Ze ziet veel studiekiezers die tussen twee richtingen heen en weer gaan, en tweedejaars die zich afvragen of ze door moeten. Bij allebei duurt het meestal twee gesprekken voordat het echte antwoord op tafel komt.",
+    "Naast StudieKeuzeCoach ben ik studieloopbaanbegeleider voor nieuwkomers tussen 18 en 27, die na de inburgering via de onderwijsroute doorstromen naar het mbo en het hbo. Ook ben ik moeder van vier zoons die alle vier een heel eigen opleidingspad volgen of hebben gevolgd.",
+    "Na mijn studie rechten ben ik in het onderwijs beland, omdat ik tijdens mijn studie gastlessen strafrecht op middelbare scholen gaf en merkte dat ik het ontzettend leuk vond om les te geven en met leerlingen in gesprek te gaan over persoonlijke en maatschappelijke onderwerpen.",
+    "Ik heb toen besloten om mijn lesbevoegdheid voor maatschappijleer te halen en heb altijd met heel veel plezier lesgegeven in zowel het voortgezet onderwijs als het mbo en het hbo. Ook heb ik docenten opgeleid en daardoor heel veel lessen en scholen bezocht. Zou ik zelf opnieuw moeten kiezen, dan zou dat weer het onderwijs zijn: de scholen en collegezalen vol jongeren met al hun dromen, zoekend, flexibel en vol potentie.",
+    "In de rol van docent, maar ook als mentor en studieloopbaanbegeleider heb je voor je gevoel altijd te weinig tijd om iedere leerling de aandacht te geven die hij of zij verdient. Ik ben nu twee jaar StudieKeuzeCoach en merk hoe prettig het is om de tijd te hebben voor persoonlijke begeleiding bij zo'n belangrijk keuzemoment. Ik zie het traject als een puzzel die we samen oplossen, waarbij we gebruikmaken van testen en reflectie op de uitkomst daarvan.",
+    "Een test is maar een test. Jij weet zelf het beste wie je bent, wat je kunt en wat je wilt, en ik begeleid je graag bij het leggen van deze puzzel.",
   ],
-  focus: "Twijfelen tussen twee richtingen, en tweedejaars",
-  levels: "MBO · HBO · WO",
-  oneLiner:
-    "Was tien jaar decaan in Utrecht. Werkt graag met mensen die nog twijfelen.",
-  specialties: ["Oud-decaan", "Twijfel tussen twee richtingen", "Tweedejaars"],
-  portrait: portraitOne,
+  experience:
+    "30 jaar werkzaam in het onderwijs als docent en studieloopbaanbegeleider in het vo, mbo en hbo, en de afgelopen 2 jaar ook als StudieKeuzeCoach.",
+  quote: "Wie naar buiten kijkt, droomt; wie naar binnen kijkt, ontwaakt.",
+  quoteSource: "Carl Jung",
+  levels: alleNiveaus,
+  portrait: portraitRegula,
   portraitAlt:
-    "Hanneke, studiekeuzecoach in Utrecht, aan tafel in haar werkkamer",
-};
-
-export const bram: Coach = {
-  slug: "bram",
-  isPlaceholder: true,
-  // Nobody asked this person, because this person does not exist.
-  responseTime: null,
-  name: "Bram",
-  town: "Amersfoort",
-  region: "Amersfoort, Leusden, Soest en Barneveld",
-  citySlug: "amersfoort",
-  // No address: this person does not exist.
-  email: null,
-  intro:
-    "Bram is zelf twee keer gestopt met een studie voordat hij vond wat wel klopte. Hij weet dus hoe het voelt om een jaar over te doen, en hoe weinig je eraan hebt als iemand zegt dat het vanzelf goed komt. Hij werkt vooral met studiestoppers.",
-  bio: [
-    "Die twee studies waren rechten en bedrijfskunde. Allebei gekozen omdat ze een brede basis leken, en allebei van dichtbij iets anders dan van een afstand. Daarna werd het toegepaste psychologie, en dat klopte wel.",
-    "Wat hij aan die omweg heeft overgehouden: bijna niemand stopt omdat hij het niet kan. Mensen stoppen omdat ze kozen op te weinig informatie. Dat is vervelend en het kost een jaar, maar het is geen karakterfout. Het is bruikbaar.",
-    "Bram begint daarom bij wat er misging. Niet om erin te blijven hangen, maar omdat je daarna weet waar je de tweede keer op moet letten. Wachten tot september hoeft van hem niet.",
-  ],
-  focus: "Gestopt, of erover denken te stoppen",
-  levels: "MBO · HBO · WO",
-  oneLiner:
-    "Stopte zelf twee keer met een studie. Werkt vooral met studiestoppers.",
-  specialties: ["Gestopt met een studie", "Opnieuw kiezen", "Een jaar overdoen"],
-  portrait: portraitTwo,
-  portraitAlt:
-    "Bram, studiekeuzecoach in Amersfoort, aan tafel in zijn werkkamer",
-};
-
-export const nadia: Coach = {
-  slug: "nadia",
-  isPlaceholder: true,
-  // Nobody asked this person, because this person does not exist.
-  responseTime: null,
-  name: "Nadia",
-  town: "Rotterdam",
-  region: "Rotterdam, Schiedam en Capelle aan den IJssel",
-  citySlug: null,
-  // No address: this person does not exist.
-  email: null,
-  intro:
-    "Nadia werkte twaalf jaar in personeelszaken voordat ze studiekiezers ging begeleiden. Ze was zelf de eerste in haar familie die ging studeren, en ze weet hoeveel je dan alleen moet uitzoeken.",
-  bio: [
-    "Die twaalf jaar zaten bij een bedrijf in de Rotterdamse haven. Ze voerde er de gesprekken met mensen die net binnenkwamen en met mensen die weg wilden. Die twee gesprekken gingen vaker over hetzelfde dan je zou denken: wat wil je eigenlijk, en durf je dat hardop te zeggen.",
-    "Thuis kon niemand haar vertellen wat het verschil is tussen hbo en universiteit, of wat een propedeuse is. Ze kwam er gaandeweg achter, meestal net te laat om er nog iets aan te hebben.",
-    "Met studiekiezers legt ze daarom eerst het speelveld uit, ook als je denkt dat je dat allang zou moeten weten. Pas daarna gaat het over wat bij jou past. Die volgorde scheelt een hoop schaamte.",
-  ],
-  focus: "De eerste in je familie die gaat studeren",
-  levels: "MBO · HBO · WO",
-  oneLiner:
-    "Twaalf jaar personeelszaken. Was zelf de eerste in haar familie die ging studeren.",
-  specialties: ["Eerste in de familie", "Verschil tussen hbo en wo", "Uit personeelszaken"],
-  portrait: portraitThree,
-  portraitAlt:
-    "Nadia, studiekeuzecoach in Rotterdam, aan tafel in haar werkkamer",
-};
-
-export const wietske: Coach = {
-  slug: "wietske",
-  isPlaceholder: true,
-  // Nobody asked this person, because this person does not exist.
-  responseTime: null,
-  name: "Wietske",
-  town: "Groningen",
-  region: "Groningen, Assen en Leeuwarden",
-  citySlug: null,
-  // No address: this person does not exist.
-  email: null,
-  intro:
-    "Wietske gaf achttien jaar les en was daarnaast zorgcoördinator op een school in Groningen. Ze is opgeleid als autismecoach en werkt veel met studiekiezers die meer aan overzicht hebben dan aan opties.",
-  bio: [
-    "Als zorgcoördinator zag ze de leerlingen voor wie de gewone weg niet werkt. Slim genoeg, maar vastgelopen op de manier waarop het onderwijs is ingericht: te veel tegelijk, te weinig ritme, te veel open vragen.",
-    "Haar uitgangspunt is dat overzicht meer helpt dan keuze. Twee opleidingen die je echt kent zijn bruikbaarder dan twintig die je van een website hebt. Ze knipt de zoektocht daarom in kleine stukken, met één ding per keer.",
-    "Ze werkt met een vast ritme: hetzelfde tijdstip, dezelfde plek, en aan het begin van elk gesprek de vraag wat er sinds de vorige keer is gebeurd. Heb je daar niets aan, dan laat ze het weg.",
-  ],
-  focus: "Kiezen met ADD, ADHD of autisme",
-  levels: "MBO · HBO · WO",
-  oneLiner:
-    "Achttien jaar voor de klas en zorgcoördinator. Opgeleid als autismecoach.",
-  specialties: ["Autismecoach", "ADD en ADHD", "Vast ritme en overzicht"],
-  portrait: portraitFour,
-  portraitAlt:
-    "Wietske, studiekeuzecoach in Groningen, aan tafel in haar werkkamer",
-};
-
-export const joris: Coach = {
-  slug: "joris",
-  isPlaceholder: true,
-  // Nobody asked this person, because this person does not exist.
-  responseTime: null,
-  name: "Joris",
-  town: "Eindhoven",
-  region: "Eindhoven, Helmond en Veldhoven",
-  citySlug: null,
-  // No address: this person does not exist.
-  email: null,
-  intro:
-    "Joris studeerde natuurkunde en werkte zes jaar in de techniek. Hij werkt vooral met studiekiezers die te veel leuk vinden, en daardoor niet kunnen kiezen.",
-  bio: [
-    "Bij dat technische bedrijf stopte hij omdat hij merkte dat hij het liefst deed wat het minst in zijn functie zat: uitleggen, en naast iemand zitten die iets aan het uitzoeken is.",
-    "Te veel leuk vinden klinkt als een luxeprobleem. Dat is het niet. Wie overal ja op zegt kiest uiteindelijk niets, en bij elke keuze komt het gevoel dat je iets weggooit.",
-    "Joris maakt dat gevoel kleiner. Je kiest geen leven, je kiest een eerste opleiding, en die ligt niet vast tot je pensioen. Je mag bij hem ook gewoon zeggen dat je het niet weet. Dat is precies waarom je er zit.",
-  ],
-  focus: "Te veel leuk vinden om te kunnen kiezen",
-  levels: "MBO · HBO · WO",
-  oneLiner:
-    "Studeerde natuurkunde, werkte in de techniek. Werkt met wie te veel leuk vindt.",
-  specialties: ["Te veel leuk vinden", "Uit de techniek", "Niet kunnen kiezen"],
-  portrait: portraitFive,
-  portraitAlt:
-    "Joris, studiekeuzecoach in Eindhoven, aan tafel in zijn werkkamer",
+    "Regula Rexwinkel, StudieKeuzeCoach in Utrecht, aan haar werktafel met de Keuzegidsen voor mbo, hbo en universiteiten",
 };
 
 /**
  * The order on /studiekeuzecoaches, and the order of the index in its hero.
- * It carries no ranking, with one exception: the real coach stands first, and
- * every stand-in follows. That keeps the top of the page true if the rest is
- * pulled at short notice.
+ * It carries no ranking: it is the order the client wrote them in.
  */
-export const coaches: Coach[] = [janneke, hanneke, bram, nadia, wietske, joris];
+export const coaches: Coach[] = [mirjam, janneke, aart, tamara, regula];
 
 /**
  * One coach by slug, or undefined. The intake form carries a slug through the

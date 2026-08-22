@@ -23,6 +23,16 @@ const CANONICAL_HOST = "www.studiekeuzeadvies.nl";
 const BARE_HOST = "studiekeuzeadvies\\.nl";
 
 const nextConfig: NextConfig = {
+  // A coach may send a CV with their application (client's mail, row W2), and
+  // a server action refuses a request body over 1MB by default. The cap on the
+  // file itself is 5MB, written down once in `cvMaxBytes` in app/application.ts;
+  // the extra megabyte is the room multipart/form-data needs for its boundaries
+  // and part headers, which count towards this limit. Raise them together or
+  // the reader meets a failure the form cannot explain.
+  experimental: {
+    serverActions: { bodySizeLimit: "6mb" },
+  },
+
   // The articles are .mdx files under content/artikelen/. app/[artikel]/page.tsx
   // imports them by slug, so they are never routed by their own filename. This
   // setting only teaches the compiler that .mdx is a module it can import.

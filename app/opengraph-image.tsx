@@ -28,7 +28,7 @@ import { join } from "node:path";
  */
 
 export const alt =
-  "StudiekeuzeAdvies. Samen kiezen voor een studie die echt past.";
+  "StudieKeuzeAdvies. Samen kiezen voor een studie die echt past.";
 
 export const size = { width: 1200, height: 630 };
 

@@ -113,7 +113,7 @@ const archiveStories: Story[] = [
     person: "Max Vogt",
     meta: "stond in 2019 op de oude site",
     paragraphs: [
-      "Voor mij heeft het studiekeuzetraject heel erg geholpen om een paar dingen voor mij duidelijk te maken. Ten eerste natuurlijk de studiekeuze zelf: door het doen van oefeningen en het voeren van gesprekken kwam ik er steeds meer achter welke studie het best bij mij paste en waarom. Ten tweede hielpen de oefeningen en gesprekken voor mij persoonlijk ook heel erg. Omdat ik hierdoor ook veel over mezelf te weten kwam.",
+      "Voor mij heeft het StudieKeuzeTraject heel erg geholpen om een paar dingen voor mij duidelijk te maken. Ten eerste natuurlijk de studiekeuze zelf: door het doen van oefeningen en het voeren van gesprekken kwam ik er steeds meer achter welke studie het best bij mij paste en waarom. Ten tweede hielpen de oefeningen en gesprekken voor mij persoonlijk ook heel erg. Omdat ik hierdoor ook veel over mezelf te weten kwam.",
     ],
   },
   {

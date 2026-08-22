@@ -9,10 +9,10 @@
  * three answers. The only change is where a paragraph breaks, so a long answer
  * is easier to read on a telephone at night.
  *
- * - "Wat houdt StudiekeuzeAdvies in?"
- * - "Voor wie is StudiekeuzeAdvies?"
+ * - "Wat houdt StudieKeuzeAdvies in?"
+ * - "Voor wie is StudieKeuzeAdvies?"
  * - "Hoe lang duurt een traject?" The old question read "Hoe lang duurt een
- *   traject bij StudiekeuzeAdvies?". The page already carries our name, so the
+ *   traject bij StudieKeuzeAdvies?". The page already carries our name, so the
  *   question says it once instead of twice. The answer is untouched.
  *
  * NEW, AND EVERY LINE IS PROVABLE FROM A PAGE THAT ALREADY EXISTS. This page
@@ -36,7 +36,7 @@
  *
  * REMOVED, AND WHY:
  *
- * - The whole answer to "Waarom StudiekeuzeAdvies?". It was the Keuzegids with
+ * - The whole answer to "Waarom StudieKeuzeAdvies?". It was the Keuzegids with
  *   an online licence, the tests of Talentfocus, and a list of partners. Those
  *   belong to the seller. What was left after taking them out is one sentence
  *   that says nothing, so the question does not come back.
@@ -79,10 +79,10 @@ export type Question = {
 export const questions: Question[] = [
   {
     id: "wat-is-het",
-    question: "Wat houdt StudiekeuzeAdvies in?",
+    question: "Wat houdt StudieKeuzeAdvies in?",
     answer: [
-      "Bij StudiekeuzeAdvies bieden we hulp bij het maken van de juiste studiekeuze. Dit doen wij voor scholieren die hun eerste studiekeuze moeten maken of voor studenten die een verkeerde studie hebben gekozen.",
-      "In vier bijeenkomsten ontdek je samen met een persoonlijke studiecoach wie jij bent, waar jouw interesses liggen en welke mogelijkheden er zijn. Aan het einde van het studiekeuzetraject heb je een weloverwogen keuze gemaakt voor een studie die echt bij jou past!",
+      "Bij StudieKeuzeAdvies bieden we hulp bij het maken van de juiste studiekeuze. Dit doen wij voor scholieren die hun eerste studiekeuze moeten maken of voor studenten die een verkeerde studie hebben gekozen.",
+      "In vier bijeenkomsten ontdek je samen met een persoonlijke studiecoach wie jij bent, waar jouw interesses liggen en welke mogelijkheden er zijn. Aan het einde van het StudieKeuzeTraject heb je een weloverwogen keuze gemaakt voor een studie die echt bij jou past!",
     ],
     links: [
       { href: "/studiekeuzetraject", label: "Lees per gesprek wat je doet" },
@@ -90,9 +90,9 @@ export const questions: Question[] = [
   },
   {
     id: "voor-wie",
-    question: "Voor wie is StudiekeuzeAdvies?",
+    question: "Voor wie is StudieKeuzeAdvies?",
     answer: [
-      "StudiekeuzeAdvies is voor scholieren die niet weten wat ze willen studeren en hulp nodig hebben bij het maken van de keuze voor een mbo, hbo of wo opleiding.",
+      "StudieKeuzeAdvies is voor scholieren die niet weten wat ze willen studeren en hulp nodig hebben bij het maken van de keuze voor een mbo, hbo of wo opleiding.",
       "Of voor studenten die een verkeerde studiekeuze hebben gemaakt en hulp nodig hebben bij het maken van een nieuwe keuze voor een mbo, hbo of wo opleiding.",
     ],
     links: [
@@ -114,8 +114,8 @@ export const questions: Question[] = [
     question: "Wat kost het?",
     answer: [
       `${intakeIsFree} Pas daarna kies je wat bij je situatie past.`,
-      `Het studiekeuzetraject kost ${traject.label}. Daarin heb je vier gesprekken met één vaste coach, maak je de persoonlijkheidstest en de studie-interessetest, en krijg je opdrachten voor thuis. Op locatie bij jou in de buurt of online.`,
-      `De studiekeuzescan kost ${scan.label}. Dat is de korte weg: je maakt dezelfde twee tests en bespreekt de uitkomsten in één gesprek met een coach.`,
+      `Het StudieKeuzeTraject kost ${traject.label}. Daarin heb je vier gesprekken met één vaste coach, maak je de persoonlijkheidstest en de studie-interessetest, en krijg je opdrachten voor thuis. Op locatie bij jou in de buurt of online.`,
+      `De StudieKeuzeScan kost ${scan.label}. Dat is de korte weg: je maakt dezelfde twee tests en bespreekt de uitkomsten in één gesprek met een coach.`,
       `Heb je later nog een gesprek nodig, dan kost dat ${extraGesprek.label}. Een extra gesprek is geen los product: het kan alleen ná de scan of het traject.`,
     ],
     links: [{ href: "/tarieven", label: "Bekijk de tarieven" }],

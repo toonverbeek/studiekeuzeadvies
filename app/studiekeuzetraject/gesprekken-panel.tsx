@@ -8,8 +8,9 @@ import { meetings } from "@/app/traject";
  * Each card is three columns on a wide screen: the numeral, what you do in the
  * meeting, and what you do at home before the next one. The rhythm answers the
  * question the reader really has, which is how much work this is. The last
- * card has no homework, so its third column stands empty, exactly as the
- * client drew it.
+ * card has no homework. Its third column is not empty, though: row T5 of the
+ * client's mail gave it "Daarna, inschrijven!" and a party mark, and that
+ * heading stands there on its own.
  *
  * Responsive (ours, the client's export keeps three columns at 390px): one
  * column on a telephone with the numeral above the title, two from `sm` with
@@ -24,8 +25,9 @@ export function GesprekkenPanel() {
             <h2 className="text-h2 max-w-[29rem] font-bold">
               Hoe ziet het traject eruit?
             </h2>
+            {/* Row T2. */}
             <p className="text-small font-mono text-violet-dark">
-              4 gesprekken · elk gesprek bouwt op het vorige
+              4 gesprekken · 2 online testen
             </p>
           </div>
 
@@ -35,6 +37,10 @@ export function GesprekkenPanel() {
             </li>
             <li>
               <Pill tone="white">✓ Incl. studie-interessetest</Pill>
+            </li>
+            {/* Row T3: "kopje toevoegen naast de twee testen". */}
+            <li>
+              <Pill tone="white">✓ Incl. rapportage</Pill>
             </li>
           </ul>
 
@@ -61,16 +67,25 @@ export function GesprekkenPanel() {
                   <p className="text-body mt-2 text-muted lg:text-card">{meeting.body}</p>
                 </div>
 
-                {meeting.homework ? (
-                  <div className="rounded-row bg-paper p-5 sm:col-span-2 lg:col-span-1">
-                    <p className="eyebrow text-eyebrow-sm text-coral-text">
-                      Daarna, thuis
-                    </p>
+                {/* ROW T5. The heading is the meeting's own now, because the
+                    client gave the third and the fourth their own words. The
+                    fourth has a heading and no body: after that meeting you
+                    enrol, and "Daarna, inschrijven!" says the whole thing. The
+                    party mark the client asked for is decoration, so it
+                    carries `aria-hidden` and the heading reads on its own. */}
+                <div className="rounded-row bg-paper p-5 sm:col-span-2 lg:col-span-1">
+                  <p className="eyebrow text-eyebrow-sm text-coral-text">
+                    {meeting.homeworkTitle}
+                    {meeting.homework === null ? (
+                      <span aria-hidden="true"> 🎉</span>
+                    ) : null}
+                  </p>
+                  {meeting.homework ? (
                     <p className="text-card mt-1.5 text-muted lg:text-small">
                       {meeting.homework}
                     </p>
-                  </div>
-                ) : null}
+                  ) : null}
+                </div>
               </Reveal>
             ))}
           </ol>
