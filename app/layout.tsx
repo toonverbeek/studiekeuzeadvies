@@ -1,17 +1,38 @@
 import type { Metadata } from "next";
-import { Alegreya_Sans } from "next/font/google";
+import {
+  Bricolage_Grotesque,
+  Figtree,
+  IBM_Plex_Mono,
+} from "next/font/google";
 import { CookieConsentBar } from "./components/cookie-consent";
 import "./globals.css";
 
-/* One warm humanist sans at every size. DESIGN.md bans the reflex defaults
-   (Inter, DM Sans, Plus Jakarta, Outfit, IBM Plex Sans) and the Dutch education
-   defaults (Poppins, Nunito). Alegreya Sans has calligraphic roots, a true italic,
-   and a heavy weight strong enough to carry the display line. */
-const alegreyaSans = Alegreya_Sans({
-  variable: "--font-alegreya-sans",
-  subsets: ["latin"],
-  weight: ["400", "500", "700", "800"],
-  style: ["normal", "italic"],
+/* Three families, each with one job (docs/redesign/design-spec.md, 2.1).
+   Bricolage Grotesque is the voice: every heading, numeral and price. Figtree
+   is the sentence: everything a reader reads. IBM Plex Mono is the label: the
+   small uppercase lines above a heading, the dates, the meta rows.
+   latin-ext is in every subset because Dutch copy carries ï, ë and é, and a
+   name like Fatima el Amrani or a city like Zürich must not fall back. */
+const bricolage = Bricolage_Grotesque({
+  variable: "--font-bricolage",
+  subsets: ["latin", "latin-ext"],
+  // The variable font covers 200 to 800; the design uses 600 and 700, and the
+  // range keeps a heavier or lighter step available without a second file.
+  weight: "variable",
+  display: "swap",
+});
+
+const figtree = Figtree({
+  variable: "--font-figtree",
+  subsets: ["latin", "latin-ext"],
+  weight: "variable",
+  display: "swap",
+});
+
+const plexMono = IBM_Plex_Mono({
+  variable: "--font-plex-mono",
+  subsets: ["latin", "latin-ext"],
+  weight: ["400", "500"],
   display: "swap",
 });
 
@@ -33,7 +54,10 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
-    <html lang="nl" className={`${alegreyaSans.variable} h-full antialiased`}>
+    <html
+      className={`${bricolage.variable} ${figtree.variable} ${plexMono.variable} h-full antialiased`}
+      lang="nl"
+    >
       <body className="flex min-h-full flex-col bg-paper text-ink">
         {children}
         {/* Last child of the body on purpose. The bar is sticky, so the footer

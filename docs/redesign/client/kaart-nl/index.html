@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html><head>
+<meta charset="utf-8">
+<script src="assets/6090c416-a5e3-43cd-9252-a476e7ddb402.js" integrity="sha384-CjloA8y00+1SDAUkjs099PVfnY2KmDC2BZnws9kh8D/lX1s46w6EPhpXdqMfjK6i" crossorigin="anonymous"></script>
+<script src="assets/30134467-c8f0-4af0-ab6e-efb55459adb3.js" integrity="sha384-Ukv1p/xTma6P4/2bY5KzWBw+ydSpXmhCMtyciIQVDJ1RmOxtCYNMF1uXT9T63H67" crossorigin="anonymous"></script>
+<style>
+  html, body { margin: 0; height: 100%; background: transparent; font-family: 'Figtree', sans-serif; overflow: hidden; }
+  #map { width: 100%; height: 100%; }
+  .lbl { font: 600 12.5px 'Figtree', sans-serif; fill: #1e1b4b; paint-order: stroke; stroke: #efebff; stroke-width: 4px; }
+</style>
+</head>
+<body>
+
+<div id="map"></div>
+<script>
+(async () => {
+  const el = document.getElementById('map');
+  const W = el.clientWidth || 520, H = el.clientHeight || 560;
+  const svg = d3.select('#map').append('svg').attr('viewBox', `0 0 ${W} ${H}`).attr('width', '100%').attr('height', '100%');
+  const topo = await d3.json('https://cdn.jsdelivr.net/npm/world-atlas@2.0.2/countries-110m.json');
+  const countries = topojson.feature(topo, topo.objects.countries);
+  const nl = countries.features.find(f => f.properties.name === 'Netherlands');
+  const proj = d3.geoMercator().fitExtent([[30, 30], [W - 30, H - 30]], nl);
+  // Abstract halftone: dot-grid sampled inside the NL polygon
+  const step = 13;
+  const dotsG = svg.append('g');
+  const dots = [];
+  for (let y = 0; y < H; y += step) {
+    for (let x = 0; x < W; x += step) {
+      const ll = proj.invert([x + (Math.round(y / step) % 2 ? step / 2 : 0), y]);
+      if (ll && d3.geoContains(nl, ll)) dots.push([x, y]);
+    }
+  }
+  dotsG.selectAll('circle').data(dots).join('circle')
+    .attr('cx', d => d[0]).attr('cy', d => d[1])
+    .attr('r', 0).attr('fill', '#8f75ff').attr('opacity', 0.55)
+    .transition().duration(500)
+    .delay(d => d[1] * 1.4 + Math.random() * 220)
+    .ease(d3.easeCubicOut)
+    .attr('r', 3.1);
+  const cities = [
+    { n: 'Amsterdam', c: [4.90, 52.37], dx: 12, dy: 4 },
+    { n: 'Utrecht', c: [5.12, 52.09], dx: 12, dy: 13 },
+    { n: 'Amersfoort', c: [5.39, 52.16], dx: 12, dy: -5 },
+    { n: 'Rotterdam', c: [4.48, 51.92], dx: -12, dy: 17, anchor: 'end' },
+    { n: 'Eindhoven', c: [5.47, 51.44], dx: 12, dy: 4 },
+    { n: 'Zwolle', c: [6.09, 52.51], dx: 12, dy: 4 }
+  ];
+  const g = svg.append('g');
+  cities.forEach((city, i) => {
+    const [x, y] = proj(city.c);
+    const cg = g.append('g').attr('transform', `translate(${x},${y})`).style('opacity', 0);
+    cg.transition().duration(400).delay(900 + i * 140).style('opacity', 1);
+    const ring = cg.append('circle').attr('r', 6).attr('fill', 'none').attr('stroke', '#ff6b4a').attr('stroke-width', 2);
+    function pulse() {
+      ring.attr('r', 6).attr('opacity', 0.9)
+        .transition().duration(2400).delay(600 + i * 340).ease(d3.easeCubicOut)
+        .attr('r', 22).attr('opacity', 0)
+        .on('end', pulse);
+    }
+    pulse();
+    cg.append('circle').attr('r', 5.5).attr('fill', '#ff6b4a').attr('stroke', '#faf8f4').attr('stroke-width', 2.5);
+    cg.append('text').attr('class', 'lbl')
+      .attr('x', city.dx).attr('y', city.dy)
+      .attr('text-anchor', city.anchor || 'start')
+      .text(city.n);
+  });
+})();
+</script>
+
+
+</body></html>

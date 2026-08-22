@@ -19,7 +19,14 @@
  * app/coaches.ts, because that is the only place where it can be true.
  */
 export const site = {
-  name: "StudieKeuzeAdvies",
+  /**
+   * The brand as it is written in running text: the client's own spelling, the
+   * one on the wordmark and on every page they designed. The `<title>` of a
+   * page is the one place that keeps the old "StudieKeuzeAdvies", because that
+   * string is what the bought rankings hang on. Decided 2026-08-20, see
+   * docs/decisions.md.
+   */
+  name: "StudiekeuzeAdvies",
 } as const;
 
 /** Who answers a request from a city where no coach works yet.
@@ -40,6 +47,29 @@ export const unassignedIntakeInbox: string | null = null;
  * and #44.
  */
 export const coachRecruitmentInbox: string | null = null;
+
+/**
+ * Where a filled-in application from `/coach-worden` is delivered.
+ *
+ * IT IS NOT `coachRecruitmentInbox` ABOVE, AND THE DIFFERENCE MATTERS. That one
+ * is an address we PRINT on a page, so it may not be a stand-in and it may not
+ * be a mailbox that bounces: it stays null until the client names one. This one
+ * is a destination the server writes to, and it is never shown to a reader, so
+ * the archive address is a perfectly good answer while the client decides.
+ *
+ * The order is: an inbox the client set, then MAIL_ARCHIVE, then null. Null
+ * means the form still renders and still says something honest, because
+ * `applyAsCoach` in app/actions.ts answers `not-configured` and the card offers
+ * no mailto it cannot honour. See issues #20 and #44.
+ *
+ * COACH_APPLICATION_INBOX has no NEXT_PUBLIC_ prefix on purpose. Nothing in the
+ * browser needs it, and an address in a client bundle is an address a scraper
+ * gets for free.
+ */
+export const coachApplicationInbox: string | null =
+  process.env.COACH_APPLICATION_INBOX?.trim() ||
+  process.env.MAIL_ARCHIVE?.trim() ||
+  null;
 
 /**
  * The image at the top of the home page. public/images/hero-gesprek.jpg IS
@@ -85,7 +115,7 @@ export const heroImage = {
 export const legacyQuotes = [
   {
     quote:
-      "StudieKeuzeAdvies heeft mij erg op weg geholpen naar een studiekeuze! De lessen waren heel gezellig en nog belangrijker, ook heel leerzaam. Mijn coach oordeelde niet over iets wat ik zei en had vooral veel interesse.",
+      "StudiekeuzeAdvies heeft mij erg op weg geholpen naar een studiekeuze! De lessen waren heel gezellig en nog belangrijker, ook heel leerzaam. Mijn coach oordeelde niet over iets wat ik zei en had vooral veel interesse.",
     person: "Ger, 18 jaar",
     meta: "traject afgerond in november 2023",
   },

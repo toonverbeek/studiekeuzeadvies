@@ -1,0 +1,15 @@
+{
+ "source": "kaart-nl.html",
+ "ext_resources": [],
+ "page_order": [],
+ "assets": {
+  "30134467-c8f0-4af0-ab6e-efb55459adb3": {
+   "file": "30134467-c8f0-4af0-ab6e-efb55459adb3.js",
+   "mime": "text/javascript"
+  },
+  "6090c416-a5e3-43cd-9252-a476e7ddb402": {
+   "file": "6090c416-a5e3-43cd-9252-a476e7ddb402.js",
+   "mime": "text/javascript"
+  }
+ }
+}

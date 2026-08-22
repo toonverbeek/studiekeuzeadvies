@@ -94,6 +94,8 @@
  * writes "hbo-opleiding" in running text and "hbo opleiding" in the doors.
  */
 
+import { meetings } from "@/app/traject";
+
 export type LevelSection = {
   /** The h2, and one entry in both indexes. */
   title: string;
@@ -153,16 +155,16 @@ export type Level = {
 };
 
 /**
- * The four themes are the four the old level pages listed, word for word, and
- * the same four that app/situations.ts uses. Names only: the descriptions live
- * on the traject page and they stay there.
+ * The four meetings of the traject, by name only: the descriptions live on the
+ * traject page and they stay there.
+ *
+ * READ FROM app/traject.ts, NOT TYPED HERE. This list used to be typed by hand,
+ * and it drifted: it opened with "Oriëntatie" and it had no "Mijn interesses en
+ * verdieping", so a reader who opened this page and the traject page saw two
+ * different trajects. There is one traject, so there is one list. Rename a
+ * meeting there and these three pages follow.
  */
-export const levelThemes = [
-  "Oriëntatie",
-  "Wie ben ik en wat kan ik?",
-  "Blik op de toekomst",
-  "De studiekeuze",
-];
+export const levelThemes = meetings.map((meeting) => meeting.title);
 
 export const levels: Level[] = [
   {

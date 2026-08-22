@@ -121,7 +121,13 @@ PAGE_MAP = {
 
     # The people.
     "/studiekeuzecoaches/": ("/studiekeuzecoaches", "keep"),
-    "/janneke-van-den-brand/": ("/studiekeuzecoaches/janneke-van-den-brand", "redirect"),
+    # Janneke is the one of the three who works here, and this URL is the one
+    # old address that is about her and nobody else (1.129 real words, an
+    # interview). Her profile page exists now, so the row lands on the page
+    # about the same person instead of on the roster. Aart Smit and Angelina
+    # Muller do not work here: their targets have no page and never will, so
+    # `landing()` sends both to the roster and marks that settled.
+    "/janneke-van-den-brand/": ("/studiekeuzecoaches/janneke", "redirect"),
     "/aart-smit/": ("/studiekeuzecoaches/aart-smit", "redirect"),
     "/angelina-muller/": ("/studiekeuzecoaches/angelina-muller", "redirect"),
 
@@ -246,6 +252,7 @@ PAGE_FILES = {"page.ts", "page.tsx", "page.mdx"}
 DYNAMIC_SEGMENTS = {
     "[artikel]": "app/articles.ts",
     "[stad]": "app/cities.ts",
+    "[coach]": "app/coaches.ts",
 }
 
 # The fallback ladder. No redirect may land on a 404, and many targets in the
@@ -259,9 +266,7 @@ DYNAMIC_SEGMENTS = {
 # leaves a crawler checking a page that is never coming back.
 FALLBACKS = {
     # Not settled: these pages are planned, they are only blocked today.
-    "/tarieven": ("/studiekeuzetraject", False),      # the price is not decided yet
     "/onze-methode": ("/studiekeuzetraject", False),  # blocked, see issue #37
-    "/coach-worden": ("/studiekeuzecoaches", False),  # needs the freelance answer
     "/vacatures": ("/studiekeuzecoaches", False),
     "/bedankt": ("/", False),
     # Settled. There is no central contact point any more and there will not be
@@ -270,10 +275,16 @@ FALLBACKS = {
     # goes to /locaties rather than "/", which would drop the reader at the
     # front door with the same question they arrived with.
     "/contact": ("/locaties", True),
-    # Settled. There is no "about us" page planned, because the company is the
-    # coaches. PRODUCT.md principle 3: the proof is a named person.
-    "/over-ons": ("/studiekeuzecoaches", True),
 }
+
+# THREE ROWS LEFT THIS TABLE ON 2026-08-20, when the client's redesign landed
+# and the pages behind them were written: /tarieven (the prices are decided,
+# see docs/decisions.md), /coach-worden (the freelance model is written down on
+# the page itself) and /over-ons. The last one also reverses the note that used
+# to stand beside it, "there is no about-us page planned": there is one now, and
+# it was a `rebuild` row in docs/url-map.csv all along. `landing()` reads
+# app/ before it reads this table, so those three targets now resolve to
+# themselves and their parked redirects disappear from app/redirects.ts.
 
 
 def slugs_in(data_file: str) -> set[str]:
@@ -406,8 +417,7 @@ export const legacyRedirects: LegacyRedirect[] = [
 '''
 
 
-def write_redirects(rows: list[dict]) -> None:
-    routes = app_routes()
+def write_redirects(rows: list[dict], routes: set[str]) -> None:
     article_slugs = {row["old"].strip("/") for row in rows if row["kind"] == "post"}
 
     # EVERY ROW THAT MUST NOT ANSWER 404, which is every row except a deliberate
@@ -470,6 +480,7 @@ def write_redirects(rows: list[dict]) -> None:
 
 
 def main() -> None:
+    routes = app_routes()
     crawl = json.load(open(ARCHIVE / "meta" / "crawl.json"))
     inbound = json.load(open(ARCHIVE / "meta" / "editorial_inbound.json"))
     attachments = sitemap_paths("attachment-sitemap.xml")
@@ -503,6 +514,20 @@ def main() -> None:
         if action == "redirect" and new == path.rstrip("/"):
             action = "keep"
             note = f"the new URL is the old URL; {note}" if note else "the new URL is the old URL"
+        # THE OLD ADDRESS IS A PAGE ON THIS SITE. Then it cannot redirect: a
+        # redirect answers before the router does, so the row would stand in
+        # front of a page we wrote and hide it. It happened the day the coach
+        # profiles landed: /studiekeuzecoaches/janneke/ is an old attachment
+        # page (a photograph named "Janneke"), and the attachment rule sent it
+        # to its parent, /studiekeuzecoaches, which is exactly the page the new
+        # route sits under. The rule below is general and it is the truthful
+        # one: an address that answers 200 keeps itself, whatever the archive
+        # made of it. app/sitemap.ts throws when this is not done.
+        if path.rstrip("/") in routes:
+            new = path.rstrip("/")
+            action = "keep"
+            note = "the address is a page on this site now" + (f"; {note}" if note else "")
+
         rows.append({
             "old": path,
             "kind": record["kind"],
@@ -530,7 +555,7 @@ def main() -> None:
         for path in unresolved:
             print(f"  {path}")
 
-    write_redirects(rows)
+    write_redirects(rows, routes)
 
 
 if __name__ == "__main__":

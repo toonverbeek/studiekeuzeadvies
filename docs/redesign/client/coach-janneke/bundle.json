@@ -1,0 +1,92 @@
+{
+ "source": "Coach Janneke.dc.html",
+ "ext_resources": [
+  {
+   "id": "https://unpkg.com/react@18.3.1/umd/react.production.min.js",
+   "uuid": "5ea91ea2-0e90-4e5f-a566-28142f136a38"
+  },
+  {
+   "id": "https://unpkg.com/react-dom@18.3.1/umd/react-dom.production.min.js",
+   "uuid": "90a0eaa8-9ea0-4b31-bbd8-898382d59ce3"
+  }
+ ],
+ "page_order": [],
+ "assets": {
+  "03b94cb1-09c9-40da-8c8b-4cee1b7db735": {
+   "file": "03b94cb1-09c9-40da-8c8b-4cee1b7db735.jpg",
+   "mime": "image/jpeg"
+  },
+  "44722135-6eab-498a-91d4-cfed138b5c99": {
+   "file": "44722135-6eab-498a-91d4-cfed138b5c99.js",
+   "mime": "text/javascript"
+  },
+  "5ea91ea2-0e90-4e5f-a566-28142f136a38": {
+   "file": "ext-react.production.min.js",
+   "mime": "text/javascript"
+  },
+  "90a0eaa8-9ea0-4b31-bbd8-898382d59ce3": {
+   "file": "ext-react-dom.production.min.js",
+   "mime": "text/javascript"
+  },
+  "18c1f26f-530a-4eb4-8f12-db256b7bf3e8": {
+   "file": "18c1f26f-530a-4eb4-8f12-db256b7bf3e8.woff2",
+   "mime": "font/woff2"
+  },
+  "c06b0145-5b9e-4951-9edd-07dded3ab37d": {
+   "file": "c06b0145-5b9e-4951-9edd-07dded3ab37d.woff2",
+   "mime": "font/woff2"
+  },
+  "0863f195-c61b-4360-83aa-efa551624bd8": {
+   "file": "0863f195-c61b-4360-83aa-efa551624bd8.woff2",
+   "mime": "font/woff2"
+  },
+  "bfd96dba-c514-4fa4-8e30-073ccdb430d4": {
+   "file": "bfd96dba-c514-4fa4-8e30-073ccdb430d4.woff2",
+   "mime": "font/woff2"
+  },
+  "27b67d37-33ca-4b1b-ab95-79c3ea009c23": {
+   "file": "27b67d37-33ca-4b1b-ab95-79c3ea009c23.woff2",
+   "mime": "font/woff2"
+  },
+  "a4981cd8-0bb7-48da-ae15-b34d4e460054": {
+   "file": "a4981cd8-0bb7-48da-ae15-b34d4e460054.woff2",
+   "mime": "font/woff2"
+  },
+  "1d2a8b00-3955-477a-a7aa-766a684e3e5f": {
+   "file": "1d2a8b00-3955-477a-a7aa-766a684e3e5f.woff2",
+   "mime": "font/woff2"
+  },
+  "b4f16da2-bbe6-4e20-b8df-5448d1a4eb36": {
+   "file": "b4f16da2-bbe6-4e20-b8df-5448d1a4eb36.woff2",
+   "mime": "font/woff2"
+  },
+  "bd0b2934-fdcc-4aed-aa95-9155367dae46": {
+   "file": "bd0b2934-fdcc-4aed-aa95-9155367dae46.woff2",
+   "mime": "font/woff2"
+  },
+  "4dd4cc4c-bdd7-4c69-a32d-f9cabd53c921": {
+   "file": "4dd4cc4c-bdd7-4c69-a32d-f9cabd53c921.woff2",
+   "mime": "font/woff2"
+  },
+  "34464b61-f85d-452f-8215-8ee5277e3269": {
+   "file": "34464b61-f85d-452f-8215-8ee5277e3269.woff2",
+   "mime": "font/woff2"
+  },
+  "3c31bac2-31da-4970-a2ac-fa02d761136b": {
+   "file": "3c31bac2-31da-4970-a2ac-fa02d761136b.woff2",
+   "mime": "font/woff2"
+  },
+  "7548db02-37bf-4fce-a63b-ca221a5702ca": {
+   "file": "7548db02-37bf-4fce-a63b-ca221a5702ca.woff2",
+   "mime": "font/woff2"
+  },
+  "b5638e26-3e40-4f2f-a364-6de31ca69a2e": {
+   "file": "b5638e26-3e40-4f2f-a364-6de31ca69a2e.woff2",
+   "mime": "font/woff2"
+  },
+  "ae2d194f-0291-4f81-ab6b-ddda7a6caafb": {
+   "file": "ae2d194f-0291-4f81-ab6b-ddda7a6caafb.woff2",
+   "mime": "font/woff2"
+  }
+ }
+}

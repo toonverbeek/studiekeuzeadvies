@@ -1,11 +1,20 @@
 import type { Metadata } from "next";
 import Image from "next/image";
-import Link from "next/link";
-import { coaches } from "@/app/coaches";
-import { ContactSection } from "@/app/components/contact-section";
+import { citiesWithCoach } from "@/app/cities";
+import { type Coach, coaches } from "@/app/coaches";
+import { NlMap } from "@/app/components/nl-map";
 import { SiteFooter } from "@/app/components/site-footer";
-import { SiteHeader, type NavItem } from "@/app/components/site-header";
-import { button, linkOnOchre, linkOnPaper, readingRow, shell } from "@/app/shell";
+import { SiteHeader } from "@/app/components/site-header";
+import {
+  Button,
+  Card,
+  Container,
+  Eyebrow,
+  Pill,
+  Reveal,
+  Section,
+} from "@/app/components/ui";
+import { CoachFilter, type FilterItem } from "./coach-filter";
 
 export const metadata: Metadata = {
   // The old title, word for word. It is what ranks today.
@@ -15,28 +24,49 @@ export const metadata: Metadata = {
   alternates: { canonical: "/studiekeuzecoaches" },
 };
 
-const nav: NavItem[] = [
-  { href: "/studiekeuzetraject", label: "Het traject" },
-  { href: "#coaches", label: "Coaches" },
-  { href: "/locaties", label: "Locaties" },
-  { href: "/artikelen", label: "Artikelen" },
-  { href: "#contact", label: "Contact" },
+/**
+ * The three facts under the h1, where the client's export prints a rating.
+ *
+ * WHAT IS NOT HERE. The client wrote "8,8 gemiddelde beoordeling" and "6
+ * regio's". The 8,8 was earned by coaches who are mostly not ours, so it may
+ * not be printed (PRODUCT.md principle 5, issue #24). The count is not typed
+ * either.
+ *
+ * WHY IT COUNTS CITIES AND NOT TOWNS. The number stands beside the map, and
+ * the map pins `citiesWithCoach`. Counting every coach's town instead gave six
+ * next to three pins, so one screen said two different things. Both now read
+ * the same list, and the strip on the home page reads it too.
+ */
+/**
+ * The towns in roster order, without repeats. The real coach stands first
+ * (decision 2026-08-06), so the first chip after "Alle regio's" is hers. This
+ * feeds the filter over the grid and nothing else.
+ */
+const regions = [...new Set(coaches.map((coach) => coach.town))];
+
+const stats = [
+  {
+    value: String(citiesWithCoach.length),
+    label: citiesWithCoach.length === 1 ? "stad + online" : "steden + online",
+    tone: "text-violet",
+  },
+  { value: "Gratis", label: "het eerste gesprek", tone: "text-coral-text" },
+  { value: "1-op-1", label: "alle gesprekken", tone: "text-amber-ink" },
 ];
 
 /**
  * This block stands where the old page put "gemiddeld beoordeeld met een 8,8".
- * A rating we may not use is replaced by four things we can keep, and the first
- * two are the old page's own opening sentence, taken apart.
+ *
+ * WHAT WENT OUT (issue #19). It opened with two cards about the people: "Elke
+ * coach heeft jaren buiten het onderwijs gewerkt" and "Ze werken al jaren met
+ * jouw leeftijd". Neither is a fact about this roster. The first one is even
+ * contradicted by it: Hanneke stood ten years in a school and Wietske taught
+ * eighteen. They were promises about hiring, and a promise about hiring may
+ * not be printed as a fact (PRODUCT.md principle 5).
+ *
+ * WHAT STAYS. The two that describe the traject, which is ours to promise.
  */
 const shared = [
-  {
-    title: "Ze hebben zelf gestudeerd én gewerkt",
-    body: "Elke coach heeft jaren buiten het onderwijs gewerkt. Ze weten dus niet alleen hoe een opleiding eruitziet, maar ook waar die op uitkomt.",
-  },
-  {
-    title: "Ze werken al jaren met jouw leeftijd",
-    body: "Studiekiezers van 16 tot 22 begeleiden is een vak apart. Het is iets anders dan volwassenen coachen, en het vraagt geduld met stiltes.",
-  },
   {
     title: "Je houdt dezelfde coach",
     body: "Van het eerste gesprek tot je keuze rond is. Geen wisselend team, geen wachtrij, en je hoeft je verhaal maar één keer te vertellen.",
@@ -47,236 +77,217 @@ const shared = [
   },
 ];
 
+/**
+ * One card of the roster (design-spec 3.16). It is rendered on the server and
+ * handed to the filter as a finished block, so nothing about a coach travels to
+ * the browser as data.
+ *
+ * The client's card carries a quote from the coach. Ours does not: five of
+ * these six people do not exist yet, and the one who does has not written one.
+ * A pill row of specialisms does the same work and says nothing untrue.
+ */
+function CoachCard({ coach }: { coach: Coach }) {
+  return (
+    <article
+      className="flex w-full flex-col overflow-hidden rounded-card-sm border border-hairline bg-white"
+      id={coach.slug}
+    >
+      {coach.portrait ? (
+        <Image
+          alt={coach.portraitAlt}
+          // 4:5, not the client's 4:3. Five squares in a column read as profile
+          // pictures, which is the team grid this brand stays away from
+          // (decision 2026-08-05).
+          className="aspect-[4/5] w-full object-cover"
+          placeholder="blur"
+          sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 360px"
+          src={coach.portrait}
+        />
+      ) : (
+        // A coach can start before they send a photo. The card then opens at
+        // the name instead of at a grey box.
+        null
+      )}
+
+      <div className="flex flex-1 flex-col gap-2 p-6">
+        <div className="flex items-center justify-between gap-3">
+          <h3 className="text-title-sm font-bold">{coach.name}</h3>
+          <Pill className="shrink-0" size="sm" tone="lavender">
+            {coach.town}
+          </Pill>
+        </div>
+
+        <p className="text-small font-semibold text-coral-text">
+          {coach.levels}
+        </p>
+
+        <p className="text-card text-muted">{coach.oneLiner}</p>
+
+        <p className="text-small text-muted">Werkgebied: {coach.region}</p>
+
+        <ul className="mt-1 flex flex-wrap gap-2">
+          {coach.specialties.map((item) => (
+            <li
+              className="inline-flex items-center rounded-full border border-chip-border px-3 py-1 text-micro font-semibold text-muted"
+              key={item}
+            >
+              {item}
+            </li>
+          ))}
+        </ul>
+
+        {/* The name stands on the button and not in an `sr-only` span: the
+            page promises "de persoon die je straks spreekt", and the client's
+            card prints it. The second button is the client's outline chip. It
+            is written out here and not as a `variant`, because app/components
+            belongs to the Foundation phase; the need is reported. */}
+        <div className="mt-auto flex flex-wrap gap-2.5 pt-5">
+          <Button className="grow" href={`/studiekeuzecoaches/${coach.slug}`}>
+            Maak kennis met {coach.name}
+          </Button>
+          <Button
+            className="shrink-0 border-[1.5px] border-chip-border px-6 py-3 text-button whitespace-nowrap hover:border-violet"
+            href={`/studiekeuzecoaches/${coach.slug}#intake`}
+            variant="ghost"
+          >
+            Intake
+          </Button>
+        </div>
+      </div>
+    </article>
+  );
+}
+
 export default function CoachesPage() {
+  const items: FilterItem[] = coaches.map((coach) => ({
+    key: coach.slug,
+    region: coach.town,
+    card: <CoachCard coach={coach} />,
+  }));
+
   return (
     <>
-      <SiteHeader homeHref="/" nav={nav} />
+      <SiteHeader />
 
       <main id="top">
-        {/* The ochre poster. The right column is the roster itself, so a reader
-            who came for one city can leave the hero at the right person. */}
-        <section className="bg-ochre text-ink">
-          <div className={`${shell} pb-16 md:pb-20`}>
-            <p className="text-eyebrow pt-16 uppercase sm:pt-24">
-              Wie je tegenover je hebt
-            </p>
+        {/* Hero: the sentence on the left, the country on the right. */}
+        <header className="pt-10 pb-12 lg:pt-14 lg:pb-16" id="kaart">
+          <Container className="grid items-center gap-10 lg:grid-cols-[1.15fr_1fr] lg:gap-14">
+            <div>
+              <Eyebrow className="mb-4">Onze studiekeuzecoaches</Eyebrow>
 
-            {/* The words of the old H1, without its exclamation mark. The loud
-                line is the display step from sm up, so this page opens with the
-                same weight as the traject page and every city page. Below sm it
-                drops to the headline step: "studiekeuzecoaches" is one word of
-                eighteen letters that cannot break, and at the display size it
-                runs past the gutter on every telephone. */}
-            <h1 className="mt-5">
-              {/* The trailing space is not decoration: without it a screen
-                  reader runs the two spans together into one word. */}
-              <span className="text-title block font-medium">Leer onze </span>
-              <span className="text-headline sm:text-display mt-1 block font-extrabold">
-                studiekeuzecoaches kennen
-              </span>
-            </h1>
+              <h1 className="text-h1 font-bold">
+                De persoon die je straks spreekt, kies je zelf.
+              </h1>
 
-            <div className="mt-12 grid items-start gap-x-16 gap-y-12 lg:mt-16 lg:grid-cols-[minmax(0,1fr)_minmax(240px,320px)]">
-              <div className="flex flex-col items-start gap-8">
-                <p className="text-lead max-w-[52ch]">
-                  Een traject bij ons is geen test en geen portaal. Het zijn
-                  gesprekken met één persoon, die je leert kennen en die je niets
-                  aanpraat. Hieronder lees je wie dat zijn, waar ze werken en
-                  waar ze vandaan komen.
-                </p>
-                <div className="flex flex-wrap items-center gap-x-8 gap-y-4">
-                  <a className={button} href="#contact">
-                    Plan een gratis intakegesprek
-                  </a>
-                  <Link className={linkOnOchre} href="/studiekeuzetraject">
-                    Eerst lezen hoe het traject werkt
-                  </Link>
-                </div>
-              </div>
+              <p className="text-lead mt-5 max-w-[30rem] text-muted">
+                Geen centraal callcenter: je kiest een stad, ziet wie daar werkt
+                en vraagt bij díe coach een gratis intakegesprek aan. Alle
+                gesprekken zijn 1-op-1.
+              </p>
 
-              {/* The index of the two sibling pages lists sections. Here it
-                  lists people, because a reader who came for one city wants the
-                  person, not the section. The label says so: "De coaches" is
-                  the heading of the roster further down, and one name for two
-                  different things sends a reader to the wrong place. */}
-              <nav aria-label="Direct naar een coach">
-                <p className="text-eyebrow border-t border-ochre-line pt-4 uppercase">
-                  Direct naar
-                </p>
-                <ul className="mt-4 flex flex-col gap-2">
-                  {coaches.map((person) => (
-                    <li key={person.slug}>
-                      <a className={linkOnOchre} href={`#${person.slug}`}>
-                        {person.name}
-                      </a>{" "}
-                      in {person.town}
-                    </li>
-                  ))}
-                </ul>
-              </nav>
-            </div>
-          </div>
-        </section>
-
-        {/* Still ochre, so the top of the page reads as one poster. Four short
-            lines are not a reading text, so they may sit on the colour. */}
-        <section className="bg-ochre text-ink" id="samen">
-          <div className={`${shell} pb-20 md:pb-28`}>
-            <div
-              className={`${readingRow} border-t border-ochre-line pt-12 md:pt-16`}
-            >
-              <h2 className="text-section font-extrabold">
-                Wat elke coach gemeen heeft
-              </h2>
-              <ul className="grid gap-x-16 gap-y-8 md:grid-cols-2">
-                {shared.map((item) => (
-                  <li
-                    className="flex max-w-[46ch] flex-col gap-2 border-t border-ochre-line pt-5"
-                    key={item.title}
-                  >
-                    <h3 className="text-title font-bold">{item.title}</h3>
-                    <p>{item.body}</p>
+              <ul className="mt-8 grid max-w-[30rem] grid-cols-3 gap-x-5 gap-y-5">
+                {stats.map((stat) => (
+                  <li key={stat.label}>
+                    <p
+                      className={`font-display text-h4 font-bold ${stat.tone}`}
+                    >
+                      {stat.value}
+                    </p>
+                    <p className="mt-2 text-small text-muted">{stat.label}</p>
                   </li>
                 ))}
               </ul>
             </div>
-          </div>
-        </section>
 
-        {/* The spine of the page. The face sits in the column that holds a
-            heading everywhere else on this site, so the text of every coach
-            starts on the same line as the text of every other page. */}
-        <section className="bg-paper" id="coaches">
-          <div className={`${shell} py-20 md:py-28`}>
-            <div className={readingRow}>
-              <h2 className="text-section font-extrabold">De coaches</h2>
-              <p className="text-lead max-w-[52ch]">
-                Ze werken los van elkaar, elk in hun eigen regio, met dezelfde
-                manier van kijken. Je krijgt de coach van jouw gebied.
-              </p>
+            {/* The map pins the cities that have a page of their own. A pin is
+                a link to that page, so the picture is also the index. */}
+            <div className="rounded-photo bg-lavender p-3.5 shadow-map sm:p-[18px]">
+              <NlMap
+                cities={citiesWithCoach.map((city) => ({
+                  name: city.name,
+                  at: city.at,
+                  href: `/locaties/${city.slug}`,
+                }))}
+                title="Kaart van Nederland met de steden waar een coach werkt"
+              />
             </div>
+          </Container>
+        </header>
 
-            {/* No portrait here carries `priority`. The roster starts about two
-                screens down, the largest paint of this page is the ochre poster
-                at the top, and preloading a face nobody has scrolled to yet
-                only takes bandwidth away from it. */}
-            <ul className="mt-14 border-b border-hairline md:mt-20">
-              {coaches.map((person) => (
-                <li
-                  className={`${readingRow} border-t border-hairline py-14 md:py-20`}
-                  id={person.slug}
-                  key={person.slug}
-                >
-                  {person.portrait ? (
-                    <Image
-                      alt={person.portraitAlt}
-                      // Below lg the cap is wider than the reading column, so
-                      // the photo runs flush with the text on a telephone. From
-                      // lg it sits in the 20rem margin column of the site.
-                      // The source files are square. A column of five squares
-                      // reads as a row of profile pictures, which is the team
-                      // grid DESIGN.md sends us away from, so they are cropped
-                      // to a portrait 4:5. It also shortens the empty paper
-                      // under the face, which the long texts leave behind.
-                      className="aspect-[4/5] w-full max-w-[22rem] object-cover lg:max-w-[20rem]"
-                      placeholder="blur"
-                      sizes="(max-width: 1024px) 352px, 320px"
-                      src={person.portrait}
-                    />
-                  ) : (
-                    // A coach can start before they send a photo. The column
-                    // then stays empty instead of showing a grey box.
-                    <span aria-hidden="true" />
-                  )}
+        {/* Filter and grid. */}
+        <Section id="coaches" space="lg">
+          <Container>
+            <Reveal>
+              <CoachFilter items={items} regions={regions} />
+            </Reveal>
+          </Container>
+        </Section>
 
-                  <div className="flex flex-col items-start gap-6">
-                    <div className="flex flex-col gap-2">
-                      <p className="text-eyebrow text-ink-soft uppercase">
-                        Studiekeuzecoach in {person.town}
-                      </p>
-                      <h3 className="text-section font-extrabold">
-                        {person.name}
-                      </h3>
-                    </div>
-
-                    <p className="text-lead max-w-[52ch]">{person.intro}</p>
-
-                    <div className="flex max-w-[62ch] flex-col gap-5">
-                      {person.bio.map((paragraph) => (
-                        <p key={paragraph.slice(0, 24)}>{paragraph}</p>
-                      ))}
-                    </div>
-
-                    <dl className="grid w-full max-w-[62ch] gap-x-10 gap-y-5 border-t border-hairline pt-6 sm:grid-cols-2">
-                      <div className="flex flex-col gap-1">
-                        <dt className="text-eyebrow text-ink-soft uppercase">
-                          Werkgebied
-                        </dt>
-                        <dd>{person.region}</dd>
-                      </div>
-                      <div className="flex flex-col gap-1">
-                        <dt className="text-eyebrow text-ink-soft uppercase">
-                          Werkt veel met
-                        </dt>
-                        <dd>{person.focus}</dd>
-                      </div>
-                    </dl>
-
-                    {person.citySlug && (
-                      <p>
-                        <Link
-                          className={linkOnPaper}
-                          href={`/locaties/${person.citySlug}`}
-                        >
-                          Studiekeuzeadvies in {person.town}
-                        </Link>
-                      </p>
-                    )}
-                  </div>
-                </li>
-              ))}
-            </ul>
-          </div>
-        </section>
-
-        {/* The practical question a reader has by now, answered before the
-            form. It also brings the ochre back after the long paper run. */}
-        <section className="bg-ochre text-ink">
-          <div className={`${shell} py-20 md:py-28`}>
-            <div className="grid gap-x-16 gap-y-8 lg:grid-cols-[minmax(0,20rem)_minmax(0,1fr)]">
-              <h2 className="text-section font-extrabold">
-                Welke coach krijg jij?
+        {/* What every coach has in common. It is the honest answer to the
+            question the client's "8,8" was there to answer. */}
+        <Section space="md">
+          <Container>
+            <Reveal className="rounded-panel bg-lavender p-6 sm:p-10 lg:p-13">
+              <h2 className="text-h2 max-w-[18ch] font-bold">
+                Wat je van elke coach mag verwachten
               </h2>
-              <div className="flex flex-col items-start gap-8">
-                <p className="text-lead max-w-[58ch]">
-                  Meestal die van jouw regio. Werkt er in jouw stad geen coach,
-                  dan kijken we of iemand uit de buurt tijd heeft, en anders doen
-                  we het online. Dat hoef je nu niet te beslissen. Het eerste
-                  gesprek is gratis en je zit nergens aan vast.
-                </p>
-                <div className="flex flex-wrap items-center gap-x-8 gap-y-4">
-                  <a className={button} href="#contact">
-                    Plan een gratis intakegesprek
-                  </a>
-                  <Link className={linkOnOchre} href="/locaties">
-                    Bekijk alle locaties
-                  </Link>
-                </div>
-              </div>
-            </div>
-          </div>
-        </section>
 
-        <ContactSection />
+              <ul className="mt-8 grid gap-x-12 gap-y-8 md:grid-cols-2">
+                {shared.map((item) => (
+                  <li className="flex flex-col gap-2" key={item.title}>
+                    <h3 className="text-title-sm font-bold">{item.title}</h3>
+                    <p className="text-card max-w-[42ch] text-muted">
+                      {item.body}
+                    </p>
+                  </li>
+                ))}
+              </ul>
+            </Reveal>
+          </Container>
+        </Section>
+
+        {/* The ink CTA of the client's page (design-spec 3.14, ink variant).
+            Its buttons stay on this site: the grid above is the region
+            chooser, and /locaties is the same roster sorted by city. */}
+        <Section space="close">
+          <Container>
+            <Card
+              className="px-6 py-12 text-center sm:px-10 lg:px-14 lg:py-14"
+              pad="none"
+              radius="panel"
+              variant="indigo"
+            >
+              <h2 className="text-h2 mx-auto max-w-[16ch] font-bold">
+                Twijfel je welke coach past?
+              </h2>
+              <p className="mx-auto mt-3.5 max-w-[29rem] text-lavender-ink">
+                Begin gewoon met een gratis intake in jouw regio, de coach denkt
+                met je mee, ook als een collega beter past.
+              </p>
+              <div className="mt-7 flex flex-wrap justify-center gap-3">
+                <Button
+                  className="max-[420px]:w-full"
+                  href="#coaches"
+                  size="lg"
+                >
+                  Kies je coach
+                </Button>
+                <Button
+                  className="max-[420px]:w-full"
+                  href="/locaties"
+                  size="lg"
+                  variant="outline-on-ink"
+                >
+                  Bekijk de locaties
+                </Button>
+              </div>
+            </Card>
+          </Container>
+        </Section>
       </main>
 
-      <SiteFooter
-        pageLinks={[
-          { href: "#samen", label: "Wat elke coach gemeen heeft" },
-          { href: "#coaches", label: "De coaches" },
-          { href: "#contact", label: "Gratis intakegesprek" },
-        ]}
-      />
+      <SiteFooter />
     </>
   );
 }

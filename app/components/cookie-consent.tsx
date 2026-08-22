@@ -9,7 +9,7 @@ import {
   writeConsent,
   type ConsentState,
 } from "../consent";
-import { button, buttonOnInk, shell } from "../shell";
+import { Button, Container } from "./ui";
 
 /**
  * The two client pieces of the cookie question, and the only client JavaScript
@@ -50,17 +50,14 @@ export function CookieConsentBar() {
   return (
     <aside
       aria-label="Cookies"
-      // INK, NOT OCHRE. The bar used to be ochre, and it lay over ochre bands
-      // half the time: on the home page it could arrive on top of one. A bar
-      // that asks a question has to be an object on the page, not another band
-      // of it. Ink is the one surface this site keeps for that, and the thin
-      // ochre line on top separates it from the footer, which is ink as well.
-      className="sticky bottom-0 z-10 border-t border-ochre-line bg-ink text-paper"
+      // INK, NOT A SOFT SURFACE. A bar that asks a question has to be an
+      // object on the page and not another band of it. Ink is the one surface
+      // this site keeps for that, and the violet line on top separates it from
+      // the footer, which is ink as well.
+      className="sticky bottom-0 z-10 border-t border-violet bg-ink text-paper"
       data-consent-bar
     >
-      <div
-        className={`${shell} flex flex-col gap-6 py-6 sm:flex-row sm:items-center sm:justify-between sm:gap-10`}
-      >
+      <Container className="flex flex-col gap-6 py-6 sm:flex-row sm:items-center sm:justify-between sm:gap-10">
         {/* THIS LINE NAMES NO PAGE, ON PURPOSE. It named the city page, and
             then the home page as well, and it would have to be edited again for
             every embed we add. It says what the answer covers instead: anything
@@ -73,7 +70,7 @@ export function CookieConsentBar() {
             question lives in localStorage and not in a cookie (app/consent.ts).
             Add anything that sets a cookie of our own and this sentence has to
             go first. */}
-        <p className="max-w-[62ch]">
+        <p className="max-w-[62ch] text-card text-lavender-ink">
           Sommige onderdelen op deze site komen van iemand anders, zoals een
           kaart van Google. Die zetten cookies op je apparaat, dus we laden ze
           pas als jij het goedvindt. Zelf zetten we er geen. Dit is de enige
@@ -85,26 +82,21 @@ export function CookieConsentBar() {
             to press. A no must never be the small grey word in the corner.
 
             They cannot use the ink button of the rest of the site, because an
-            ink block on an ink bar is a hole. The pair keeps its relation and
-            swaps its colours: the yes is filled, the no is the same shape in
-            outline, both in paper. */}
-        <div className="flex shrink-0 flex-wrap items-center gap-4">
-          <button
-            className={buttonOnInk}
-            onClick={() => writeConsent("granted")}
-            type="button"
-          >
+            ink block on an ink bar is a hole. The yes is the violet pill, the
+            no is the design system's outline on ink, the same button the two
+            panels on /voor-wie and /studiekeuzecoaches use. */}
+        <div className="flex shrink-0 flex-wrap items-center gap-3">
+          <Button onClick={() => writeConsent("granted")}>
             Cookies toestaan
-          </button>
-          <button
-            className="border border-paper px-8 py-4 text-eyebrow uppercase transition-colors duration-150 ease-out-quart hover:bg-paper hover:text-ink"
+          </Button>
+          <Button
             onClick={() => writeConsent("denied")}
-            type="button"
+            variant="outline-on-ink"
           >
             Nee, liever niet
-          </button>
+          </Button>
         </div>
-      </div>
+      </Container>
     </aside>
   );
 }
@@ -143,14 +135,8 @@ export function ConsentGate({
       {/* The same line before the question and after a no. In both cases the
           map is not there for the same reason, and in both cases the visitor
           can still change their mind here. */}
-      <p className="max-w-[38ch]">{reason}</p>
-      <button
-        className={button}
-        onClick={() => writeConsent("granted")}
-        type="button"
-      >
-        {agreeLabel}
-      </button>
+      <p className="max-w-[38ch] text-card text-muted">{reason}</p>
+      <Button onClick={() => writeConsent("granted")}>{agreeLabel}</Button>
     </div>
   );
 }

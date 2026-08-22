@@ -1,25 +1,23 @@
 /**
  * The content of /studiekeuzetraject.
  *
- * The page follows the section order of the old page at
- * `../studiekeuzeadvies archive/markdown/studiekeuzetraject.md`, and it keeps
- * the old words where they are true and in voice. Four things are removed on
- * purpose:
- *
- * - The figure "92%" and the claims "meest gevraagde partij" and "meest
- *   ervaren partij". We cannot prove them. See PRODUCT.md, "Say only what is
- *   true".
- * - Qompas, the tests and the Keuzegids. They belong to the seller, and this
- *   site does not sell them.
- * - The section "Unieke samenwerking". It only names those partners.
- * - "in vrijwel alle grote steden". At this moment we have a few cities.
+ * The page is rebuilt to the client's own design (`docs/redesign/client/
+ * het-traject/`, design-spec 4.2). Where the client's copy is newer than the
+ * text the archive gave us, the client wins, so the four meetings below carry
+ * the client's wording and the two tests are back: the client's feedback of
+ * 2026-08-12 reversed the decision of 2026-08-04 that this site sells no
+ * tests. What stays removed is what we cannot prove of ourselves: "92%",
+ * "meest gevraagde partij", "meest ervaren partij" and "in vrijwel alle grote
+ * steden". See PRODUCT.md, "Say only what is true".
  *
  * WARNING ABOUT `homework`. The old page says that you work on assignments in
  * the meeting and at home, but it never says which assignments. The lines
- * below are written to be true to that shape. A real coach must confirm that
- * this is the work they really give. If the work is different, change the text
- * here. Nothing else has to change.
+ * below are the client's own, so they are the client's claim about the client's
+ * own method. If the work is different, change the text here. Nothing else has
+ * to change.
  */
+
+import { scan } from "@/app/pricing";
 
 export type Meeting = {
   /** Shown large, and hidden from screen readers. The list carries the order. */
@@ -35,21 +33,21 @@ export const meetings: Meeting[] = [
   {
     number: "01",
     title: "Wie ben ik en wat kan ik?",
-    body: "Je begint bij jezelf, niet bij opleidingen. Waar word je blij van, waar loop je op leeg, en wat kun je goed zonder dat je het bijzonder vindt? Dat laatste is meestal het belangrijkste, want je eigen talent voelt vaak als iets gewoons.",
+    body: "Je begint bij jezelf, niet bij opleidingen. Waar word je blij van, waar loop je op leeg, en wat kun je goed zonder dat je het bijzonder vindt? Dat laatste is meestal het belangrijkste: je eigen talent voelt vaak als iets gewoons. Een persoonlijkheidstest helpt hierbij.",
     homework:
       "Je vraagt aan drie mensen die je goed kennen waar zij jou goed in vinden. De antwoorden verrassen bijna iedereen.",
   },
   {
     number: "02",
     title: "Blik op de toekomst",
-    body: "Een studie is een middel. Daarom kijken we een stap verder: in wat voor werk zou je passen, met wat voor mensen, en in wat voor omgeving? Je hoeft nog geen beroep te kiezen. Je moet alleen weten welke richting warm aanvoelt.",
+    body: "Een studie is een middel. Daarom kijken we een stap verder: in wat voor werk zou je passen, met wat voor mensen, in wat voor omgeving? Je hoeft nog geen beroep te kiezen, alleen te weten welke richting warm aanvoelt.",
     homework:
       "Je praat met iemand die het werk doet dat jou aanspreekt. Eén gesprek van een half uur zegt meer dan tien websites.",
   },
   {
     number: "03",
     title: "Mijn interesses en verdieping",
-    body: "Nu pas gaan we naar opleidingen kijken. Je coach helpt je de lijst kort te maken: van duizenden naar een stuk of tien, en van tien naar drie. Bij elke opleiding kijken we naar het rooster en de vakken, niet naar de folder.",
+    body: "Nu pas kijken we naar opleidingen. Met de studie-interessetest en je coach maak je de lijst kort: van duizenden naar een stuk of tien, en van tien naar drie. Bij elke opleiding kijken we naar het rooster en de vakken, niet naar de folder.",
     homework:
       "Je gaat naar de open dagen van de opleidingen die overblijven. Let vooral op de mensen die er rondlopen: daar zit je straks tussen.",
   },
@@ -62,68 +60,84 @@ export const meetings: Meeting[] = [
 ];
 
 /**
- * "Welk keuze-type ben jij?" The old page had these eight lines. They do the
- * work of a self-test without being one: je herkent jezelf, of niet.
+ * The two tests, and who makes them.
+ *
+ * WARNING. "TalentDrives" and "meer dan 30 jaar" are facts about a third
+ * party. The client supplied both when the tests came back on 2026-08-12, so
+ * they are printed as the client's claim and not as ours. If TalentDrives is
+ * not the supplier of the tests a coach really uses, this block is the only
+ * place that has to change.
  */
-export const chooserTypes: string[] = [
-  "Je bent een serieuze scholier die zich goed wil voorbereiden op je toekomst.",
-  "Je hebt geen idee wat je wilt, of je vindt juist veel leuk en je twijfelt.",
-  "Je woont in het buitenland en je zou graag in Nederland gaan studeren, maar je weet niet welke opleidingen er zijn.",
-  "Je vraagt je af welke studie bij je past, of je worstelt met de vraag wat je wilt worden.",
-  "Je hebt al een idee wat je wilt gaan studeren, maar je wilt verder kijken dan je eerste ingeving.",
-  "Je bent gestopt met een studie en je weet nu niet wat je wilt gaan doen.",
-  "Je bent nog bezig met een studie, maar je twijfelt of die wel bij je past.",
-  "Je vindt het moeilijk om overzicht te krijgen in alle mogelijkheden.",
-];
+export const tests = {
+  supplier: "TalentDrives",
+  /** The two letters in the violet square next to the supplier's name. */
+  monogram: "TD",
+  claim: "30+ jaar ervaring in assessments en testontwikkeling",
+  body: [
+    "Onze testen zijn ontwikkeld door TalentDrives, met meer dan 30 jaar ervaring in assessments, coaching en testontwikkeling. De instrumenten zijn praktijkgericht en betrouwbaar, en sluiten aan bij de ontwikkelingsfase van jongeren.",
+    "Zo weet je zeker dat je werkt met inzichten die niet alleen theorie, maar ook de dagelijkse realiteit weerspiegelen.",
+  ],
+  pills: [
+    "Persoonlijkheidstest",
+    "Studie-interessetest",
+    "Praktijkgericht & betrouwbaar",
+  ],
+} as const;
 
-/** `href` is null where the door has no page of its own yet. */
-export type Path = { title: string; body: string; href: string | null };
-
-/** The three doors of the old page, in the order the old page used. */
-export const paths: Path[] = [
-  {
-    href: "/eerste-studiekeuze",
-    title: "Eerste studiekeuze",
-    body: "Ga je voor het eerst een opleiding starten, maar heb je geen idee wat je wilt gaan doen? Lijken veel opleidingen je leuk, waardoor je geen keuze kunt maken? Of wil je je gewoon goed voorbereiden op de toekomst? We helpen je een passende keuze te maken voor een vervolgopleiding.",
-  },
-  {
-    href: "/verkeerde-studiekeuze",
-    title: "Verkeerde studiekeuze",
-    body: "Ben je gestopt met een studie en weet je niet wat je nu wilt gaan doen? Of ben je nog bezig met een studie, maar twijfel je of die wel bij je past? Aan het eind van het traject heb je een overwogen keuze gemaakt voor de studie die écht bij je past. Wachten tot september hoeft niet.",
-  },
-  {
-    // The page behind this door is about ADD and ADHD only. The door keeps the
-    // wider wording; see the note on the same door in app/page.tsx.
-    href: "/studiekeuze-met-add-adhd",
-    title: "Studeren met ADD, ADHD of autisme",
-    body: "Ben je gediagnosticeerd met ADD, ADHD of autisme? Dan helpt overzicht meer dan nog meer opties. Vaste stappen, één ding per keer, dezelfde coach elke afspraak, en van tevoren weten wat er gaat gebeuren. Zeg het in het intakegesprek, dan houdt je coach er rekening mee.",
-  },
-];
-
-export type Reason = { title: string; body: string };
+export type ScanStep = { number: string; title: string; body: string };
 
 /**
- * "Waarom StudieKeuzeAdvies". The old page had a fourth block, "92% door naar
+ * The three steps of the Studiekeuzescan. The client's export calls this
+ * product "KeuzeScan" on this page and "Studiekeuzescan" on the home page and
+ * on /tarieven. One product with two names is a defect, so the priced name
+ * wins on every page (design-spec, open question 6).
+ */
+export const scanSteps: ScanStep[] = [
+  {
+    number: "1",
+    title: "Persoonlijkheidstest",
+    body: "Thuis, in je eigen tempo.",
+  },
+  {
+    number: "2",
+    title: "Interessetest",
+    body: "Welke studierichtingen passen bij wat jou boeit?",
+  },
+  {
+    number: "3",
+    title: "Eén online sessie met een coach",
+    body: "Resultaten in een matrix, toelichting op je antwoorden en concrete vervolgstappen.",
+  },
+];
+
+/**
+ * What the scan costs. The client decided the three prices; /tarieven prints
+ * all three, and this page prints the one it is talking about, so a reader who
+ * lands here does not have to leave to learn what it costs. The figure itself
+ * lives in app/pricing.ts, with the other three.
+ */
+export const scanPrice = scan.label;
+
+export type Reason = { eyebrow: string; title: string; body: string };
+
+/**
+ * "Waarom StudiekeuzeAdvies". The old page had a fourth block, "92% door naar
  * het 2e jaar". We cannot prove that figure, so the block is not here.
  */
 export const reasons: Reason[] = [
   {
+    eyebrow: "Doelgericht",
     title: "Doelgerichte trajecten",
     body: "Het traject is zo opgebouwd dat je, samen met je eigen coach, stap voor stap toewerkt naar een keuze. Leren, ontdekken, ervaren en kiezen.",
   },
   {
+    eyebrow: "Zekerheid",
     title: "Kiezen met zekerheid",
-    body: "Doordat je in het hele traject begeleiding krijgt, weet je aan het eind waarom je kiest wat je kiest. Zo begin je met een zelfverzekerd gevoel aan je nieuwe opleiding.",
+    body: "Doordat je in het hele traject begeleiding krijgt, weet je aan het eind waarom je kiest wat je kiest. Zo begin je zelfverzekerd aan je opleiding.",
   },
   {
+    eyebrow: "Dichtbij",
     title: "Bij jou in de buurt",
     body: "Je spreekt af in de stad waar je coach werkt, en anders gaan de gesprekken online. Dat werkt beter dan je denkt.",
   },
-];
-
-/** "Waarom is het maken van de juiste studiekeuze zo belangrijk?" */
-export const whyItMatters: string[] = [
-  "De keuze voor een vervolgstudie is één van de belangrijkste keuzes die je tot nu toe hebt moeten maken. Tegelijk is de uitval en de switch in het eerste jaar van het mbo, hbo en wo hoog.",
-  "Het grootste deel van de studenten die uitvallen, valt uit omdat de studie niet bleek te passen. Je moet op jonge leeftijd kiezen, en je bent vaak niet overtuigd van je keuze. Veel scholieren stellen het kiezen ook uit, en maken op het laatste moment snel een keuze die misschien helemaal niet de juiste is.",
-  "Een verkeerde studiekeuze kost niet alleen geld, maar kan je ook veel stress bezorgen, doordat je toekomst onzeker lijkt. Goede begeleiding helpt je bij het maken van een overwogen keuze. Dat scheelt frustratie, teleurstelling en een hoop geld.",
 ];

@@ -1,95 +1,90 @@
 import Link from "next/link";
-import { citiesWithCoach } from "../cities";
-import { linkOnInk } from "../shell";
-import { site } from "../site-config";
-import type { NavItem } from "./site-header";
+import { LogoMark, Wordmark } from "./ui";
 
-const homeLinks: NavItem[] = [
-  { href: "#aanpak", label: "Waar sta jij nu?" },
-  { href: "#coaches", label: "Je coach" },
-  { href: "#contact", label: "Gratis intakegesprek" },
+type FooterColumn = { heading: string; links: { href: string; label: string }[] };
+
+/**
+ * The client's four column footer, with every link pointed at a route that
+ * exists in this repo (design-spec 3.3).
+ *
+ * Two labels differ from the client's export, and both for the same reason:
+ * a link has to say what the click does.
+ *  - "Contactformulier" became "Kies je coach". There is no central contact
+ *    point (decision 2026-08-15, issue #7), and the client's link went to one
+ *    coach's own form. The Coaches page is where a reader picks the person
+ *    they will write to.
+ *  - "Decanen" is gone. No page on this site speaks to a decaan, and a footer
+ *    link to a page that does not answer is worse than no link.
+ * "Algemene voorwaarden" and "Privacy" are gone for the same reason: neither
+ * page exists yet. They come back the day the client delivers the text.
+ */
+const columns: FooterColumn[] = [
+  {
+    heading: "Aanbod",
+    links: [
+      { href: "/studiekeuzetraject", label: "Het studiekeuzetraject" },
+      { href: "/verkeerde-studiekeuze", label: "Verkeerde studiekeuze" },
+      { href: "/studiekeuze-met-add-adhd", label: "Extra ondersteuning" },
+      { href: "/tarieven", label: "Tarieven" },
+    ],
+  },
+  {
+    heading: "Voor wie",
+    links: [
+      { href: "/eerste-studiekeuze", label: "Scholieren" },
+      { href: "/verkeerde-studiekeuze", label: "Studenten" },
+      { href: "/voor-wie", label: "Ouders" },
+    ],
+  },
+  {
+    heading: "Contact",
+    links: [
+      { href: "/studiekeuzecoaches", label: "Kies je coach" },
+      { href: "/locaties", label: "Locaties" },
+      { href: "/coach-worden", label: "Word coach" },
+    ],
+  },
 ];
 
-export function SiteFooter({ pageLinks = homeLinks }: { pageLinks?: NavItem[] }) {
+export function SiteFooter() {
   return (
-    <footer className="bg-ink text-paper">
-      <div className="mx-auto grid w-full max-w-[1240px] gap-x-16 gap-y-12 px-6 py-20 sm:px-10 md:grid-cols-3 lg:px-16">
-        {/* This column carried a telephone number, a WhatsApp link and one
-            mailbox. All three are gone (issue #7): there is no central point to
-            write to. The column keeps its name and its place, because the
-            footer is where a reader looks for it, and it answers the question
-            instead of leaving them to hunt for a number that is not there.
-
-            The grid keeps its three columns, so nothing goes ragged: this one
-            sentence carries the weight the three links used to carry.
-
-            The FAQ link stays here. Answer before you offer: the questions we
-            are asked most are one click away from every page, before anybody
-            has to write to anyone. */}
-        <div className="flex flex-col gap-4">
-          <p className="text-eyebrow uppercase text-paper/70">Contact</p>
-          <p className="max-w-[38ch] text-paper/70">
-            Je schrijft rechtstreeks naar de coach in jouw stad.{" "}
-            <Link className={linkOnInk} href="/locaties">
-              Kies je stad
-            </Link>
-            , dan zie je wie daar werkt.
-          </p>
-          <ul className="flex flex-col gap-2">
-            <li>
-              <Link className={linkOnInk} href="/veelgestelde-vragen">
-                Veelgestelde vragen
-              </Link>
-            </li>
-            {/* /ervaringen has 182 inbound links behind it and it is in the
-                sitemap, but nothing on the site linked to it. The menu is full
-                at five items, so the footer is the way in, next to the FAQ:
-                both answer a question before anybody has to write to anyone. */}
-            <li>
-              <Link className={linkOnInk} href="/ervaringen">
-                Ervaringen van studiekiezers
-              </Link>
-            </li>
-          </ul>
-        </div>
-
-        <div className="flex flex-col gap-4">
-          <p className="text-eyebrow uppercase text-paper/70">Op deze pagina</p>
-          <ul className="flex flex-col gap-2">
-            {pageLinks.map((item) => (
-              <li key={item.href}>
-                <Link className={linkOnInk} href={item.href}>
-                  {item.label}
-                </Link>
-              </li>
-            ))}
-          </ul>
-        </div>
-
-        <div className="flex flex-col gap-4">
-          <p className="text-eyebrow uppercase text-paper/70">Locaties</p>
-          <ul className="flex flex-wrap gap-x-6 gap-y-2">
-            {citiesWithCoach.map((city) => (
-              <li key={city.slug}>
-                <Link className={linkOnInk} href={`/locaties/${city.slug}`}>
-                  {city.name}
-                </Link>
-              </li>
-            ))}
-          </ul>
-          <p className="max-w-[38ch] text-paper/70">
-            We noemen alleen steden waar echt een coach werkt.{" "}
-            <Link className={linkOnInk} href="/locaties">
-              Alle locaties
-            </Link>
-            .
+    <footer className="mt-auto bg-ink text-lavender-ink">
+      <div className="mx-auto grid w-full max-w-shell gap-8 px-6 pt-12 pb-6 sm:grid-cols-2 sm:px-8 lg:grid-cols-[2fr_1fr_1fr_1fr] lg:px-12 lg:pt-13">
+        <div>
+          <Link className="flex items-center gap-2.5" href="/">
+            <LogoMark size={26} tone="light" />
+            <Wordmark className="text-[1.125rem]" tone="paper" />
+          </Link>
+          <p className="mt-3.5 max-w-[19rem] text-small">
+            Wij geven scholieren, studenten en hun ouders het vertrouwen om de
+            juiste studiekeuze te maken.
           </p>
         </div>
+
+        {columns.map((column) => (
+          <nav aria-label={column.heading} key={column.heading}>
+            <h2 className="font-display text-[0.8125rem] font-semibold text-paper">
+              {column.heading}
+            </h2>
+            <ul className="mt-1 flex flex-col">
+              {column.links.map((link) => (
+                <li key={`${column.heading}-${link.href}-${link.label}`}>
+                  <Link
+                    className="flex min-h-11 items-center text-small hover:text-paper"
+                    href={link.href}
+                  >
+                    {link.label}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </nav>
+        ))}
       </div>
 
-      <div className="border-t border-paper/15">
-        <p className="mx-auto w-full max-w-[1240px] px-6 py-8 text-paper/70 sm:px-10 lg:px-16">
-          {site.name}
+      <div className="mx-auto w-full max-w-shell px-6 sm:px-8 lg:px-12">
+        <p className="flex flex-wrap gap-2 border-t border-hairline-ink pt-5 pb-8 text-micro">
+          <span>© 2026 StudiekeuzeAdvies</span>
         </p>
       </div>
     </footer>

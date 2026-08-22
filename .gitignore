@@ -32,9 +32,9 @@ yarn-error.log*
 
 # env files (can opt-in for committing if needed)
 .env*
-# The example is the opt-in. It holds names and instructions, never a value, and
-# app/components/maps.tsx and todos.md both send a reader to it, so it belongs
-# in the repo. Every other .env file stays out.
+# The example is the opt-in. It holds names and instructions, never a value, so
+# it belongs in the repo. Its readers today are app/lib/mail.ts,
+# app/site-config.ts and docs/decisions.md. Every other .env file stays out.
 !.env.example
 
 # vercel
@@ -50,7 +50,12 @@ next-env.d.ts
 # megabytes out of the history.
 /.claude
 
+# The impeccable design skill keeps its measured palette and its hook cache
+# here. Both are rebuilt from the repo, so a copy in the history would only go
+# stale.
+/.impeccable
+
 # python
-# docs/art/build-marks.py imports docs/art/mark.py, so a run leaves bytecode.
+# scripts/build-url-map.py and docs/art/wordmark-paths.py both leave bytecode.
 __pycache__/
 *.pyc

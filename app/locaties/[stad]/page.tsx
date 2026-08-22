@@ -2,12 +2,26 @@ import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { cityCopy, citySlugs, getCity, otherCitiesWithCoach } from "@/app/cities";
-import { CityMap } from "@/app/components/maps";
+import {
+  cityCopy,
+  citySlugs,
+  getCity,
+  otherCitiesWithCoach,
+} from "@/app/cities";
 import { ContactSection } from "@/app/components/contact-section";
+import { CityMap } from "@/app/components/maps";
 import { SiteFooter } from "@/app/components/site-footer";
-import { SiteHeader, type NavItem } from "@/app/components/site-header";
-import { button, linkOnOchre, linkOnPaper, shell } from "@/app/shell";
+import { SiteHeader } from "@/app/components/site-header";
+import {
+  Button,
+  Container,
+  Eyebrow,
+  PageHero,
+  PageIndex,
+  Pill,
+  Reveal,
+  Section,
+} from "@/app/components/ui";
 import { coachRecruitmentInbox } from "@/app/site-config";
 
 /** Every city is known at build time, so an unknown city is a real 404. */
@@ -31,6 +45,10 @@ export async function generateMetadata(
       ? `Studiekeuzecoach in ${city.name}. Eén vaste coach die je helpt kiezen, of opnieuw kiezen. Het eerste gesprek is gratis.`
       : `Studiekeuzeadvies voor ${city.name}. We zoeken hier nog een coach. Online of in een stad in de buurt kun je wel terecht.`,
     alternates: { canonical: `/locaties/${city.slug}` },
+    // A page about a person who does not exist is not offered to a search
+    // engine. The same guard sits on the coach profile and in app/sitemap.ts;
+    // all three disappear by themselves when isPlaceholder becomes false.
+    robots: city.coach?.isPlaceholder ? { index: false, follow: false } : undefined,
   };
 }
 
@@ -41,248 +59,244 @@ export default async function CityPage(props: PageProps<"/locaties/[stad]">) {
 
   const copy = cityCopy(city);
   const elsewhere = otherCitiesWithCoach(city.slug);
+  const coach = city.coach;
 
-  const nav: NavItem[] = [
-    { href: "#coach", label: city.coach ? "Coach" : "Coach gezocht" },
-    { href: "#traject", label: "Traject" },
-    { href: "/locaties", label: "Locaties" },
-    { href: "/artikelen", label: "Artikelen" },
-    { href: "#contact", label: "Contact" },
-  ];
-
-  const jumps: NavItem[] = [
-    { href: "#coach", label: city.coach ? `Je coach in ${city.name}` : "Hier zoeken we een coach" },
+  const jumps = [
+    {
+      href: "#coach",
+      label: coach ? `Je coach in ${city.name}` : "Hier zoeken we een coach",
+    },
     { href: "#traject", label: "Als je voor het eerst kiest" },
     { href: "#traject-stoppen", label: "Als je bent gestopt" },
-    { href: "#afspreken", label: city.coach ? "Waar we afspreken" : "Hoe het dan gaat" },
-    { href: "#contact", label: "Gratis intakegesprek" },
+    { href: "#afspreken", label: coach ? "Waar we afspreken" : "Hoe het dan gaat" },
   ];
 
   return (
     <>
-      <SiteHeader homeHref="/" nav={nav} />
+      <SiteHeader />
 
       <main id="top">
-        {/* The city name is the loud word. 37 pages, 37 different silhouettes. */}
-        <section className="bg-ochre text-ink">
-          <div className={`${shell} pb-14 md:pb-20`}>
-            <nav aria-label="Kruimelpad" className="pt-16 sm:pt-24">
-              <ol className="text-eyebrow flex flex-wrap items-baseline gap-x-3 uppercase">
-                <li>
-                  <Link
-                    className="underline decoration-ink/30 decoration-2 underline-offset-4 transition-colors duration-150 ease-out-quart hover:decoration-ink"
-                    href="/locaties"
-                  >
-                    Locaties
-                  </Link>
-                </li>
-                <li aria-hidden="true">/</li>
-                <li aria-current="page">{city.name}</li>
-              </ol>
-            </nav>
-
-            <h1 className="mt-6">
-              <span className="text-title block font-medium">
-                Studiekeuzeadvies in
+        <PageHero
+          eyebrow={
+            <>
+              <Link className="hover:text-violet" href="/locaties">
+                Locaties
+              </Link>{" "}
+              <span aria-hidden="true">/</span>{" "}
+              <span className="text-muted">{city.name}</span>
+            </>
+          }
+          /* Hero A of the client's design: the index card stands beside the
+             title from lg and follows under it below that (design-spec 6.2).
+             It is an index and not decoration, because overview before detail
+             is a requirement for the readers PRODUCT.md names. */
+          aside={<PageIndex items={jumps} />}
+          lede={copy.intro}
+          title={
+            <>
+              {/* The trailing space is not decoration: without it a screen
+                  reader runs the two lines together into one word. */}
+              <span className="text-title block font-semibold">
+                Studiekeuzeadvies in{" "}
               </span>
-              <span className="text-display mt-1 block font-extrabold break-words">
-                {city.name}
-              </span>
-            </h1>
-
-            <div className="mt-12 grid items-start gap-x-16 gap-y-12 lg:mt-16 lg:grid-cols-[minmax(0,1fr)_minmax(240px,320px)]">
-              <div className="flex flex-col items-start gap-8">
-                <p className="text-lead max-w-[52ch]">{copy.intro}</p>
-                <div className="flex flex-wrap items-center gap-x-8 gap-y-4">
-                  <a className={button} href="#contact">
-                    Plan een gratis intakegesprek
-                  </a>
-                  <a className={linkOnOchre} href="#traject">
-                    Eerst lezen hoe het werkt
-                  </a>
-                </div>
-              </div>
-
-              {/* An index, not decoration. Overview first is a requirement for
-                  the readers named in PRODUCT.md, not a style choice. */}
-              <nav aria-label="Op deze pagina">
-                <p className="text-eyebrow border-t border-ochre-line pt-4 uppercase">
-                  Op deze pagina
-                </p>
-                <ul className="mt-4 flex flex-col gap-2">
-                  {jumps.map((item) => (
-                    <li key={item.href}>
-                      <a className={linkOnOchre} href={item.href}>
-                        {item.label}
-                      </a>
-                    </li>
-                  ))}
-                </ul>
-              </nav>
-            </div>
+              <span className="block break-words">{city.name}</span>
+            </>
+          }
+        >
+          <div className="mt-7 flex flex-wrap gap-3">
+            <Button href="#contact" size="lg">
+              {coach
+                ? `Plan gratis intake bij ${coach.name}`
+                : "Zoek een coach in de buurt"}
+            </Button>
+            <Button href="#traject" size="lg" variant="outline">
+              Eerst lezen hoe het werkt
+            </Button>
           </div>
-        </section>
+
+        </PageHero>
 
         {/* All trust comes from one person with a face and a region. */}
-        <section className="bg-paper-shade" id="coach">
-          <div className={`${shell} py-20 md:py-28`}>
-            {city.coach ? (
-              <div className="grid items-start gap-x-16 gap-y-10 lg:grid-cols-[minmax(0,340px)_minmax(0,1fr)]">
-                <Image
-                  alt={city.coach.portraitAlt}
-                  className="w-full max-w-[340px]"
-                  placeholder="blur"
-                  priority
-                  sizes="(max-width: 1024px) 100vw, 340px"
-                  src={city.coach.portrait!}
-                />
+        <Section id="coach" space="md">
+          <Container>
+            {coach ? (
+              <Reveal className="grid items-start gap-10 lg:grid-cols-[minmax(0,1fr)_minmax(0,340px)] lg:gap-14">
+                <div className="flex flex-col items-start gap-5">
+                  <Eyebrow>Je coach in {city.name}</Eyebrow>
 
-                <div className="flex flex-col gap-8">
-                  <div className="flex flex-col gap-3">
-                    <p className="text-eyebrow text-ink-soft uppercase">
-                      Je coach in {city.name}
-                    </p>
-                    <h2 className="text-section font-extrabold">
-                      {city.coach.name}
-                    </h2>
-                  </div>
-                  <p className="text-lead max-w-[52ch]">{city.coach.intro}</p>
-                  <dl className="flex flex-wrap items-baseline gap-x-5 gap-y-2 border-t border-hairline pt-6">
-                    <dt className="text-eyebrow text-ink-soft uppercase">
+                  <h2 className="text-h2 font-bold">{coach.name}</h2>
+
+                  <ul className="flex flex-wrap gap-2.5">
+                    <li>
+                      <Pill size="sm">{city.name} en online</Pill>
+                    </li>
+                    {coach.specialties.slice(0, 2).map((item) => (
+                      <li key={item}>
+                        <Pill size="sm" tone="coral">
+                          {item}
+                        </Pill>
+                      </li>
+                    ))}
+                  </ul>
+
+                  <p className="text-lead max-w-[52ch] text-muted-read">
+                    {coach.intro}
+                  </p>
+
+                  <dl className="flex w-full max-w-[52ch] flex-wrap items-baseline gap-x-4 gap-y-2 border-t border-hairline pt-5">
+                    <Eyebrow as="dt" color="muted" size="sm">
                       Werkgebied
-                    </dt>
-                    <dd className="max-w-[46ch]">{city.region}</dd>
+                    </Eyebrow>
+                    <dd className="text-card max-w-[46ch] text-muted">
+                      {city.region}
+                    </dd>
                   </dl>
 
                   {/* Most readers land here from a search for their own city,
                       not by way of /locaties, so this is the only place they
                       meet the coach. Three sentences is a handshake, not a
                       history, and the way to the rest of it belongs here. */}
-                  <p>
-                    <Link
-                      className={linkOnPaper}
-                      href={`/studiekeuzecoaches#${city.coach.slug}`}
-                    >
-                      Lees meer over {city.coach.name}
-                    </Link>
-                  </p>
+                  <Button href={`/studiekeuzecoaches/${coach.slug}`}>
+                    Maak kennis met {coach.name}
+                  </Button>
                 </div>
-              </div>
+
+                {coach.portrait && (
+                  <div className="relative w-full max-w-[340px]">
+                    <Image
+                      alt={coach.portraitAlt}
+                      className="rounded-photo aspect-[4/5] w-full object-cover shadow-portrait"
+                      placeholder="blur"
+                      /* No priority: this portrait sits a full screen below
+                         the fold on a telephone, and there is no image in the
+                         hero of this page that it could be competing for. */
+                      sizes="340px"
+                      src={coach.portrait}
+                    />
+                    <p className="rounded-row mt-3 bg-paper/95 text-small font-semibold sm:absolute sm:bottom-5 sm:left-5 sm:mt-0 sm:px-4 sm:py-3 sm:backdrop-blur-[6px]">
+                      {coach.name}, studiekeuzecoach in {city.name}
+                    </p>
+                  </div>
+                )}
+              </Reveal>
             ) : (
-              <div className="grid gap-x-16 gap-y-8 lg:grid-cols-[minmax(0,20rem)_minmax(0,1fr)]">
-                <h2 className="text-section font-extrabold">
+              <Reveal className="rounded-panel bg-lavender p-6 sm:p-10 lg:p-13">
+                <h2 className="text-h2 max-w-[18ch] font-bold">
                   In {city.name} zoeken we een coach
                 </h2>
-                <div className="flex flex-col items-start gap-8">
-                  <p className="text-lead max-w-[58ch]">
-                    Deze pagina heeft nog geen naam en geen gezicht. Dat laten we
-                    liever zo tot er echt iemand staat. Je kunt wel beginnen: de
-                    gesprekken kunnen online, en in de steden hieronder werkt wel
-                    een coach.
+
+                <p className="text-lead mt-5 max-w-[52ch] text-muted-read">
+                  Deze pagina heeft nog geen naam en geen gezicht. Dat laten we
+                  liever zo tot er echt iemand staat. Je kunt wel beginnen: de
+                  gesprekken kunnen online, en in de steden hieronder werkt wel
+                  een coach.
+                </p>
+
+                {elsewhere.length > 0 && (
+                  <ul className="mt-6 flex flex-wrap gap-2.5">
+                    {elsewhere.map((other) => (
+                      <li key={other.slug}>
+                        <Button
+                          href={`/locaties/${other.slug}`}
+                          variant="outline"
+                        >
+                          {other.name}
+                        </Button>
+                      </li>
+                    ))}
+                  </ul>
+                )}
+
+                {/* The invitation to a coach only stands here while there is an
+                    address behind it. It named hallo@studiekeuzeadvies.nl, and
+                    that mailbox is cancelled (issue #7), so it sent a coach to
+                    a bounce. Fill `coachRecruitmentInbox` in app/site-config.ts
+                    and this block comes back as it was. */}
+                {coachRecruitmentInbox && (
+                  <p className="mt-6 max-w-[52ch] border-t border-chip-border pt-5 text-muted">
+                    Werk je zelf als studiekeuzecoach in {city.region}? Dan horen
+                    we graag van je. Mail naar{" "}
+                    <a
+                      className="font-bold text-violet-dark underline decoration-violet/40 decoration-2 underline-offset-4"
+                      href={`mailto:${coachRecruitmentInbox}`}
+                    >
+                      {coachRecruitmentInbox}
+                    </a>
+                    .
                   </p>
-                  {elsewhere.length > 0 && (
-                    <ul className="flex flex-wrap gap-x-10 gap-y-3">
-                      {elsewhere.map((other) => (
-                        <li className="text-title font-bold" key={other.slug}>
-                          <Link
-                            className="underline decoration-ochre-line decoration-2 underline-offset-4 transition-colors duration-150 ease-out-quart hover:decoration-ink"
-                            href={`/locaties/${other.slug}`}
-                          >
-                            {other.name}
-                          </Link>
-                        </li>
-                      ))}
-                    </ul>
-                  )}
-                  {/* The invitation to a coach only stands here while there is
-                      an address behind it. It named hallo@studiekeuzeadvies.nl,
-                      and that mailbox is cancelled (issue #7), so it sent a
-                      coach to a bounce. Fill `coachRecruitmentInbox` in
-                      app/site-config.ts and this block comes back as it was. */}
-                  {coachRecruitmentInbox && (
-                    <p className="max-w-[58ch] border-t border-hairline pt-6">
-                      Werk je zelf als studiekeuzecoach in {city.region}? Dan
-                      horen we graag van je. Mail naar{" "}
-                      <a
-                        className={linkOnPaper}
-                        href={`mailto:${coachRecruitmentInbox}`}
-                      >
-                        {coachRecruitmentInbox}
-                      </a>
-                      .
-                    </p>
-                  )}
-                </div>
-              </div>
+                )}
+              </Reveal>
             )}
-          </div>
-        </section>
+          </Container>
+        </Section>
 
         {/* The reading zone. Long text always on the lightest paper. */}
-        <section className="bg-paper" id="traject">
-          <div className={`${shell} py-8 md:py-12`}>
+        <Section id="traject" space="sm">
+          <Container>
             <ul>
-              <li className="grid gap-x-16 gap-y-5 border-t border-hairline py-12 md:py-16 lg:grid-cols-[minmax(0,20rem)_minmax(0,1fr)]">
-                <h2 className="text-section font-extrabold">
-                  Je eerste studiekeuze
-                </h2>
+              <li className="grid gap-x-14 gap-y-5 border-t border-hairline py-10 lg:grid-cols-[minmax(0,20rem)_minmax(0,1fr)] lg:py-14">
+                <h2 className="text-h2 font-bold">Je eerste studiekeuze</h2>
                 <div className="flex max-w-[62ch] flex-col gap-5">
                   {copy.firstChoice.map((paragraph) => (
-                    <p key={paragraph.slice(0, 24)}>{paragraph}</p>
+                    <p className="text-read text-muted-read" key={paragraph.slice(0, 24)}>
+                      {paragraph}
+                    </p>
                   ))}
                   <p>
-                    <Link className={linkOnPaper} href="/studiekeuzetraject">
-                      Lees precies wat je in die vier gesprekken doet
-                    </Link>
+                    <Button href="/studiekeuzetraject" variant="ghost">
+                      Lees precies wat je in die vier gesprekken doet →
+                    </Button>
                   </p>
                 </div>
               </li>
 
               <li
-                className="grid gap-x-16 gap-y-5 border-t border-hairline py-12 md:py-16 lg:grid-cols-[minmax(0,20rem)_minmax(0,1fr)]"
+                className="grid gap-x-14 gap-y-5 border-t border-hairline py-10 lg:grid-cols-[minmax(0,20rem)_minmax(0,1fr)] lg:py-14"
                 id="traject-stoppen"
               >
-                <h2 className="text-section font-extrabold">
+                <h2 className="text-h2 font-bold">
                   Verkeerde studiekeuze gemaakt?
                 </h2>
                 <div className="flex max-w-[62ch] flex-col gap-5">
                   {copy.wrongChoice.map((paragraph) => (
-                    <p key={paragraph.slice(0, 24)}>{paragraph}</p>
+                    <p className="text-read text-muted-read" key={paragraph.slice(0, 24)}>
+                      {paragraph}
+                    </p>
                   ))}
                   <p>
-                    <a className={linkOnPaper} href="#contact">
-                      Bespreek je situatie in een gratis gesprek
-                    </a>
+                    <Button href="#contact" variant="ghost">
+                      {coach
+                        ? "Bespreek je situatie in een gratis gesprek →"
+                        : "Zoek een coach in de buurt →"}
+                    </Button>
                   </p>
                 </div>
               </li>
             </ul>
-          </div>
-        </section>
+          </Container>
+        </Section>
 
-        {/* This band is on every city page, also on a page without a coach. It
-            answers the practical question, and it keeps the ochre from
-            disappearing for the length of the whole read. */}
-        <section className="bg-ochre text-ink" id="afspreken">
-          <div className={`${shell} py-14 md:py-16`}>
-            {/* The right column starts on the same line as the form below it:
-                half the container, plus the 4rem inner gutter. The contact
-                section splits the page at the centre, so this band must use
-                that same line or the two ochre blocks look off by 60px. */}
-            <div className="grid gap-y-10 lg:grid-cols-[calc(50%+4rem)_minmax(0,1fr)]">
-              <div className="flex flex-col gap-6">
-                <h2 className="text-section max-w-[20rem] font-extrabold">
-                  {city.coach ? "Waar spreken we af?" : "Dan doen we het online"}
+        {/* This block is on every city page, also on a page without a coach.
+            The map frame is lavender, so the panel around it is white: two
+            violet tints on top of each other read as one flat block. */}
+        <Section id="afspreken" space="md">
+          <Container>
+            <Reveal className="rounded-panel grid items-center gap-8 border border-hairline bg-white p-6 sm:p-10 lg:grid-cols-2 lg:gap-12 lg:p-13">
+              <div className="flex flex-col gap-4">
+                <h2 className="text-h4 max-w-[16ch] font-bold">
+                  {coach ? "Waar spreken we af?" : "Dan doen we het online"}
                 </h2>
-                {city.coach && city.meeting && (
+
+                {coach && city.meeting && (
                   <address className="text-title font-bold not-italic">
                     {city.meeting.street}
                     <br />
                     {city.meeting.postcode} {city.meeting.town}
                   </address>
                 )}
-                <p className="text-lead max-w-[46ch]">
-                  {!city.coach
+
+                <p className="max-w-[46ch] text-muted">
+                  {!coach
                     ? "De gesprekken gaan dan via videobellen. Dat werkt beter dan je denkt: je zit thuis, je bent geen reistijd kwijt, en je kunt tussendoor rustig nadenken. Wil je toch iemand in het echt spreken? Vraag het ons, dan kijken we of een coach uit een buurstad tijd heeft."
                     : city.meeting
                       ? `Je bent welkom in ${city.meeting.town}. Liever online? Dat kan ook, en voor sommige gesprekken werkt een scherm ertussen zelfs beter.`
@@ -290,21 +304,15 @@ export default async function CityPage(props: PageProps<"/locaties/[stad]">) {
                 </p>
               </div>
 
-              {city.coach && <CityMap city={city} />}
-            </div>
-          </div>
-        </section>
+              <CityMap city={city} />
+            </Reveal>
+          </Container>
+        </Section>
 
         <ContactSection city={city.name} />
       </main>
 
-      <SiteFooter
-        pageLinks={[
-          { href: "#coach", label: city.coach ? "De coach" : "Coach gezocht" },
-          { href: "#traject", label: "Het traject" },
-          { href: "#contact", label: "Gratis intakegesprek" },
-        ]}
-      />
+      <SiteFooter />
     </>
   );
 }

@@ -30,18 +30,19 @@ const nextConfig: NextConfig = {
 
   // The old WordPress site goes offline in September 2026. On that day every old
   // address must land somewhere correct, or the rankings that were bought are
-  // lost. app/redirects.ts holds the table, all 439 rows of it, generated from
+  // lost. app/redirects.ts holds the table, all 436 rows of it, generated from
   // docs/url-map.csv by scripts/build-url-map.py. It is data, so it lives in its
   // own file; this config only says what to do with it.
   //
-  // NOT EVERY ROW IS PERMANENT, AND THAT IS THE POINT. 253 rows are addresses
+  // NOT EVERY ROW IS PERMANENT, AND THAT IS THE POINT. 302 rows are addresses
   // that are gone for good: they answer 308 and a search engine moves the
-  // ranking to the destination. The other 186 are addresses we still intend to
-  // serve, whose page is not written yet, mostly the 63 archived articles and
-  // the 30 cities without a coach. They answer 307, so the crawler keeps the old
-  // address on its list and comes back. A 308 there would hand away a URL that
-  // still ranks and that we mean to keep. Build the page, re-run the generator,
-  // and the row disappears: the address then answers for itself.
+  // ranking to the destination. The other 134 are addresses we still intend to
+  // serve, whose page is not written yet: 58 of them wait for a city page and
+  // the rest mostly for an archived article. They answer 307, so the crawler
+  // keeps the old address on its list and comes back. A 308 there would hand
+  // away a URL that still ranks and that we mean to keep. Build the page,
+  // re-run the generator, and the row disappears: the address then answers for
+  // itself.
   //
   // The sources carry no trailing slash on purpose: Next normalises
   // `/oude-pagina/` to `/oude-pagina` with its own 308 before it reads this
