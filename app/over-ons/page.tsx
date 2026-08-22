@@ -18,22 +18,24 @@ import {
  * "Wie zijn wij", the client's page (design-spec 4.6), at the old address
  * /over-ons so the 301 inbound links keep landing on a page about us.
  *
- * WHO IS NAMED HERE: nobody. GESPREK.md calls this "het verhaal van de vijf
- * coach-eigenaren", but the client's own export names no one, and only Janneke
- * is a confirmed person in app/coaches.ts. The story is told in "we", which is
- * how the client wrote it, and the reader meets a named person one click away
- * on /studiekeuzecoaches. Nothing is invented to fill the gap.
+ * WHO IS NAMED HERE: the five. The rebuild told the story in "we" because the
+ * client's export named no one and only Janneke was a confirmed person. Row O1
+ * of the client's mail settles it: "Toevoegen aan koptekst: Wie zijn wij?
+ * Tamara, Aart, Mirjam, Regula en Janneke." So the five stand in the title, in
+ * the client's own order, and app/coaches.ts holds the same five.
  *
- * NO PHOTO. The client's hero and panel carry stock photographs. The one scene
- * image this repo owns is reserved for the home hero (decision 2026-08-13), so
- * the hero is one column and the panel holds our own map of the country: the
- * cities where a coach really works, which is the same claim in a picture.
+ * NO PHOTO, YET. The client's hero and panel carry stock photographs, and the
+ * mail asks for a picture of the five together: "Hier zou een foto van ons
+ * vijven natuurlijk heel leuk zijn." There is not one, so the hero is one
+ * column and the panel holds our own map of the country: the cities where a
+ * coach really works, which is the same claim in a picture. The photograph is
+ * open question Q6 in docs/redesign/client-feedback.md.
  */
 export const metadata: Metadata = {
   title:
-    "Wie zijn wij | Een collectief van studiekeuzecoaches | StudieKeuzeAdvies",
+    "Wie zijn wij | Een collectief van StudieKeuzeCoaches | StudieKeuzeAdvies",
   description:
-    "StudiekeuzeAdvies is een collectief van freelance studiekeuzecoaches. Geen callcenter en geen tussenlagen: je kiest zelf je coach, in jouw regio, van intake tot keuze.",
+    "StudieKeuzeAdvies is een collectief van freelance StudieKeuzeCoaches. Geen callcenter en geen tussenlagen: je kiest zelf je coach, in jouw regio, van intake tot keuze.",
   alternates: { canonical: "/over-ons" },
 };
 
@@ -64,27 +66,25 @@ export default function OverOnsPage() {
       <SiteHeader />
 
       <main id="top">
+        {/* ROW O1. The title is the client's own line, names and all. The
+            eyebrow was "Wie zijn wij" and would now say it twice, so it names
+            the page instead. */}
         <PageHero
-          eyebrow="Wie zijn wij"
-          lede="StudiekeuzeAdvies is een collectief van freelance studiekeuzecoaches. We werkten jarenlang voor een grote opdrachtgever, maar hebben nu de handen ineengeslagen om het op onze eigen manier te doen: met de student als middelpunt."
-          title="Een collectief van coaches. Met de student centraal."
-          titleClassName="max-w-[28ch]"
+          eyebrow="Over ons"
+          lede="StudieKeuzeAdvies is een collectief van freelance StudieKeuzeCoaches. We werkten jarenlang voor een grote opdrachtgever, maar hebben nu de handen ineengeslagen om het op onze eigen manier te doen: met de studiekiezer als middelpunt."
+          title="Wie zijn wij? Tamara, Aart, Mirjam, Regula en Janneke."
+          titleClassName="max-w-[24ch]"
         >
+          {/* ROW O2. "Plan gratis intake bij een coach" is gone, so one button
+              is left. The client's own note: when the roster grows this may
+              have to read "Ontmoet al onze coaches". */}
           <div className="mt-8 flex flex-wrap gap-3">
             <Button
               className="max-[420px]:w-full"
               href="/studiekeuzecoaches"
               size="lg"
             >
-              Ontmoet de coaches
-            </Button>
-            <Button
-              className="max-[420px]:w-full"
-              href="/studiekeuzecoaches"
-              size="lg"
-              variant="outline"
-            >
-              Plan gratis intake bij een coach
+              Ontmoet onze coaches
             </Button>
           </div>
         </PageHero>
@@ -98,19 +98,32 @@ export default function OverOnsPage() {
                 Waarom we opnieuw zijn begonnen
               </h2>
 
+              {/* ROW O3, the client's own text. One block in the mail, three
+                  paragraphs here, broken where the subject changes: what we
+                  did, what we decided, and what we do now. The rebuild wrote
+                  "processen en targets belangrijker dan de studiekiezer"; the
+                  client does not say that about their old client, so it is
+                  gone. */}
               <div className="flex flex-col gap-4">
                 <p className="text-muted">
                   Jarenlang begeleidden we studiekiezers in opdracht van een
-                  grote organisatie. Daar leerden we het vak, maar we zagen ook
-                  hoe processen en targets soms belangrijker werden dan de
-                  studiekiezer zelf. Toen die samenwerking stopte, was de keuze
-                  snel gemaakt: samen verder, op onze eigen voorwaarden.
+                  grote organisatie. Samen hebben we in die tijd veel jongeren
+                  geholpen bij het maken van hun studiekeuze en waardevolle
+                  ervaring opgedaan in dit vak.
                 </p>
                 <p className="text-muted">
-                  Vanaf nu staat de student veel centraler. Geen callcenter of
-                  tussenlagen: je kiest zelf je coach, in jouw regio, en die
-                  coach blijft van intake tot keuze. Ons doel is simpel: zoveel
-                  mogelijk studiekiezers helpen om de juiste stap te zetten.
+                  Toen de samenwerking stopte en ons de mooie kans werd geboden
+                  om het stokje over te nemen, hoefden we daar niet lang over na
+                  te denken. Samen besloten we verder te gaan, op onze eigen
+                  voorwaarden en met onze eigen visie.
+                </p>
+                <p className="text-muted">
+                  Vanaf nu staat de studiekiezer nog meer centraal. Geen
+                  callcenter of onnodige tussenlagen: je kiest zelf je coach, in
+                  jouw regio, en die coach blijft betrokken van intake tot
+                  studiekeuze. Ons doel is simpel: zoveel mogelijk studiekiezers
+                  persoonlijk en goed begeleiden naar een studie die bij hen
+                  past.
                 </p>
               </div>
             </Reveal>

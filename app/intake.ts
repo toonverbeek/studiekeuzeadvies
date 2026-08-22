@@ -10,6 +10,7 @@ export type IntakeField =
   | "telefoon"
   | "situatie"
   | "voorkeur"
+  | "bereik"
   | "bericht"
   | "voor";
 
@@ -55,6 +56,8 @@ export type IntakeState = {
     situatie: string;
     /** Online, in the coach's town, or no preference. See `voorkeuren`. */
     voorkeur: string;
+    /** How the reader wants to be reached. See `bereikbaar` below. */
+    bereik: string;
     bericht: string;
     /** Where the request must go. See `IntakeRoute` below. */
     voor: string;
@@ -72,6 +75,7 @@ export const intakeInitialState: IntakeState = {
     telefoon: "",
     situatie: "",
     voorkeur: "",
+    bereik: "mail",
     bericht: "",
     voor: "",
   },
@@ -104,9 +108,12 @@ export const spamGuard = {
 } as const;
 
 /**
- * Who a request is for. There is no central mailbox any more (issue #7), so a
- * request that does not name a destination cannot be delivered at all. The form
- * carries this in a hidden field and the server resolves it to one address.
+ * Who a request is for. An intake still has no central address: the client's
+ * mail brought one back for the general forms, and kept this one per coach
+ * ("je kiest zelf je coach ... en die coach blijft betrokken van intake tot
+ * studiekeuze"). So a request that does not name a destination cannot be
+ * delivered at all. The form carries this in a hidden field and the server
+ * resolves it to one address.
  *
  * Two kinds, because a page knows one of two things. A coach page knows the
  * person. A city page knows the place, and the place is the better answer: if
@@ -165,4 +172,32 @@ export const voorkeuren = [
 
 export function voorkeurLabel(value: string, place: string | null): string {
   return voorkeuren.find((v) => v.value === value)?.label(place) ?? value;
+}
+
+/**
+ * How a reader wants to be reached, added at the client's request (row P3:
+ * "optie whatsapp erbij").
+ *
+ * IT IS A CHOICE AND NOT A CHANNEL WE OPEN. There is no WhatsApp number on
+ * this site to click, because a number belongs to a coach and not to the
+ * site. This says which way the coach should answer, and the answer travels
+ * in the mail they already get. So nothing new is published, and a reader who
+ * finds a telephone easier than an inbox can say so.
+ *
+ * "mail" is the default, because it is the one channel every reader already
+ * gave us: the e-mail field above it is required.
+ */
+export const bereikbaar = [
+  { value: "mail", label: "Per e-mail" },
+  { value: "telefoon", label: "Telefonisch" },
+  { value: "whatsapp", label: "Via WhatsApp" },
+] as const;
+
+/** true when the chosen channel cannot work without a telephone number. */
+export function bereikNeedsPhone(value: string): boolean {
+  return value === "telefoon" || value === "whatsapp";
+}
+
+export function bereikLabel(value: string): string {
+  return bereikbaar.find((b) => b.value === value)?.label ?? value;
 }

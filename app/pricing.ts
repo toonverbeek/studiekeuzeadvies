@@ -51,13 +51,16 @@ export const scan = euro(249);
 export const extraGesprek = euro(89);
 
 /**
- * The one-off licence a new coach pays (/coach-worden). It is the only price on
- * this site the client has not fixed, so it is printed as an indication and it
- * says so in the same breath. See docs/redesign/client/GESPREK.md, section 5.
+ * The licence a new coach pays (/coach-worden).
+ *
+ * IT USED TO BE "± € 750, ONCE". GESPREK.md section 5 listed it as the one
+ * price the client had not fixed, so it was printed as an indication. The
+ * client's mail of 2026-08-21 fixed it, row W5: "En het wordt: Een jaarlijkse
+ * licentie van €750." The figure did not move. What moved is the term, and the
+ * hedge is gone, because a decided price does not need one.
  */
 export const coachLicence = {
   ...euro(750),
-  label: `± € 750`,
   /** Print this beside the figure. Never the figure on its own. */
-  note: "een indicatie, de definitieve prijs stemmen we samen af",
+  term: "per jaar",
 } as const;

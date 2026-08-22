@@ -30,7 +30,7 @@ const jumps = questions.map((item) => ({
 export const metadata: Metadata = {
   title: "Veelgestelde vragen - StudieKeuzeAdvies",
   description:
-    "Wat is een studiekeuzetraject, wat kost het, hoe lang duurt het, wie is je coach en waar spreek je af? De vragen die we het vaakst krijgen, met het antwoord eronder.",
+    "Wat is een StudieKeuzeTraject, wat kost het, hoe lang duurt het, wie is je coach en waar spreek je af? De vragen die we het vaakst krijgen, met het antwoord eronder.",
   alternates: { canonical: "/veelgestelde-vragen" },
 };
 
@@ -74,8 +74,9 @@ export default function FaqPage() {
                   pagina: je hoeft nergens op te klikken en niets uit te vouwen.
                 </p>
                 <p className="mt-4 max-w-[34rem] text-muted">
-                  Staat je vraag er niet bij? Stel hem gerust. Kies je stad, dan
-                  zie je wie daar werkt, en je vraagt het aan die coach zelf.
+                  Staat je vraag er niet bij? Stel hem gerust. Kies je coach,
+                  dan lees je wie waar werkt, en je vraagt het aan die coach
+                  zelf.
                 </p>
 
                 {/* The button used to say "Plan een gratis intakegesprek" and
@@ -86,10 +87,10 @@ export default function FaqPage() {
                 <div className="mt-7 flex flex-wrap gap-3">
                   <Button
                     className="max-[420px]:w-full"
-                    href="/locaties"
+                    href="/studiekeuzecoaches"
                     size="lg"
                   >
-                    Kies je stad
+                    Kies je coach
                   </Button>
                   <Button
                     className="max-[420px]:w-full"

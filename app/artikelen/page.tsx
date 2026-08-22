@@ -18,7 +18,7 @@ import { Button, Container, PageHero, Section } from "@/app/components/ui";
 export const metadata: Metadata = {
   title: "Artikelen over studiekeuze | StudieKeuzeAdvies",
   description:
-    "Antwoorden op de vragen die je stelt als je moet kiezen: deadlines, inschrijven, stoppen en opnieuw beginnen. Geschreven door studiekeuzecoaches.",
+    "Antwoorden op de vragen die je stelt als je moet kiezen: deadlines, inschrijven, stoppen en opnieuw beginnen. Geschreven door StudieKeuzeCoaches.",
   alternates: { canonical: "/artikelen" },
 };
 
@@ -65,8 +65,11 @@ export default function ArtikelenPage() {
                 </p>
               </div>
 
-              <Button className="max-[420px]:w-full" href="/locaties">
-                Kies je regio
+              {/* ROW R1. It read "Kies je regio" and opened /locaties. The
+                  client wants the roster: "Die link moet naar de pagina met
+                  coaches en mag daarom heten 'Vind je coach'." */}
+              <Button className="max-[420px]:w-full" href="/studiekeuzecoaches">
+                Vind je coach
               </Button>
             </div>
           </Container>

@@ -15,7 +15,7 @@
  * wants does not exist yet. A 308 there would surrender an address we intend to
  * serve ourselves, so it stays a 307 until the page lands.
  *
- * The table lives here and not in `next.config.ts` because it is 436 rows
+ * The table lives here and not in `next.config.ts` because it is 424 rows
  * long, and a config file that is mostly data is a config file nobody reads.
  *
  * **A source carries no trailing slash, and it still matches one.** Every old
@@ -63,7 +63,6 @@ export const legacyRedirects: LegacyRedirect[] = [
   { source: "/category", destination: "/artikelen" },
   { source: "/category/blog", destination: "/artikelen" },
   { source: "/category/nieuws", destination: "/artikelen" },
-  { source: "/contact", destination: "/locaties" },
   { source: "/de-voorbereiding-op-je-nieuwe-studie-begint-nu", destination: "/artikelen", temporary: true }, // waits for /de-voorbereiding-op-je-nieuwe-studie-begint-nu
   { source: "/de-wereld-aan-je-voeten-waarom-een-tussenjaar-soms-de-beste-studiekeuze-is", destination: "/artikelen", temporary: true }, // waits for /de-wereld-aan-je-voeten-waarom-een-tussenjaar-soms-de-beste-studiekeuze-is
   { source: "/deadline-decentrale-selectie-15-januari", destination: "/artikelen", temporary: true }, // waits for /deadline-decentrale-selectie-15-januari
@@ -125,9 +124,7 @@ export const legacyRedirects: LegacyRedirect[] = [
   { source: "/keuzegids/home-keuzegids", destination: "/studiekeuzetraject" },
   { source: "/kosten-verkeerde-studiekeuze", destination: "/artikelen", temporary: true }, // waits for /kosten-verkeerde-studiekeuze
   { source: "/leiden", destination: "/locaties", temporary: true }, // waits for /locaties/leiden
-  { source: "/locaties/almere", destination: "/locaties", temporary: true }, // waits for /locaties/almere
   { source: "/locaties/amersfoort/mirjam-260x300", destination: "/locaties/amersfoort" },
-  { source: "/locaties/amstelveen", destination: "/locaties", temporary: true }, // waits for /locaties/amstelveen
   { source: "/locaties/amsterdam/amsterdam", destination: "/locaties/amsterdam" },
   { source: "/locaties/amsterdam/img_0943", destination: "/locaties/amsterdam" },
   { source: "/locaties/arnhem-2", destination: "/locaties", temporary: true }, // waits for /locaties/arnhem
@@ -138,30 +135,24 @@ export const legacyRedirects: LegacyRedirect[] = [
   { source: "/locaties/bussum", destination: "/locaties", temporary: true }, // waits for /locaties/bussum
   { source: "/locaties/bussum/img_2795", destination: "/locaties", temporary: true }, // waits for /locaties/bussum
   { source: "/locaties/de-melkfabriek-bruinevisstraat-32-4611hj-bergen-op-zoom", destination: "/locaties" },
-  { source: "/locaties/den-bosch", destination: "/locaties", temporary: true }, // waits for /locaties/den-bosch
   { source: "/locaties/den-haag", destination: "/locaties", temporary: true }, // waits for /locaties/den-haag
   { source: "/locaties/dordrecht", destination: "/locaties", temporary: true }, // waits for /locaties/dordrecht
-  { source: "/locaties/eindhoven", destination: "/locaties", temporary: true }, // waits for /locaties/eindhoven
   { source: "/locaties/enschede", destination: "/locaties", temporary: true }, // waits for /locaties/enschede
   { source: "/locaties/enschede/monique-kock", destination: "/locaties", temporary: true }, // waits for /locaties/enschede
   { source: "/locaties/enschede/schermafbeelding-2022-02-08-om-09-30-07", destination: "/locaties", temporary: true }, // waits for /locaties/enschede
   { source: "/locaties/gouda", destination: "/locaties", temporary: true }, // waits for /locaties/gouda
   { source: "/locaties/groningen", destination: "/locaties", temporary: true }, // waits for /locaties/groningen
   { source: "/locaties/groningen/pieter-jpg", destination: "/locaties", temporary: true }, // waits for /locaties/groningen
-  { source: "/locaties/haarlem", destination: "/locaties", temporary: true }, // waits for /locaties/haarlem
   { source: "/locaties/hengelo", destination: "/locaties", temporary: true }, // waits for /locaties/hengelo
-  { source: "/locaties/hilversum", destination: "/locaties", temporary: true }, // waits for /locaties/hilversum
   { source: "/locaties/leeuwarden", destination: "/locaties", temporary: true }, // waits for /locaties/leeuwarden
   { source: "/locaties/leiden", destination: "/locaties", temporary: true }, // waits for /locaties/leiden
   { source: "/locaties/leiden/silvia", destination: "/locaties", temporary: true }, // waits for /locaties/leiden
   { source: "/locaties/logo-2", destination: "/locaties" },
   { source: "/locaties/maarssen", destination: "/locaties", temporary: true }, // waits for /locaties/maarssen
-  { source: "/locaties/maastricht", destination: "/locaties", temporary: true }, // waits for /locaties/maastricht
-  { source: "/locaties/maastricht/schermafbeelding-2021-10-28-om-12-04-32", destination: "/locaties", temporary: true }, // waits for /locaties/maastricht
+  { source: "/locaties/maastricht/schermafbeelding-2021-10-28-om-12-04-32", destination: "/locaties/maastricht" },
   { source: "/locaties/nijmegen", destination: "/locaties", temporary: true }, // waits for /locaties/nijmegen
   { source: "/locaties/oldenzaal", destination: "/locaties", temporary: true }, // waits for /locaties/oldenzaal
   { source: "/locaties/p-j-oudweg-4-1314-ch-almere", destination: "/locaties" },
-  { source: "/locaties/roermond", destination: "/locaties", temporary: true }, // waits for /locaties/roermond
   { source: "/locaties/roosendaal", destination: "/locaties", temporary: true }, // waits for /locaties/roosendaal
   { source: "/locaties/roosendaal/angelina-muller-1", destination: "/locaties", temporary: true }, // waits for /locaties/roosendaal
   { source: "/locaties/rotterdam", destination: "/locaties", temporary: true }, // waits for /locaties/rotterdam
@@ -170,18 +161,16 @@ export const legacyRedirects: LegacyRedirect[] = [
   { source: "/locaties/sittard/lisa-2", destination: "/locaties", temporary: true }, // waits for /locaties/sittard
   { source: "/locaties/student-getting-help-from-tutor-in-library", destination: "/locaties" },
   { source: "/locaties/studiekeuzeadvies-apeldoorn", destination: "/locaties", temporary: true }, // waits for /locaties/apeldoorn
-  { source: "/locaties/tilburg", destination: "/locaties", temporary: true }, // waits for /locaties/tilburg
   { source: "/locaties/utrecht/b-m", destination: "/locaties/utrecht" },
   { source: "/locaties/utrechtseweg-7-3811-na-amersfoort", destination: "/locaties" },
   { source: "/locaties/van-baerlestraat-13-1071-al-amsterdam", destination: "/locaties" },
-  { source: "/locaties/vught", destination: "/locaties", temporary: true }, // waits for /locaties/vught
   { source: "/locaties/wassenaar", destination: "/locaties", temporary: true }, // waits for /locaties/wassenaar
   { source: "/locaties/wassenaar/download-14", destination: "/locaties", temporary: true }, // waits for /locaties/wassenaar
   { source: "/locaties/wassenaar/silvia-200x300", destination: "/locaties", temporary: true }, // waits for /locaties/wassenaar
   { source: "/locaties/zwolle", destination: "/locaties", temporary: true }, // waits for /locaties/zwolle
   { source: "/locaties/zwolle/ilse-froukje", destination: "/locaties", temporary: true }, // waits for /locaties/zwolle
   { source: "/locaties/zwolle/ilse-van-den-belt", destination: "/locaties", temporary: true }, // waits for /locaties/zwolle
-  { source: "/maastricht", destination: "/locaties", temporary: true }, // waits for /locaties/maastricht
+  { source: "/maastricht", destination: "/locaties/maastricht" },
   { source: "/matching-wat-moet-je-weten", destination: "/artikelen", temporary: true }, // waits for /matching-wat-moet-je-weten
   { source: "/mbo-hbo-of-wo-je-kunt-alle-kanten-op", destination: "/artikelen", temporary: true }, // waits for /mbo-hbo-of-wo-je-kunt-alle-kanten-op
   { source: "/mbo-opleidingen-beperkt-aantal-plaatsen", destination: "/artikelen", temporary: true }, // waits for /mbo-opleidingen-beperkt-aantal-plaatsen
@@ -315,7 +304,6 @@ export const legacyRedirects: LegacyRedirect[] = [
   { source: "/studiekeuzecoaches/merel-musa", destination: "/studiekeuzecoaches" },
   { source: "/studiekeuzecoaches/mirjam-schmidt-erftemeijer-2", destination: "/studiekeuzecoaches" },
   { source: "/studiekeuzecoaches/mirjam-schmidt-erftemeijer", destination: "/studiekeuzecoaches" },
-  { source: "/studiekeuzecoaches/mirjam", destination: "/studiekeuzecoaches" },
   { source: "/studiekeuzecoaches/mirren-coach-utrecht-hilversum-amersfoort", destination: "/studiekeuzecoaches" },
   { source: "/studiekeuzecoaches/myrthe", destination: "/studiekeuzecoaches" },
   { source: "/studiekeuzecoaches/new-project-10", destination: "/studiekeuzecoaches" },

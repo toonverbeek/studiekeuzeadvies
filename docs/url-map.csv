@@ -74,7 +74,7 @@ old,kind,status,real_words,editorial_inbound,h1,new,action,note
 /category/,taxonomy,404,0,0,,/artikelen,redirect,
 /category/blog/,taxonomy,200,1050,0,Oudergids: hoe begeleid je als ouder de studiekeuze van je kind?,/artikelen,redirect,
 /category/nieuws/,taxonomy,200,773,0,Een goede balans tussen studie en vrije tijd,/artikelen,redirect,
-/contact/,page,200,45,182,Neem vrijblijvend contact met ons op!,/contact,rebuild,
+/contact/,page,200,45,182,Neem vrijblijvend contact met ons op!,/contact,keep,the address is a page on this site now
 /de-1-februariregeling/,post,200,402,3,De 1-februariregeling,/de-1-februariregeling,keep,the address is a page on this site now; the article keeps its root URL
 /de-voorbereiding-op-je-nieuwe-studie-begint-nu/,post,200,417,1,De voorbereiding op je nieuwe studie begint nu,/de-voorbereiding-op-je-nieuwe-studie-begint-nu,keep,the article keeps its root URL
 /de-wereld-aan-je-voeten-waarom-een-tussenjaar-soms-de-beste-studiekeuze-is/,post,200,398,1,De wereld aan je voeten: waarom een tussenjaar?,/de-wereld-aan-je-voeten-waarom-een-tussenjaar-soms-de-beste-studiekeuze-is,keep,the article keeps its root URL
@@ -143,10 +143,10 @@ old,kind,status,real_words,editorial_inbound,h1,new,action,note
 /kosten-verkeerde-studiekeuze/,post,200,481,1,Kosten verkeerde studiekeuze,/kosten-verkeerde-studiekeuze,keep,the article keeps its root URL
 /leiden/,other,200,716,1,StudieKeuzeAdvies Leiden,/locaties/leiden,redirect,the old site already redirects this to /locaties/leiden/
 /locaties/,page,200,354,182,Locaties,/locaties,keep,the address is a page on this site now
-/locaties/almere/,page,200,723,182,StudieKeuzeAdvies Almere,/locaties/almere,keep,
+/locaties/almere/,page,200,723,182,StudieKeuzeAdvies Almere,/locaties/almere,keep,the address is a page on this site now
 /locaties/amersfoort/,page,200,723,182,StudieKeuzeAdvies Amersfoort,/locaties/amersfoort,keep,the address is a page on this site now
 /locaties/amersfoort/mirjam-260x300/,attachment,200,0,0,Mirjam-260x300,/locaties/amersfoort,redirect,attachment to its parent
-/locaties/amstelveen/,page,200,727,182,StudieKeuzeAdvies Amstelveen,/locaties/amstelveen,keep,
+/locaties/amstelveen/,page,200,727,182,StudieKeuzeAdvies Amstelveen,/locaties/amstelveen,keep,the address is a page on this site now
 /locaties/amsterdam/,page,200,980,182,StudieKeuzeAdvies Amsterdam,/locaties/amsterdam,keep,the address is a page on this site now
 /locaties/amsterdam/amsterdam/,attachment,200,0,0,Amsterdam,/locaties/amsterdam,redirect,attachment to its parent
 /locaties/amsterdam/img_0943/,attachment,200,0,0,IMG_0943,/locaties/amsterdam,redirect,attachment to its parent
@@ -158,30 +158,30 @@ old,kind,status,real_words,editorial_inbound,h1,new,action,note
 /locaties/bussum/,page,200,722,182,StudieKeuzeAdvies Bussum,/locaties/bussum,keep,
 /locaties/bussum/img_2795/,attachment,200,0,0,IMG_2795,/locaties/bussum,redirect,attachment to its parent
 /locaties/de-melkfabriek-bruinevisstraat-32-4611hj-bergen-op-zoom/,attachment,200,16,0,"De Melkfabriek – Bruinevisstraat 32, 4611HJ, Bergen op Zoom",/locaties,redirect,attachment to its parent
-/locaties/den-bosch/,page,200,729,182,StudieKeuzeAdvies Den Bosch,/locaties/den-bosch,keep,
+/locaties/den-bosch/,page,200,729,182,StudieKeuzeAdvies Den Bosch,/locaties/den-bosch,keep,the address is a page on this site now
 /locaties/den-haag/,page,200,728,182,StudieKeuzeAdvies Den Haag,/locaties/den-haag,keep,
 /locaties/dordrecht/,page,200,727,182,StudieKeuzeAdvies Dordrecht,/locaties/dordrecht,keep,
-/locaties/eindhoven/,page,200,721,182,StudieKeuzeAdvies Eindhoven,/locaties/eindhoven,keep,
+/locaties/eindhoven/,page,200,721,182,StudieKeuzeAdvies Eindhoven,/locaties/eindhoven,keep,the address is a page on this site now
 /locaties/enschede/,page,200,725,182,StudieKeuzeAdvies Enschede,/locaties/enschede,keep,
 /locaties/enschede/monique-kock/,attachment,200,2,0,Monique Kock,/locaties/enschede,redirect,attachment to its parent
 /locaties/enschede/schermafbeelding-2022-02-08-om-09-30-07/,attachment,200,2,0,Coach Ansje,/locaties/enschede,redirect,attachment to its parent
 /locaties/gouda/,other,200,715,2,StudieKeuzeAdvies Gouda,/locaties/gouda,keep,the new URL is the old URL; the old site already redirects this to /gouda/
 /locaties/groningen/,page,200,723,182,StudieKeuzeAdvies Groningen,/locaties/groningen,keep,
 /locaties/groningen/pieter-jpg/,attachment,200,2,0,Pieter JPG,/locaties/groningen,redirect,attachment to its parent
-/locaties/haarlem/,page,200,723,182,StudieKeuzeAdvies Haarlem,/locaties/haarlem,keep,
+/locaties/haarlem/,page,200,723,182,StudieKeuzeAdvies Haarlem,/locaties/haarlem,keep,the address is a page on this site now
 /locaties/hengelo/,page,200,732,182,StudieKeuzeAdvies Hengelo,/locaties/hengelo,keep,
-/locaties/hilversum/,page,200,724,182,StudieKeuzeAdvies Hilversum,/locaties/hilversum,keep,
+/locaties/hilversum/,page,200,724,182,StudieKeuzeAdvies Hilversum,/locaties/hilversum,keep,the address is a page on this site now
 /locaties/leeuwarden/,page,200,723,182,StudieKeuzeAdvies Leeuwarden,/locaties/leeuwarden,keep,
 /locaties/leiden/,page,200,716,182,StudieKeuzeAdvies Leiden,/locaties/leiden,keep,
 /locaties/leiden/silvia/,attachment,200,0,0,Silvia,/locaties/leiden,redirect,attachment to its parent
 /locaties/logo-2/,attachment,200,0,0,logo,/locaties,redirect,attachment to its parent
 /locaties/maarssen/,page,200,723,182,StudieKeuzeAdvies Maarssen,/locaties/maarssen,keep,
-/locaties/maastricht/,page,200,727,182,StudieKeuzeAdvies Maastricht,/locaties/maastricht,keep,
+/locaties/maastricht/,page,200,727,182,StudieKeuzeAdvies Maastricht,/locaties/maastricht,keep,the address is a page on this site now
 /locaties/maastricht/schermafbeelding-2021-10-28-om-12-04-32/,attachment,200,0,0,Aart,/locaties/maastricht,redirect,attachment to its parent
 /locaties/nijmegen/,page,200,723,182,StudieKeuzeAdvies Nijmegen,/locaties/nijmegen,keep,
 /locaties/oldenzaal/,page,200,723,182,StudieKeuzeAdvies Oldenzaal,/locaties/oldenzaal,keep,
 /locaties/p-j-oudweg-4-1314-ch-almere/,attachment,200,10,0,"P.J. Oudweg 4, 1314 CH Almere",/locaties,redirect,attachment to its parent
-/locaties/roermond/,page,200,727,182,StudieKeuzeAdvies Roermond,/locaties/roermond,keep,
+/locaties/roermond/,page,200,727,182,StudieKeuzeAdvies Roermond,/locaties/roermond,keep,the address is a page on this site now
 /locaties/roosendaal/,page,200,728,182,StudieKeuzeAdvies Roosendaal,/locaties/roosendaal,keep,
 /locaties/roosendaal/angelina-muller-1/,attachment,200,4,0,Angelina Muller (1),/locaties/roosendaal,redirect,attachment to its parent
 /locaties/rotterdam/,page,200,728,182,StudieKeuzeAdvies Rotterdam,/locaties/rotterdam,keep,
@@ -190,12 +190,12 @@ old,kind,status,real_words,editorial_inbound,h1,new,action,note
 /locaties/sittard/lisa-2/,attachment,200,2,0,Lisa 2,/locaties/sittard,redirect,attachment to its parent
 /locaties/student-getting-help-from-tutor-in-library/,attachment,200,12,0,Student getting help from tutor in library,/locaties,redirect,attachment to its parent
 /locaties/studiekeuzeadvies-apeldoorn/,page,200,723,182,StudieKeuzeAdvies Apeldoorn,/locaties/apeldoorn,redirect,
-/locaties/tilburg/,page,200,723,182,StudieKeuzeAdvies Tilburg,/locaties/tilburg,keep,
+/locaties/tilburg/,page,200,723,182,StudieKeuzeAdvies Tilburg,/locaties/tilburg,keep,the address is a page on this site now
 /locaties/utrecht/,page,200,726,182,StudieKeuzeAdvies Utrecht,/locaties/utrecht,keep,the address is a page on this site now
 /locaties/utrecht/b-m/,attachment,200,4,0,B & M,/locaties/utrecht,redirect,attachment to its parent
 /locaties/utrechtseweg-7-3811-na-amersfoort/,attachment,200,8,0,"Utrechtseweg 7, 3811 NA Amersfoort",/locaties,redirect,attachment to its parent
 /locaties/van-baerlestraat-13-1071-al-amsterdam/,attachment,200,10,0,"Van Baerlestraat 13, 1071 AL Amsterdam",/locaties,redirect,attachment to its parent
-/locaties/vught/,page,200,723,182,StudieKeuzeAdvies Vught,/locaties/vught,keep,
+/locaties/vught/,page,200,723,182,StudieKeuzeAdvies Vught,/locaties/vught,keep,the address is a page on this site now
 /locaties/wassenaar/,page,200,723,182,StudieKeuzeAdvies Wassenaar,/locaties/wassenaar,keep,
 /locaties/wassenaar/download-14/,attachment,200,2,0,Mahlia SKA,/locaties/wassenaar,redirect,attachment to its parent
 /locaties/wassenaar/silvia-200x300/,attachment,200,0,0,Silvia-200x300,/locaties/wassenaar,redirect,attachment to its parent
@@ -349,7 +349,7 @@ old,kind,status,real_words,editorial_inbound,h1,new,action,note
 /studiekeuzecoaches/merel-musa/,attachment,200,2,0,Merel Musa,/studiekeuzecoaches,redirect,attachment to its parent
 /studiekeuzecoaches/mirjam-schmidt-erftemeijer-2/,attachment,200,2,0,Mirjam Schmidt-Erftemeijer,/studiekeuzecoaches,redirect,attachment to its parent
 /studiekeuzecoaches/mirjam-schmidt-erftemeijer/,attachment,200,2,0,Mirjam Schmidt-Erftemeijer,/studiekeuzecoaches,redirect,attachment to its parent
-/studiekeuzecoaches/mirjam/,attachment,200,0,0,Mirjam,/studiekeuzecoaches,redirect,attachment to its parent
+/studiekeuzecoaches/mirjam/,attachment,200,0,0,Mirjam,/studiekeuzecoaches/mirjam,keep,the address is a page on this site now; attachment to its parent
 /studiekeuzecoaches/mirren-coach-utrecht-hilversum-amersfoort/,attachment,200,10,0,"Mirren - Coach Utrecht, Hilversum, Amersfoort",/studiekeuzecoaches,redirect,attachment to its parent
 /studiekeuzecoaches/myrthe/,attachment,200,0,0,Myrthe,/studiekeuzecoaches,redirect,attachment to its parent
 /studiekeuzecoaches/new-project-10/,attachment,200,4,0,New Project (10),/studiekeuzecoaches,redirect,attachment to its parent

@@ -5,6 +5,8 @@ import { applyAsCoach } from "../actions";
 import {
   achtergronden,
   applicationInitialState,
+  cvAccept,
+  cvMaxLabel,
   spamGuard,
 } from "../application";
 
@@ -30,6 +32,12 @@ const fieldBase =
 const labelBase = "text-[0.8125rem] font-semibold text-lavender-ink";
 
 const errorBase = "text-[0.8125rem] text-coral-soft";
+
+/** The file row. A browser paints its own button here, and the two it paints
+ *  are grey-on-grey and blue-on-white, neither of which belongs on an ink card.
+ *  So the input keeps its own button and it is dressed: paper pill, ink text. */
+const fileBase =
+  "w-full rounded-field bg-paper px-4 py-3 text-body text-ink file:mr-3.5 file:cursor-pointer file:rounded-full file:border-0 file:bg-ink file:px-4 file:py-1.5 file:text-[0.8125rem] file:font-bold file:text-paper";
 
 export function CoachApplicationForm({ className = "" }: { className?: string }) {
   const [state, formAction, pending] = useActionState(
@@ -74,7 +82,14 @@ export function CoachApplicationForm({ className = "" }: { className?: string })
     state.status === "not-configured" || state.status === "provider-error";
 
   return (
-    <form action={formAction} className={cardBase} noValidate>
+    <form
+      action={formAction}
+      className={cardBase}
+      /* ROW W2. Without this a browser posts the name of the file and not the
+         file, and the CV would arrive as the word "cv.pdf". */
+      encType="multipart/form-data"
+      noValidate
+    >
       <h2 className="text-title font-display font-bold">Meld je aan als coach</h2>
       <p className="text-small mt-2 text-lavender-ink">
         Vrijblijvend: we plannen eerst een kennismakingsgesprek.
@@ -94,7 +109,7 @@ export function CoachApplicationForm({ className = "" }: { className?: string })
                 Mail{" "}
                 <a
                   className="font-semibold underline underline-offset-4"
-                  href={`mailto:${state.fallbackAddress}?subject=${encodeURIComponent("Aanmelding als studiekeuzecoach")}`}
+                  href={`mailto:${state.fallbackAddress}?subject=${encodeURIComponent("Aanmelding als StudieKeuzeCoach")}`}
                 >
                   {state.fallbackAddress}
                 </a>{" "}
@@ -260,6 +275,38 @@ export function CoachApplicationForm({ className = "" }: { className?: string })
           {state.errors.motivatie && (
             <p className={errorBase} id={errorId("motivatie")}>
               {state.errors.motivatie}
+            </p>
+          )}
+        </div>
+
+        {/* ROW W2, the CV. Optional, so the label says so before the file
+            picker opens, and it names the two things that can go wrong before
+            they go wrong: what fits, and how big. */}
+        <div className="flex flex-col gap-1.5">
+          <label className={labelBase} htmlFor={field("cv")}>
+            Je cv <span className="font-normal">(optioneel)</span>
+          </label>
+          <input
+            accept={cvAccept}
+            aria-describedby={
+              state.errors.cv ? errorId("cv") : `${id}-cv-hint`
+            }
+            aria-invalid={Boolean(state.errors.cv)}
+            className={fileBase}
+            id={field("cv")}
+            name="cv"
+            type="file"
+          />
+          {state.errors.cv ? (
+            <p className={errorBase} id={errorId("cv")}>
+              {state.errors.cv}
+            </p>
+          ) : (
+            <p className="text-micro text-lavender-ink" id={`${id}-cv-hint`}>
+              PDF of Word, maximaal {cvMaxLabel}.
+              {state.status === "invalid"
+                ? " Kies je bestand opnieuw: een browser mag het niet voor je onthouden."
+                : ""}
             </p>
           )}
         </div>

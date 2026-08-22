@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
 import heroPhoto from "@/public/images/hero-gesprek.jpg";
-import { citiesWithCoach } from "./cities";
+import { citiesWithCoach, citiesWithCoachByName } from "./cities";
 import { NlMap } from "./components/nl-map";
 import { SiteFooter } from "./components/site-footer";
 import { SiteHeader } from "./components/site-header";
@@ -31,53 +31,58 @@ export const metadata: Metadata = {
 };
 
 /**
- * The four steps of the traject, in the client's words (design-spec 4.1). The
- * fourth number is violet: it is the one the reader is walking towards.
+ * The four steps of the traject, in the client's words. Row H4 replaced all
+ * eight strings: the mail carries the short version for this page and a longer
+ * version for /studiekeuzetraject, and the two are meant to differ.
+ *
+ * The fourth number is violet: it is the one the reader is walking towards.
  */
 const steps = [
   {
     number: "01",
     title: "Wie ben ik en wat kan ik?",
-    body: "Je begint bij jezelf, niet bij opleidingen. Met een persoonlijkheidstest en gesprekken ontdek je je sterke kanten.",
+    body: "Met behulp van opdrachten, de persoonlijkheidstest en de gesprekken, ontdek je je talenten, interesses en kwaliteiten.",
   },
   {
     number: "02",
-    title: "Blik op de toekomst",
-    body: "In wat voor werk zou je passen, met wat voor mensen? Je hoeft geen beroep te kiezen, alleen een warme richting.",
+    title: "Interesses en blik op de toekomst.",
+    body: "Met behulp van de studie-interessetest komen we tot een lijst met best passende studies. Daarnaast onderzoeken we hoe jij je toekomst voor je ziet.",
   },
   {
     number: "03",
-    title: "Mijn interesses en verdieping",
-    body: "Met de studie-interessetest maak je de lijst kort: van duizenden opleidingen naar tien, van tien naar drie.",
+    title: "Oriënteren en erop uit!",
+    body: "Je gaat je verdiepen in de door jou samengestelde lijst met studies en vervolgens gericht en goed voorbereid naar open dagen.",
   },
   {
     number: "04",
-    title: "De studiekeuze",
-    body: "Je legt je keuze naast alles wat je ontdekte en schrijft op waarom. Zo start je met een keuze waar je achter staat.",
+    title: "De studiekeuze.",
+    body: "Alles wat je hebt ontdekt, neem je mee in je uiteindelijke keuze. Jij bepaalt wat bij je past en waarom. Zo zet je een volgende stap waar je met zekerheid achter staat.",
   },
 ];
 
 /**
- * What the price covers. The client's fourth line reads "Online of op een van
- * de 35+ locaties"; we have no 35 locations, so it says what is true instead.
+ * What the price covers. Five lines now and not four: the client added the
+ * report of the test results, and rewrote the other four (row H5). "35+
+ * locaties" is gone from their own wording too, here and in the closing band.
  */
 const included = [
   "Vier 1-op-1 gesprekken met één vaste coach",
   "Persoonlijkheidstest én studie-interessetest",
-  "Opdrachten voor thuis, elk gesprek bouwt verder",
-  "Online of op locatie bij jou in de buurt",
+  "Rapportage van de testuitslagen",
+  "Opdrachten voor thuis, elk gesprek bouwt voort op het vorige",
+  "Online of op een van de vaste locaties",
 ];
 
 const forYou = [
   "Ontdek wat je écht leuk vindt (niet wat “moet”)",
   "Eén vaste coach, geen wisselende gezichten",
-  "Ook als je gestopt bent of vastloopt",
+  "Ook als je gestopt bent met of vastloopt in je huidige studie",
 ];
 
 /** The client wrote this half in "u". It is their wording and it stays. */
 const forParents = [
   "Alle gesprekken zijn 1-op-1, zo praat uw kind vrijuit",
-  "Het traject bevat een persoonlijkheidstest en een studie-interessetest",
+  "Het traject bevat een persoonlijkheidstest en een studie-interessetest, afgerond in een rapportage",
   "Uw kind beslist zelf, weloverwogen en zonder haast",
 ];
 
@@ -88,24 +93,33 @@ const regioSteps = [
 ];
 
 /**
- * The chips of the regio-kiezer, built from the file that decides where we
- * work. The line under a coach is the first sentence of their own
- * introduction, so this card and their profile cannot say two things.
+ * The chips of the regio-kiezer.
+ *
+ * ROW H13, THE TWO CHANGES THE CLIENT ASKED FOR. The card used to carry a
+ * short sentence about the coach, where the client's own export carried a
+ * made-up speciality ("Sterk in techniek- en designrichtingen"). Their verdict
+ * was that neither belongs there: "Kleine kader 'Sterk in ....' willen we
+ * niet ... Of dat daar ons werkgebied komt met dus alle steden/plaatsen die
+ * erbij horen, levert dat nog extra SEO op, dan graag dit doen." So the line
+ * under a coach is now that coach's own towns. And the chips run in
+ * alphabetical order, which is `citiesWithCoachByName`.
+ *
+ * The options are built here on the server and handed over as finished data,
+ * so no biography travels to the browser.
  */
 const regionOptions: RegionOption[] = [
-  ...citiesWithCoach.map((city): RegionOption => {
+  ...citiesWithCoachByName.map((city): RegionOption => {
     const coach = city.coach;
-    const firstSentence = `${coach.intro.split(". ")[0]}.`;
 
     return {
       key: city.slug,
       chip: city.name,
       name: coach.name,
-      line: firstSentence,
+      line: `Werkgebied: ${coach.regionTowns.join(" · ")}`,
       href: `/studiekeuzecoaches/${coach.slug}`,
       cta: "Plan gratis intake bij deze coach",
-      // A generated portrait belongs to a coach who does not exist yet, and
-      // those may not go live: `isPlaceholder` is the field that decides it.
+      // A portrait may only stand for somebody who exists. Every coach in the
+      // file is real today; `isPlaceholder` still guards the next one.
       portrait:
         !coach.isPlaceholder && coach.portrait
           ? { src: coach.portrait, alt: coach.portraitAlt }
@@ -113,12 +127,14 @@ const regionOptions: RegionOption[] = [
     };
   }),
   {
+    // ROW C4: this chip leads to its own form, and not to the roster. A reader
+    // who picks "Online" has just said their town is not on the list.
     key: "online",
     chip: "Online",
     name: "Online, waar je ook woont",
     line: "Het volledige traject via video. Je kiest de coach bij wie het klikt, ook als die niet in jouw stad zit.",
-    href: "/studiekeuzecoaches",
-    cta: "Plan gratis intake bij een coach",
+    href: "/online-begeleiding",
+    cta: "Vraag online begeleiding aan",
     portrait: null,
   },
 ];
@@ -163,10 +179,10 @@ export default function Home() {
                 </h1>
 
                 <p className="text-lead mt-5 max-w-[31.25rem] text-muted">
-                  Kiezen uit honderden opleidingen is lastig, voor jou én voor
-                  je ouders. In vier sessies met een vaste coach ontdek je wie
-                  je bent, wat je kunt en welke studie daarbij hoort. De
-                  gesprekken zijn 1-op-1, en de keuze is uiteindelijk aan jou.
+                  Kiezen uit honderden opleidingen is lastig. In vier sessies
+                  met een vaste coach ontdek je wie je bent, wat je kunt en
+                  welke studie daarbij hoort. De gesprekken zijn 1-op-1. Wij
+                  begeleiden, jij kiest.
                 </p>
 
                 <div className="mt-8 flex flex-wrap gap-3">
@@ -188,14 +204,21 @@ export default function Home() {
                 </div>
 
                 {/*
-                  The client puts five amber stars and "8,8 gemiddeld · 1.000+
-                  trajecten per jaar" here. Both are the old site's numbers,
-                  earned by coaches who are mostly not ours, so the slot keeps
-                  its place and holds four things we can prove today.
+                  ROW H2. The rebuild took the client's rating line out and put
+                  four provable facts in its place. The client put the rating
+                  back and dropped the other half themselves: "8,8 gemiddeld ·
+                  gratis intake, daarna één vaste prijs ('1.000+ trajecten per
+                  jaar' weglaten)". The client leads here, and the reversal is
+                  written down in docs/decisions.md.
+
+                  The stars are decoration and carry `aria-hidden`; the number
+                  beside them is the sentence a screen reader gets.
                 */}
-                <p className="mt-7 text-small text-muted">
-                  Gratis intake · MBO, HBO en WO · online of op locatie · daarna
-                  één vaste prijs
+                <p className="mt-7 flex flex-wrap items-center gap-x-2 gap-y-1 text-small text-muted">
+                  <span aria-hidden="true" className="tracking-[1px] text-amber">
+                    ★★★★★
+                  </span>
+                  <span>8,8 gemiddeld · gratis intake, daarna één vaste prijs</span>
                 </p>
               </div>
 
@@ -253,8 +276,9 @@ export default function Home() {
                 <h2 className="text-h2-lg max-w-[30rem] font-bold">
                   Van &ldquo;geen idee&rdquo; naar een keuze die klopt
                 </h2>
+                {/* Row H3: "± 4 weken" is gone at the client's request. */}
                 <p className="font-mono text-[0.8125rem] text-violet">
-                  4 stappen · ± 4 weken · online of dichtbij
+                  4 stappen · online of dichtbij
                 </p>
               </div>
 
@@ -264,6 +288,10 @@ export default function Home() {
                 </Pill>
                 <Pill>
                   <span aria-hidden="true">✓</span> Incl. studie-interessetest
+                </Pill>
+                {/* Row H3: the third pill the client asked for. */}
+                <Pill>
+                  <span aria-hidden="true">✓</span> Incl. rapportage
                 </Pill>
               </div>
             </Reveal>
@@ -316,7 +344,7 @@ export default function Home() {
                 </h3>
                 <p className="mt-3.5 max-w-[25rem] text-lavender-ink">
                   Geen uurtarieven, geen kosten achteraf. Je weet vooraf precies
-                  waar je aan toe bent, en je beslist pas ná het gratis
+                  waar je aan toe bent en je beslist pas ná het gratis
                   intakegesprek.
                 </p>
                 <ul className="mt-5.5 flex flex-col gap-2.5">
@@ -330,7 +358,7 @@ export default function Home() {
 
               <div className="rounded-inner bg-paper p-7 text-ink shadow-price-inner sm:p-9">
                 <p className="text-title-sm font-display font-bold">
-                  Het studiekeuzetraject
+                  Het StudieKeuzeTraject
                 </p>
                 <p className="mt-3 flex items-baseline gap-2.5">
                   <span className="text-price font-display font-bold">
@@ -345,17 +373,24 @@ export default function Home() {
                 <Button className="mt-5 w-full" href="/studiekeuzecoaches">
                   Plan gratis intake bij een coach
                 </Button>
+                {/* Row H6. */}
                 <p className="text-micro mt-2.5 text-center text-muted">
-                  Gratis en vrijblijvend. Je beslist daarna pas.
+                  De intake is vrijblijvend. Je beslist daarna pas.
                 </p>
 
+                {/* ROW H7. Two changes: the wording, and where it goes. It
+                    pointed at /tarieven, and the client wants the reader at the
+                    block that explains the scan: "Deze link verwijst nu naar de
+                    tarieven pagina, maar moet verwijzen naar de traject pagina,
+                    als kan direct naar kader 'liever een korte verkenning'." */}
                 <p className="mt-4.5 border-t border-hairline pt-4 text-small text-muted">
-                  Liever alleen de tests, met één gesprek erover?{" "}
+                  Maak je liever alleen de tests, met één toelichtend gesprek?
+                  Dat kan!{" "}
                   <Link
                     className="font-bold text-violet hover:text-violet-dark"
-                    href="/tarieven"
+                    href="/studiekeuzetraject#studiekeuzescan"
                   >
-                    Studiekeuzescan · {scan.label} →
+                    Kies voor de StudieKeuzeScan voor {scan.label} →
                   </Link>
                 </p>
               </div>
@@ -373,8 +408,11 @@ export default function Home() {
             <Reveal className="grid overflow-hidden rounded-panel md:grid-cols-2">
               <div className="bg-violet p-7 text-white sm:p-11 lg:px-12 lg:py-13">
                 <Eyebrow color="lavender-soft">Voor jou</Eyebrow>
+                {/* Row H8: over two lines, "visueel mooier". */}
                 <h3 className="text-h4 mt-4 font-bold">
-                  Jouw keuze, jouw tempo. Met één vaste coach.
+                  Jouw keuze, jouw tempo.
+                  <br />
+                  Met één vaste coach.
                 </h3>
                 <ul className="mt-6 flex flex-col gap-3">
                   {forYou.map((line) => (
@@ -436,9 +474,10 @@ export default function Home() {
                 Mijn coach oordeelde niet, maar vroeg door. Nu weet ik zeker wat
                 ik wil, en waarom.
               </blockquote>
+              {/* Row H11: the client rewrote the caption themselves. */}
               <p className="text-card mt-6 text-muted">
                 <strong className="font-semibold text-ink">Moya (22)</strong>,
-                traject afgerond in maart 2024
+                koos na haar herstart voor de opleiding Toegepaste Psychologie
               </p>
 
               <div className="mt-7 flex flex-wrap gap-x-6 gap-y-3 text-small font-semibold">
@@ -469,15 +508,21 @@ export default function Home() {
                   <br />
                   Van eerste twijfel tot definitieve keuze.
                 </h2>
+                {/* Row H12, the client's own paragraph. It names Tamara,
+                    who is gebarenvaardig, so the promise has a person behind
+                    it and not a policy. */}
                 <p className="mt-4 max-w-[27.5rem] text-muted">
-                  Het traject werkt op elk niveau (mbo, hbo en wo) en bij elke
-                  twijfel. Ook met ADD, ADHD of autisme ben je op de juiste
+                  Onze coaches kennen alle niveaus (mbo, hbo en wo) en alle
+                  twijfels. Ook met ADD, ADHD of autisme ben je op de juiste
                   plek: structuur en overzicht zitten in de methode ingebakken.
+                  Ben je doof of slechthorend? Ook dan zit je bij ons goed. We
+                  hebben 1 coach (Tamara) die jou online of thuis in
+                  gebarentaal kan begeleiden.
                 </p>
                 <div className="mt-6 flex flex-wrap gap-2.5">
                   <Pill tone="white">Niet oordelen, wél doorvragen</Pill>
                   <Pill tone="white">MBO · HBO · WO</Pill>
-                  <Pill tone="white">Extra ondersteuning</Pill>
+                  <Pill tone="white">Gebarentaal mogelijk</Pill>
                 </div>
                 <Button
                   className="mt-7"
@@ -538,16 +583,18 @@ export default function Home() {
           </Container>
         </Section>
 
+        {/* Row H14. Both lines are the client's, word for word, and "35+
+            locaties" went out of their own version too. */}
         <CtaBand
-          accent="Zet hem samen, met een gratis intake."
+          accent="Zet hem samen, plan je intake."
           mark
           primary={{
             href: "/studiekeuzecoaches",
             label: "Plan gratis intake bij een coach",
           }}
           secondary={{ href: "/tarieven", label: "Bekijk tarieven" }}
-          text="Vrijblijvend kennismaken: samen, of eerst alleen. Online of op locatie bij een coach in de buurt."
-          title="Elke goede keuze begint met één stap."
+          text="Vrijblijvend kennismaken: samen met je ouders of alleen. Online of op een van onze vaste locaties."
+          title="Elke goede keuze begint met een eerste stap."
         />
       </main>
 

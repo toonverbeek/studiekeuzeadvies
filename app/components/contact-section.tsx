@@ -133,16 +133,15 @@ export function ContactSection({ city }: { city?: string }) {
                 ))}
               </ol>
 
+              {/* Rows T8 and V3 sent "Kies je stad" to the coaches page and
+                  dropped "bekijk alle coaches". The same two changes here, so
+                  every closing on the site points at the same door. */}
               <div className="flex flex-wrap gap-3">
-                <Button className="max-[420px]:w-full" href="/locaties">
-                  Kies je stad
-                </Button>
                 <Button
                   className="max-[420px]:w-full"
                   href="/studiekeuzecoaches"
-                  variant="outline"
                 >
-                  Of bekijk eerst alle coaches
+                  Kies je coach
                 </Button>
               </div>
             </div>

@@ -3,6 +3,7 @@
 import { useActionState, useEffect, useId, useRef } from "react";
 import { requestIntake } from "../actions";
 import {
+  bereikbaar,
   intakeInitialState,
   situaties,
   spamGuard,
@@ -25,20 +26,21 @@ import {
  *
  * THE FIELDS ARE THE CLIENT'S, WITH ONE SUBSTITUTION. The client's card asks
  * for a name, an e-mail, "voor wie is de intake", a preference (online or in
- * the city) and a message. The first, the second, the fourth and the last are
- * the same here. "Voor wie" becomes the `situatie` select, because that is the
- * field `requestIntake` validates and mails, and its four options carry the
- * same answer (one of them is "Ik ben ouder of verzorger"). The preference
- * select is the client's "Voorkeur: online of in Amsterdam?", with `place`
- * standing in for Amsterdam; it is optional, as it is in the client's export,
- * and it is printed in the mail so the coach can open with the right offer.
+ * the city) and a message. The first two are the same here, and the preference
+ * is the `voorkeur` select below. "Voor wie" becomes the `situatie` select,
+ * because that is the field `requestIntake` validates and mails, and its four
+ * options carry the same answer (one of them is "Ik ben ouder of verzorger").
+ * The message is the one the client's own mail took off the card; see below.
  *
- * THE TELEPHONE FIELD IS GONE. The client's card does not ask for a number,
- * `requestIntake` has always treated it as optional, and the card is sticky on
- * a coach page: every row it does not have is a row that still fits on a short
- * laptop screen while the card stands still. A coach who wants to call can ask
- * in their answer, and until then we hold one piece of personal data less
- * about a sixteen year old (issue #21).
+ * WHAT THE CLIENT'S MAIL CHANGED (rows P2 and P3):
+ *  - "Waar loop je tegenaan?" is gone. It was the one open question on the
+ *    card and the client asked for it to go. A reader now says what is going
+ *    on in the intake conversation itself, which is what that conversation is
+ *    for, and the form is four short rows instead of a small essay;
+ *  - "Hoe kunnen we je bereiken?" is new, and WhatsApp is one of the three
+ *    answers. The telephone field came back with it, because two of the three
+ *    channels cannot work without a number. It is optional for the third, and
+ *    app/actions.ts is what decides that, not this file.
  */
 
 /** Paper field on the ink card. 17px: the reading floor of PRODUCT.md, and
@@ -285,6 +287,9 @@ export function IntakeForm({
           )}
         </div>
 
+        {/* The client's second question, and this mail does not touch it:
+            row P2 removed "Waar loop je tegenaan?" and nothing else. It is
+            optional, and the town comes from the page the card stands on. */}
         <div className="flex flex-col gap-1.5">
           <label className={labelBase} htmlFor={field("voorkeur")}>
             Voorkeur: online of {place ? `in ${place}` : "op locatie"}?
@@ -325,32 +330,72 @@ export function IntakeForm({
           )}
         </div>
 
+        {/* ROW P3. Radios and not a select: three options that a reader has
+            to weigh read better open than folded, and the third one is the
+            reason this block exists. */}
+        <fieldset className="flex flex-col gap-1.5">
+          <legend className={`${labelBase} mb-1.5`}>
+            Hoe kunnen we je bereiken?
+          </legend>
+          <div className="flex flex-wrap gap-2">
+            {bereikbaar.map((option) => (
+              <label
+                className="inline-flex min-h-11 cursor-pointer items-center gap-2 rounded-field bg-paper px-4 py-2.5 text-body text-ink has-checked:ring-2 has-checked:ring-violet"
+                htmlFor={field(`bereik-${option.value}`)}
+                key={option.value}
+              >
+                <input
+                  className="accent-violet"
+                  defaultChecked={state.values.bereik === option.value}
+                  id={field(`bereik-${option.value}`)}
+                  name="bereik"
+                  type="radio"
+                  value={option.value}
+                />
+                {option.label}
+              </label>
+            ))}
+          </div>
+          {state.errors.bereik && (
+            <p className={errorBase}>{state.errors.bereik}</p>
+          )}
+        </fieldset>
+
+        {/* The number is always in the page and never revealed by script: a
+            reader without JavaScript must be able to pick "Via WhatsApp" and
+            still have somewhere to type the number. The label says when it is
+            needed, and the server enforces it. */}
         <div className="flex flex-col gap-1.5">
-          <label className={labelBase} htmlFor={field("bericht")}>
-            Waar loop je tegenaan?{" "}
-            <span className="font-normal">(mag je leeg laten)</span>
+          <label className={labelBase} htmlFor={field("telefoon")}>
+            Telefoonnummer{" "}
+            <span className="font-normal">
+              (nodig als je gebeld of geappt wilt worden)
+            </span>
           </label>
-          <textarea
+          <input
             aria-describedby={
-              state.errors.bericht ? errorId("bericht") : undefined
+              state.errors.telefoon ? errorId("telefoon") : undefined
             }
-            aria-invalid={state.errors.bericht ? true : undefined}
-            className={`${fieldBase} resize-y`}
-            defaultValue={state.values.bericht}
-            id={field("bericht")}
-            name="bericht"
-            placeholder="Waar loop je tegenaan?"
-            rows={3}
+            aria-invalid={Boolean(state.errors.telefoon)}
+            autoComplete="tel"
+            className={fieldBase}
+            defaultValue={state.values.telefoon}
+            id={field("telefoon")}
+            inputMode="tel"
+            name="telefoon"
+            placeholder="06 12345678"
+            type="tel"
           />
-          {state.errors.bericht && (
-            <p className={errorBase} id={errorId("bericht")}>
-              {state.errors.bericht}
+          {state.errors.telefoon && (
+            <p className={errorBase} id={errorId("telefoon")}>
+              {state.errors.telefoon}
             </p>
           )}
         </div>
 
-        {/* One button, and nothing next to it. The WhatsApp link that stood
-            here went to one central number, and that number is gone. */}
+        {/* One button, and nothing next to it. WhatsApp is a choice in the
+            block above and not a link here: a link needs a number, and a
+            number belongs to a coach. */}
         <button
           className="mt-1 inline-flex min-h-12 w-full items-center justify-center rounded-full bg-violet px-6 py-4 text-card font-bold text-white shadow-violet-strong transition-colors duration-150 ease-out-quart hover:bg-violet-dark disabled:cursor-not-allowed disabled:opacity-70"
           disabled={pending}

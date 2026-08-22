@@ -51,9 +51,18 @@ export const ROUTES = [
   "/tarieven",
   "/studiekeuzecoaches",
   "/studiekeuzecoaches/janneke",
-  "/studiekeuzecoaches/hanneke",
+  // Tamara has no photograph yet (open question Q10), so hers is the profile
+  // whose hero has to hold without one. It replaces /studiekeuzecoaches/hanneke:
+  // the stand-ins are gone from the roster, so that address is a 404 now.
+  "/studiekeuzecoaches/tamara",
   "/over-ons",
   "/coach-worden",
+  // The three pages the client's mail asked for that are switched on.
+  // /samenwerken is deliberately absent: `showSamenwerken` is false, so it
+  // answers 404 on purpose (row H16) and both scripts would call that a fault.
+  "/contact",
+  "/studiekeuzescan",
+  "/online-begeleiding",
   "/artikelen",
   "/de-1-februariregeling",
   "/locaties",

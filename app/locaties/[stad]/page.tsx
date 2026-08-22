@@ -42,8 +42,8 @@ export async function generateMetadata(
   return {
     title: `Professionele hulp bij studiekeuze | ${city.name} | StudieKeuzeAdvies`,
     description: city.coach
-      ? `Studiekeuzecoach in ${city.name}. Eén vaste coach die je helpt kiezen, of opnieuw kiezen. Het eerste gesprek is gratis.`
-      : `Studiekeuzeadvies voor ${city.name}. We zoeken hier nog een coach. Online of in een stad in de buurt kun je wel terecht.`,
+      ? `StudieKeuzeCoach in ${city.name}. Eén vaste coach die je helpt kiezen, of opnieuw kiezen. Het eerste gesprek is gratis.`
+      : `StudieKeuzeAdvies voor ${city.name}. We zoeken hier nog een coach. Online of in een stad in de buurt kun je wel terecht.`,
     alternates: { canonical: `/locaties/${city.slug}` },
     // A page about a person who does not exist is not offered to a search
     // engine. The same guard sits on the coach profile and in app/sitemap.ts;
@@ -97,7 +97,7 @@ export default async function CityPage(props: PageProps<"/locaties/[stad]">) {
               {/* The trailing space is not decoration: without it a screen
                   reader runs the two lines together into one word. */}
               <span className="text-title block font-semibold">
-                Studiekeuzeadvies in{" "}
+                StudieKeuzeAdvies in{" "}
               </span>
               <span className="block break-words">{city.name}</span>
             </>
@@ -130,13 +130,11 @@ export default async function CityPage(props: PageProps<"/locaties/[stad]">) {
                     <li>
                       <Pill size="sm">{city.name} en online</Pill>
                     </li>
-                    {coach.specialties.slice(0, 2).map((item) => (
-                      <li key={item}>
-                        <Pill size="sm" tone="coral">
-                          {item}
-                        </Pill>
-                      </li>
-                    ))}
+                    <li>
+                      <Pill size="sm" tone="coral">
+                        {coach.levels}
+                      </Pill>
+                    </li>
                   </ul>
 
                   <p className="text-lead max-w-[52ch] text-muted-read">
@@ -174,7 +172,7 @@ export default async function CityPage(props: PageProps<"/locaties/[stad]">) {
                       src={coach.portrait}
                     />
                     <p className="rounded-row mt-3 bg-paper/95 text-small font-semibold sm:absolute sm:bottom-5 sm:left-5 sm:mt-0 sm:px-4 sm:py-3 sm:backdrop-blur-[6px]">
-                      {coach.name}, studiekeuzecoach in {city.name}
+                      {coach.name}, StudieKeuzeCoach in {city.name}
                     </p>
                   </div>
                 )}
@@ -214,7 +212,7 @@ export default async function CityPage(props: PageProps<"/locaties/[stad]">) {
                     and this block comes back as it was. */}
                 {coachRecruitmentInbox && (
                   <p className="mt-6 max-w-[52ch] border-t border-chip-border pt-5 text-muted">
-                    Werk je zelf als studiekeuzecoach in {city.region}? Dan horen
+                    Werk je zelf als StudieKeuzeCoach in {city.region}? Dan horen
                     we graag van je. Mail naar{" "}
                     <a
                       className="font-bold text-violet-dark underline decoration-violet/40 decoration-2 underline-offset-4"

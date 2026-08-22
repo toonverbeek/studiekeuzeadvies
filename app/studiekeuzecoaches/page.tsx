@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Image from "next/image";
+import Link from "next/link";
 import { citiesWithCoach } from "@/app/cities";
 import { type Coach, coaches } from "@/app/coaches";
 import { NlMap } from "@/app/components/nl-map";
@@ -7,7 +8,6 @@ import { SiteFooter } from "@/app/components/site-footer";
 import { SiteHeader } from "@/app/components/site-header";
 import {
   Button,
-  Card,
   Container,
   Eyebrow,
   Pill,
@@ -18,53 +18,38 @@ import { CoachFilter, type FilterItem } from "./coach-filter";
 
 export const metadata: Metadata = {
   // The old title, word for word. It is what ranks today.
-  title: "Leer onze professionele studiekeuzecoaches kennen | StudieKeuzeAdvies",
+  title: "Leer onze professionele StudieKeuzeCoaches kennen | StudieKeuzeAdvies",
   description:
-    "Maak kennis met de studiekeuzecoaches: wie ze zijn, waar ze werken en hoe ze met je meelopen. Eén vaste coach, en het eerste gesprek is gratis.",
+    "Maak kennis met de StudieKeuzeCoaches: wie ze zijn, waar ze werken en hoe ze met je meelopen. Eén vaste coach, en het eerste gesprek is gratis.",
   alternates: { canonical: "/studiekeuzecoaches" },
 };
 
 /**
- * The three facts under the h1, where the client's export prints a rating.
- *
- * WHAT IS NOT HERE. The client wrote "8,8 gemiddelde beoordeling" and "6
- * regio's". The 8,8 was earned by coaches who are mostly not ours, so it may
- * not be printed (PRODUCT.md principle 5, issue #24). The count is not typed
- * either.
- *
- * WHY IT COUNTS CITIES AND NOT TOWNS. The number stands beside the map, and
- * the map pins `citiesWithCoach`. Counting every coach's town instead gave six
- * next to three pins, so one screen said two different things. Both now read
- * the same list, and the strip on the home page reads it too.
- */
-/**
- * The towns in roster order, without repeats. The real coach stands first
- * (decision 2026-08-06), so the first chip after "Alle regio's" is hers. This
- * feeds the filter over the grid and nothing else.
+ * The towns in roster order, without repeats. This feeds the filter over the
+ * grid and nothing else.
  */
 const regions = [...new Set(coaches.map((coach) => coach.town))];
 
+/**
+ * The three facts under the h1.
+ *
+ * THE FIRST ONE IS THE CLIENT'S OWN NUMBER, AND IT REPLACED A COUNT OF OURS.
+ * The page counted the cities with a coach and printed "N steden + online".
+ * The client's mail asks for "12 provincies + online" (row C2), so that is
+ * what stands here. It is a claim about reach and not about staff: four
+ * coaches sit in five provinces, and the twelfth province is reached the same
+ * way the first one is, online. The client wrote it about their own business.
+ */
 const stats = [
-  {
-    value: String(citiesWithCoach.length),
-    label: citiesWithCoach.length === 1 ? "stad + online" : "steden + online",
-    tone: "text-violet",
-  },
+  { value: "12", label: "provincies + online", tone: "text-violet" },
   { value: "Gratis", label: "het eerste gesprek", tone: "text-coral-text" },
   { value: "1-op-1", label: "alle gesprekken", tone: "text-amber-ink" },
 ];
 
 /**
- * This block stands where the old page put "gemiddeld beoordeeld met een 8,8".
- *
- * WHAT WENT OUT (issue #19). It opened with two cards about the people: "Elke
- * coach heeft jaren buiten het onderwijs gewerkt" and "Ze werken al jaren met
- * jouw leeftijd". Neither is a fact about this roster. The first one is even
- * contradicted by it: Hanneke stood ten years in a school and Wietske taught
- * eighteen. They were promises about hiring, and a promise about hiring may
- * not be printed as a fact (PRODUCT.md principle 5).
- *
- * WHAT STAYS. The two that describe the traject, which is ours to promise.
+ * What every coach has in common. Two promises about the traject, which is ours
+ * to promise, and nothing about the people, which the cards above already say
+ * in each coach's own words.
  */
 const shared = [
   {
@@ -82,9 +67,12 @@ const shared = [
  * handed to the filter as a finished block, so nothing about a coach travels to
  * the browser as data.
  *
- * The client's card carries a quote from the coach. Ours does not: five of
- * these six people do not exist yet, and the one who does has not written one.
- * A pill row of specialisms does the same work and says nothing untrue.
+ * THE CARD THE CLIENT ASKED FOR (rows C6 and C7). It used to print a one-line
+ * summary and a pill row of specialisms, and the client's verdict on those was
+ * short: "Onder de coaches geen specialisatie (hier door ai gegenereerd), maar
+ * benoemen van werkervaring." So the card now prints what the coach did before
+ * and the slogan they chose, both in the client's own words, and the pills are
+ * gone. The work area took the place of the small "Sterk in ..." card.
  */
 function CoachCard({ coach }: { coach: Coach }) {
   return (
@@ -121,20 +109,25 @@ function CoachCard({ coach }: { coach: Coach }) {
           {coach.levels}
         </p>
 
-        <p className="text-card text-muted">{coach.oneLiner}</p>
+        <p className="text-card text-muted">{coach.experience}</p>
 
-        <p className="text-small text-muted">Werkgebied: {coach.region}</p>
+        {/* The slogan (row C7). A blockquote and not a paragraph, because it
+            is a quotation: sometimes of the coach, sometimes of Descartes. */}
+        <blockquote className="mt-1 border-l-2 border-coral pl-3.5">
+          <p className="text-card text-ink italic">&ldquo;{coach.quote}&rdquo;</p>
+          {coach.quoteSource ? (
+            <cite className="mt-1 block text-small text-muted not-italic">
+              &mdash; {coach.quoteSource}
+            </cite>
+          ) : null}
+        </blockquote>
 
-        <ul className="mt-1 flex flex-wrap gap-2">
-          {coach.specialties.map((item) => (
-            <li
-              className="inline-flex items-center rounded-full border border-chip-border px-3 py-1 text-micro font-semibold text-muted"
-              key={item}
-            >
-              {item}
-            </li>
-          ))}
-        </ul>
+        {/* Row H13 and row C6: where a made-up speciality stood, the work area
+            stands. The towns are the words a reader searches for. */}
+        <p className="mt-1 text-small text-muted">
+          <span className="font-semibold text-ink">Werkgebied:</span>{" "}
+          {coach.regionTowns.join(" · ")}
+        </p>
 
         {/* The name stands on the button and not in an `sr-only` span: the
             page promises "de persoon die je straks spreekt", and the client's
@@ -174,16 +167,31 @@ export default function CoachesPage() {
         <header className="pt-10 pb-12 lg:pt-14 lg:pb-16" id="kaart">
           <Container className="grid items-center gap-10 lg:grid-cols-[1.15fr_1fr] lg:gap-14">
             <div>
-              <Eyebrow className="mb-4">Onze studiekeuzecoaches</Eyebrow>
+              <Eyebrow className="mb-4">Onze StudieKeuzeCoaches</Eyebrow>
 
               <h1 className="text-h1 font-bold">
-                De persoon die je straks spreekt, kies je zelf.
+                De coach die je straks spreekt, kies je zelf.
               </h1>
 
               <p className="text-lead mt-5 max-w-[30rem] text-muted">
-                Geen centraal callcenter: je kiest een stad, ziet wie daar werkt
-                en vraagt bij díe coach een gratis intakegesprek aan. Alle
-                gesprekken zijn 1-op-1.
+                Geen centraal callcenter: kies hiernaast een stad, zie wie daar
+                werkt en vraag bij díe coach een gratis intakegesprek aan. Alle
+                gesprekken zijn 1-op-1. Of scroll naar beneden en klik op een
+                stad of een coach.
+              </p>
+
+              {/* Row C4: the third way in. A reader who does not want to
+                  travel picks nobody off the map, so the page says so and
+                  gives them their own form. */}
+              <p className="mt-4 max-w-[30rem] text-card text-muted">
+                Woon je buiten deze steden? Wij begeleiden ook volledig online.{" "}
+                <Link
+                  className="font-semibold text-violet underline underline-offset-4 hover:no-underline"
+                  href="/online-begeleiding"
+                >
+                  Vraag online begeleiding aan
+                </Link>
+                .
               </p>
 
               <ul className="mt-8 grid max-w-[30rem] grid-cols-3 gap-x-5 gap-y-5">
@@ -247,44 +255,10 @@ export default function CoachesPage() {
           </Container>
         </Section>
 
-        {/* The ink CTA of the client's page (design-spec 3.14, ink variant).
-            Its buttons stay on this site: the grid above is the region
-            chooser, and /locaties is the same roster sorted by city. */}
-        <Section space="close">
-          <Container>
-            <Card
-              className="px-6 py-12 text-center sm:px-10 lg:px-14 lg:py-14"
-              pad="none"
-              radius="panel"
-              variant="indigo"
-            >
-              <h2 className="text-h2 mx-auto max-w-[16ch] font-bold">
-                Twijfel je welke coach past?
-              </h2>
-              <p className="mx-auto mt-3.5 max-w-[29rem] text-lavender-ink">
-                Begin gewoon met een gratis intake in jouw regio, de coach denkt
-                met je mee, ook als een collega beter past.
-              </p>
-              <div className="mt-7 flex flex-wrap justify-center gap-3">
-                <Button
-                  className="max-[420px]:w-full"
-                  href="#coaches"
-                  size="lg"
-                >
-                  Kies je coach
-                </Button>
-                <Button
-                  className="max-[420px]:w-full"
-                  href="/locaties"
-                  size="lg"
-                  variant="outline-on-ink"
-                >
-                  Bekijk de locaties
-                </Button>
-              </div>
-            </Card>
-          </Container>
-        </Section>
+        {/* ROW C8: "kader 'twijfel je welke coach past' mag helemaal weg."
+            An ink panel stood here with "Twijfel je welke coach past?" and two
+            buttons back into this same page. It is gone, and nothing replaces
+            it: the grid above already is the chooser. */}
       </main>
 
       <SiteFooter />

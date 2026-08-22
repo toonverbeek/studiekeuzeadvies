@@ -5,10 +5,23 @@ import {
   achtergronden,
   achtergrondLabel,
   applicationInitialState,
+  cvExtensions,
+  cvMaxBytes,
+  cvMaxLabel,
+  cvTypes,
 } from "./application";
+import {
+  type CentralField,
+  type CentralState,
+  centralInitialState,
+  getCentralTopic,
+} from "./central";
 import { getCity } from "./cities";
 import { type Coach, getCoach } from "./coaches";
 import {
+  bereikbaar,
+  bereikLabel,
+  bereikNeedsPhone,
   decodeIntakeRoute,
   intakeInitialState,
   type IntakeRoute,
@@ -19,8 +32,17 @@ import {
   voorkeurLabel,
   spamGuard,
 } from "./intake";
-import { archiveInbox, type MailFailure, sendMail } from "./lib/mail";
-import { coachApplicationInbox, unassignedIntakeInbox } from "./site-config";
+import {
+  archiveInbox,
+  type MailAttachment,
+  type MailFailure,
+  sendMail,
+} from "./lib/mail";
+import {
+  centralInbox,
+  coachApplicationInbox,
+  unassignedIntakeInbox,
+} from "./site-config";
 
 const isEmail = (value: string) => /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(value);
 
@@ -146,6 +168,7 @@ export async function requestIntake(
     telefoon: String(formData.get("telefoon") ?? "").trim(),
     situatie: String(formData.get("situatie") ?? "").trim(),
     voorkeur: String(formData.get("voorkeur") ?? "").trim(),
+    bereik: String(formData.get("bereik") ?? "").trim(),
     bericht: String(formData.get("bericht") ?? "").trim(),
     voor: String(formData.get("voor") ?? "").trim(),
   };
@@ -169,6 +192,16 @@ export async function requestIntake(
   // values: the select cannot produce another, so another means a script.
   if (values.voorkeur && !voorkeuren.some((v) => v.value === values.voorkeur)) {
     errors.voorkeur = "Kies online, op locatie, of geen voorkeur.";
+  }
+  // Row P3. The channel decides whether the number is optional: a reader who
+  // asks to be called or WhatsApped has to leave one, and a reader who picked
+  // e-mail already gave us the only address we need.
+  if (!bereikbaar.some((b) => b.value === values.bereik)) {
+    errors.bereik = "Kies hoe we je mogen bereiken.";
+  }
+  if (bereikNeedsPhone(values.bereik) && !values.telefoon) {
+    errors.telefoon =
+      "Vul je nummer in, dan kunnen we je bellen of appen. Of kies e-mail hierboven.";
   }
   if (values.naam.length > MAX_SHORT) errors.naam = TOO_LONG_SHORT;
   if (values.email.length > MAX_SHORT) errors.email = TOO_LONG_SHORT;
@@ -269,9 +302,12 @@ export async function requestIntake(
             )
           : "niet ingevuld"
       }`,
-      "",
-      "Bericht:",
-      values.bericht || "(geen bericht)",
+      `Bereiken: ${bereikLabel(values.bereik)}`,
+      // There is no "Bericht:" block here any more. Row P2 of the client's
+      // mail took the question off the card ("waar loop je tegenaan moet
+      // eruit"), so there is nothing to print and an empty heading on every
+      // mail is worse than no heading. `bericht` stays in the type: putting
+      // the question back is then one field, not a migration.
       "",
       "Antwoorden gaat rechtstreeks naar de aanvrager.",
       RETENTION_LINE,
@@ -293,6 +329,51 @@ export async function requestIntake(
   }
 
   return sent;
+}
+
+/**
+ * Read the CV off the application form.
+ *
+ * It answers with exactly one of two things: an attachment, or a sentence for
+ * the reader. No file at all is neither, because the CV is optional (see
+ * app/application.ts). Nothing is written to disk: the bytes are read once,
+ * encoded, and handed to the mailer.
+ *
+ * WHY THE EXTENSION AS WELL AS THE TYPE. A browser sends an empty or a wrong
+ * `type` for a .docx often enough that a type-only check refuses real CVs, and
+ * a type on its own is a claim the sender makes about their own file anyway.
+ * Both have to look right.
+ */
+async function readCv(
+  formData: FormData,
+): Promise<{ attachment?: MailAttachment; error?: string }> {
+  const file = formData.get("cv");
+
+  if (!(file instanceof File) || file.size === 0) return {};
+
+  if (file.size > cvMaxBytes) {
+    return {
+      error: `Dit bestand is groter dan ${cvMaxLabel}. Verklein het, of mail het ons apart.`,
+    };
+  }
+
+  const name = file.name.toLowerCase();
+  const extensionOk = cvExtensions.some((end) => name.endsWith(end));
+  const typeOk = !file.type || cvTypes.some((type) => type === file.type);
+
+  if (!extensionOk || !typeOk) {
+    return { error: "Stuur je cv als PDF of Word-bestand." };
+  }
+
+  return {
+    attachment: {
+      content: Buffer.from(await file.arrayBuffer()).toString("base64"),
+      contentType: file.type || undefined,
+      // The reader's own file name, minus anything that could confuse a mail
+      // client about what kind of file it is looking at.
+      filename: oneLine(file.name).replace(/[/\\]/g, "-").slice(0, 120),
+    },
+  };
 }
 
 /**
@@ -339,6 +420,12 @@ export async function applyAsCoach(
     errors.motivatie =
       "Schrijf een paar zinnen over jezelf, dan weten we met wie we praten.";
   }
+
+  // ROW W2, the CV. It is optional, so an empty field is not a mistake; a file
+  // that is too big or of the wrong kind is, and it is said before anything is
+  // sent. `readCv` returns the attachment or the sentence, never both.
+  const cv = await readCv(formData);
+  if (cv.error) errors.cv = cv.error;
   if (values.naam.length > MAX_SHORT) errors.naam = TOO_LONG_SHORT;
   if (values.email.length > MAX_SHORT) errors.email = TOO_LONG_SHORT;
   if (values.telefoon.length > MAX_SHORT) errors.telefoon = TOO_LONG_SHORT;
@@ -380,6 +467,7 @@ export async function applyAsCoach(
       `Telefoon:    ${values.telefoon || "niet ingevuld"}`,
       `Regio:       ${values.regio}`,
       `Achtergrond: ${achtergrondLabel(values.achtergrond)}`,
+      `CV:          ${cv.attachment ? `bijgevoegd (${cv.attachment.filename})` : "niet meegestuurd"}`,
       "",
       "Motivatie:",
       values.motivatie,
@@ -387,6 +475,7 @@ export async function applyAsCoach(
       "Antwoorden gaat rechtstreeks naar de aanmelder.",
       RETENTION_LINE,
     ].join("\n"),
+    ...(cv.attachment ? { attachments: [cv.attachment] } : {}),
   });
 
   if (!result.ok) {
@@ -397,6 +486,143 @@ export async function applyAsCoach(
     return {
       status: undeliverable(result.reason),
       message: "We konden je aanmelding niet versturen.",
+      fallbackAddress: to ?? archive,
+      errors: {},
+      values,
+    };
+  }
+
+  return sent;
+}
+
+
+/**
+ * The four forms that reach the central mailbox: contact, samenwerken, the
+ * StudieKeuzeScan and online begeleiding. See app/central.ts for which is
+ * which and why they are one action.
+ *
+ * SAME SKELETON AS THE TWO ABOVE, AND SAME REASON FOR NOT SHARING MORE. What
+ * these three actions have in common is already written once: `spamGuard`,
+ * `sendMail`, `oneLine`, the length caps and `undeliverable`. What differs is
+ * the destination and what a reader is told, and that is exactly the part a
+ * shared helper would have to be told anyway.
+ *
+ * THE DESTINATION IS NOT A FIELD. `centralInbox` is a constant in
+ * app/site-config.ts. The form carries only which topic it is, and that is
+ * looked up here, so no posted value can redirect a message anywhere.
+ */
+export async function sendCentralRequest(
+  _prev: CentralState,
+  formData: FormData,
+): Promise<CentralState> {
+  const read = (name: string) => String(formData.get(name) ?? "").trim();
+
+  const values: CentralState["values"] = {
+    naam: read("naam"),
+    school: read("school"),
+    functie: read("functie"),
+    email: read("email"),
+    telefoon: read("telefoon"),
+    bericht: read("bericht"),
+    onderwerp: read("onderwerp"),
+  };
+
+  const topic =
+    values.onderwerp.length > MAX_SHORT
+      ? undefined
+      : getCentralTopic(values.onderwerp);
+
+  const errors: CentralState["errors"] = {};
+
+  // A reader cannot repair this one, so it names a way round: every one of the
+  // four forms is reachable from the footer.
+  if (!topic) {
+    errors.onderwerp =
+      "We kunnen niet zien waar dit formulier over gaat. Ververs de pagina en probeer het opnieuw.";
+  }
+
+  const isRequired = (field: CentralField) =>
+    topic ? topic.required.includes(field) : false;
+
+  if (isRequired("naam") && values.naam.length < 2) {
+    errors.naam = "Vul je naam in, dan weten we hoe we je noemen.";
+  }
+  if (isRequired("school") && values.school.length < 2) {
+    errors.school = "Vul de naam van de school in.";
+  }
+  if (isRequired("functie") && values.functie.length < 2) {
+    errors.functie = "Vul in wat je functie is, bijvoorbeeld decaan of mentor.";
+  }
+  if (isRequired("email") && !isEmail(values.email)) {
+    errors.email = "Dit e-mailadres klopt nog niet. Controleer het even.";
+  }
+  if (isRequired("telefoon") && !values.telefoon) {
+    errors.telefoon = "Vul een telefoonnummer in, dan kunnen we je bellen.";
+  }
+  if (values.telefoon && values.telefoon.replace(/\D/g, "").length < 9) {
+    errors.telefoon = "Dit nummer lijkt te kort. Controleer het even.";
+  }
+  if (isRequired("bericht") && values.bericht.length < 2) {
+    errors.bericht = "Schrijf kort op waar het over gaat.";
+  }
+
+  if (values.naam.length > MAX_SHORT) errors.naam = TOO_LONG_SHORT;
+  if (values.school.length > MAX_SHORT) errors.school = TOO_LONG_SHORT;
+  if (values.functie.length > MAX_SHORT) errors.functie = TOO_LONG_SHORT;
+  if (values.email.length > MAX_SHORT) errors.email = TOO_LONG_SHORT;
+  if (values.telefoon.length > MAX_SHORT) errors.telefoon = TOO_LONG_SHORT;
+  if (values.bericht.length > MAX_LONG) errors.bericht = TOO_LONG_MESSAGE;
+
+  if (!topic || Object.keys(errors).length > 0) {
+    return {
+      status: "invalid",
+      message: "Er ontbreekt nog iets. Kijk hieronder wat je moet aanvullen.",
+      fallbackAddress: null,
+      errors,
+      values,
+    };
+  }
+
+  const sent: CentralState = {
+    status: "sent",
+    message: topic.confirmation,
+    fallbackAddress: null,
+    errors: {},
+    values: centralInitialState.values,
+  };
+
+  // A bot gets the confirmation and no mail. See `spamGuard` in app/intake.ts.
+  if (looksAutomated(formData)) return sent;
+
+  const archive = archiveInbox();
+  const to = centralInbox || archive;
+
+  const result = await sendMail({
+    to: to ?? "",
+    cc: archive,
+    replyTo: values.email,
+    subject: oneLine(`${topic.subject}: ${values.naam}`),
+    text: [
+      `Formulier: ${topic.subject}`,
+      "",
+      ...topic.fields.map((field) => {
+        const label = `${field[0].toUpperCase()}${field.slice(1)}:`.padEnd(11);
+        return `${label}${values[field] || "niet ingevuld"}`;
+      }),
+      "",
+      "Antwoorden gaat rechtstreeks naar de afzender.",
+      RETENTION_LINE,
+    ].join("\n"),
+  });
+
+  if (!result.ok) {
+    console.error(
+      `[${topic.key}] Niet verstuurd (${result.reason}). De inhoud staat bewust niet in dit log.`,
+    );
+
+    return {
+      status: undeliverable(result.reason),
+      message: "We konden je bericht niet versturen.",
       fallbackAddress: to ?? archive,
       errors: {},
       values,

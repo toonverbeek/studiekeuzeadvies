@@ -143,7 +143,7 @@ export const situations: Situation[] = [
     title: "Verkeerde studiekeuze",
     accent: "coral",
     seoTitle:
-      "Verkeerde studiekeuze? Geen paniek! | (Online) StudiekeuzeAdvies",
+      "Verkeerde studiekeuze? Geen paniek! | (Online) StudieKeuzeAdvies",
     description:
       "Bleek jouw eerste studiekeuze toch niet bij jou te passen? Met een persoonlijke coach ga jij aan de slag om dit keer wél de juiste studiekeuze te maken.",
     lead: "De keuze voor de juiste studie kan verdraaid lastig zijn. Dat merken eindexamenscholieren vaak op het moment dat ze zich serieus gaan oriënteren op hun vervolgopleiding. Wanneer jij al gestopt bent met een opleiding of erover denkt te stoppen met een studie, weet jij nog veel beter hoe lastig een studie kiezen kan zijn.",
@@ -152,7 +152,7 @@ export const situations: Situation[] = [
       {
         title: "Het traject",
         paragraphs: [
-          "Bij StudiekeuzeAdvies ga jij met een eigen studiekeuzecoach aan de slag om dit keer wél de juiste studiekeuze te maken. Je ontdekt in vier bijeenkomsten wie je bent, wat je kan en welke studiemogelijkheden er zijn. We richten ons volledig op het einddoel, de studiekeuze. We kijken ook naar de invulling daarna, waaronder: beroep, carrière en werkomgeving. Aan het eind van het traject heb jij deze keer wél een passende studiekeuze gemaakt.",
+          "Bij StudieKeuzeAdvies ga jij met een eigen StudieKeuzeCoach aan de slag om dit keer wél de juiste studiekeuze te maken. Je ontdekt in vier bijeenkomsten wie je bent, wat je kan en welke studiemogelijkheden er zijn. We richten ons volledig op het einddoel, de studiekeuze. We kijken ook naar de invulling daarna, waaronder: beroep, carrière en werkomgeving. Aan het eind van het traject heb jij deze keer wél een passende studiekeuze gemaakt.",
           "Het is ook mogelijk om de trajecten online te volgen, uiteraard afhankelijk van jouw wensen en behoeften.",
         ],
       },
@@ -177,9 +177,9 @@ export const situations: Situation[] = [
         ],
       },
       {
-        title: "Wat doet StudiekeuzeAdvies voor jou?",
+        title: "Wat doet StudieKeuzeAdvies voor jou?",
         paragraphs: [
-          "Jij wilt een studie kiezen, wat doet StudiekeuzeAdvies tijdens een keuzetraject voor jou? Een betere vraag is: wat doet StudiekeuzeAdvies sámen met jou? Jij gaat een nieuwe en passende studie kiezen, wij zijn er voor de ondersteuning en de begeleiding. We gaan kijken naar wie jij bent, en wat je kunt. We betrekken je interesses en je toekomstbeeld bij de studiekeuze, en we kijken samen met jou terug naar je eerdere verkeerde studiekeuze.",
+          "Jij wilt een studie kiezen, wat doet StudieKeuzeAdvies tijdens een keuzetraject voor jou? Een betere vraag is: wat doet StudieKeuzeAdvies sámen met jou? Jij gaat een nieuwe en passende studie kiezen, wij zijn er voor de ondersteuning en de begeleiding. We gaan kijken naar wie jij bent, en wat je kunt. We betrekken je interesses en je toekomstbeeld bij de studiekeuze, en we kijken samen met jou terug naar je eerdere verkeerde studiekeuze.",
           "Met name voor studenten die opnieuw kiezen zit er vaak een knelpunt bij het stukje verleden. Je hebt immers al eens gekozen en dat was helaas geen succes. Dat je daardoor bewust of onbewust spanning ervaart bij het idee dat je weer een belangrijke keuze moet maken is logisch. We zijn gewend om studenten te begeleiden die zich in deze situatie bevinden.",
         ],
       },
@@ -187,7 +187,7 @@ export const situations: Situation[] = [
         title: "Help, mijn situatie is net wat lastiger",
         paragraphs: [
           "Misschien denk je bij het lezen van deze tekst wel: allemaal leuk en aardig, dat opnieuw kiezen, maar bij mij is het allemaal net wat lastiger. Dat zijn gedachten die vooral opkomen bij studenten die vaker dan één keer een verkeerde keuze hebben gemaakt. Om maar direct duidelijk te zijn: wanneer je twee, drie of zelfs vier keer eerder een studiekeuze hebt gemaakt, en het bleek steeds niet de juiste te zijn, dan moet er in elk geval wat veranderen.",
-          "Herken jij jezelf hierin? Ook met deze situaties hebben we voldoende ervaring. Ben je het zat om een verkeerde keuze voor een studie te maken en heb je de moed al bijna opgegeven? Je bent niet de enige met dit probleem, en je bent zeker geen hopeloos geval. Samen met je eigen studiekeuzecoach zetten we je op het goede spoor.",
+          "Herken jij jezelf hierin? Ook met deze situaties hebben we voldoende ervaring. Ben je het zat om een verkeerde keuze voor een studie te maken en heb je de moed al bijna opgegeven? Je bent niet de enige met dit probleem, en je bent zeker geen hopeloos geval. Samen met je eigen StudieKeuzeCoach zetten we je op het goede spoor.",
         ],
       },
     ],
@@ -204,12 +204,12 @@ export const situations: Situation[] = [
     title: "Eerste studiekeuze",
     accent: "violet",
     seoTitle:
-      "Bewuste studiekeuze | mbo, hbo of wo | (Online) StudiekeuzeAdvies",
+      "Bewuste studiekeuze | mbo, hbo of wo | (Online) StudieKeuzeAdvies",
     // The old description sold the page as the alternative to open days that
     // were cancelled in 2020. That is gone, so this line is new.
     description:
-      "Ga je voor het eerst studeren en weet je nog niet wat? In vier bijeenkomsten met een eigen studiekeuzecoach maak je een keuze die echt bij je past.",
-    lead: "Een studiekeuze maken is iets heel persoonlijks. Het gaat namelijk om jouw toekomst. Om jou als studiekiezer zo goed mogelijk te begeleiden in je keuzeproces, hebben wij een eigen studiekeuzetraject ontwikkeld. Met behulp van een persoonlijke studiekeuzecoach helpen wij jou om een studiekeuze te maken die echt bij je past.",
+      "Ga je voor het eerst studeren en weet je nog niet wat? In vier bijeenkomsten met een eigen StudieKeuzeCoach maak je een keuze die echt bij je past.",
+    lead: "Een studiekeuze maken is iets heel persoonlijks. Het gaat namelijk om jouw toekomst. Om jou als studiekiezer zo goed mogelijk te begeleiden in je keuzeproces, hebben wij een eigen StudieKeuzeTraject ontwikkeld. Met behulp van een persoonlijke StudieKeuzeCoach helpen wij jou om een studiekeuze te maken die echt bij je past.",
     crossLink: {
       href: "/verkeerde-studiekeuze",
       label: "Ik ben al eens gestopt",
@@ -218,7 +218,7 @@ export const situations: Situation[] = [
       {
         title: "Het traject",
         paragraphs: [
-          "Met het persoonlijke en doelgerichte studiekeuzetraject begeleiden wij jou op gestructureerde wijze naar een passende vervolgstudie. Je krijgt een eigen studiekeuzecoach met wie je in totaal vier bijeenkomsten op een locatie bij jou in de buurt zult hebben.",
+          "Met het persoonlijke en doelgerichte StudieKeuzeTraject begeleiden wij jou op gestructureerde wijze naar een passende vervolgstudie. Je krijgt een eigen StudieKeuzeCoach met wie je in totaal vier bijeenkomsten op een locatie bij jou in de buurt zult hebben.",
           "Het is ook mogelijk om de trajecten online te volgen, uiteraard afhankelijk van jouw wensen en behoeften.",
         ],
       },
@@ -253,7 +253,7 @@ export const situations: Situation[] = [
     title: "Studeren met ADD of ADHD",
     accent: "ink",
     seoTitle:
-      "Studeren met ADD of ADHD | Hulp bij studiekeuze | StudiekeuzeAdvies",
+      "Studeren met ADD of ADHD | Hulp bij studiekeuze | StudieKeuzeAdvies",
     // The old meta description, word for word. It makes no claim we cannot keep.
     description:
       "Een studiekeuze voor jongeren met ADD of ADHD is vaak erg lastig. Met een persoonlijke studiecoach helpen wij jou de juiste vervolgopleiding te kiezen.",
@@ -280,7 +280,7 @@ export const situations: Situation[] = [
       {
         title: "Is dit traject iets voor mij?",
         paragraphs: [
-          "Herken je je in een van de bovenstaande scenario's? Dan is het studiekeuzetraject iets voor jou. In een persoonlijk en doelgericht traject begeleiden we jou op een gestructureerde wijze naar een vervolgstudie. Hierbij besteden we aandacht aan jouw specifieke hulpvragen en kijken we naar de verschillende zaken die je moet regelen voordat je gaat studeren.",
+          "Herken je je in een van de bovenstaande scenario's? Dan is het StudieKeuzeTraject iets voor jou. In een persoonlijk en doelgericht traject begeleiden we jou op een gestructureerde wijze naar een vervolgstudie. Hierbij besteden we aandacht aan jouw specifieke hulpvragen en kijken we naar de verschillende zaken die je moet regelen voordat je gaat studeren.",
           "We richten ons volledig op het einddoel, de studiekeuze. Echter kijken we ook naar de invulling daarna, waaronder: beroep, carrière en werkomgeving. Aan het eind van het traject heb jij een passende studiekeuze gemaakt, zodat jij je zonder zorgen kan voorbereiden op je studententijd.",
         ],
       },

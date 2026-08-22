@@ -16,7 +16,7 @@ import {
 export const metadata: Metadata = {
   title: "Locaties | StudieKeuzeAdvies",
   description:
-    "De steden waar een studiekeuzecoach werkt. Staat jouw stad er niet bij? Kijk wie er in de buurt werkt, en vraag het gesprek bij die coach aan.",
+    "De steden waar een StudieKeuzeCoach werkt. Staat jouw stad er niet bij? Kijk wie er in de buurt werkt, en vraag het gesprek bij die coach aan.",
   alternates: { canonical: "/locaties" },
 };
 
@@ -92,11 +92,11 @@ export default function LocationsPage() {
                           the city itself, so "ook" made every line repeat its
                           own heading. */}
                       <p className="text-card text-muted">
-                        {city.coach.name}, studiekeuzecoach voor {city.region}.
+                        {city.coach.name}, StudieKeuzeCoach voor {city.region}.
                       </p>
 
                       <p className="text-small text-muted">
-                        {city.coach.focus}.
+                        {city.coach.experience}
                       </p>
 
                       {/* One pill and one text link, not two pills: the city

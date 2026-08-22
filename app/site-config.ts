@@ -11,42 +11,65 @@
  * See the "Inherited Content and Open Questions" section of PRODUCT.md.
  */
 
-/**
- * Only the name is left here. The telephone number, the WhatsApp number and the
- * central mailbox are gone on purpose: the client decided there is no central
- * sign-up point. A reader picks a city, sees who works there, and writes to that
- * coach. See issue #7. The address of a coach lives on the coach, in
- * app/coaches.ts, because that is the only place where it can be true.
- */
 export const site = {
   /**
-   * The brand as it is written in running text: the client's own spelling, the
-   * one on the wordmark and on every page they designed. The `<title>` of a
-   * page is the one place that keeps the old "StudieKeuzeAdvies", because that
-   * string is what the bought rankings hang on. Decided 2026-08-20, see
-   * docs/decisions.md.
+   * The brand as it is written in running text.
+   *
+   * It read "StudiekeuzeAdvies" until the client's mail of 21 August 2026
+   * (docs/redesign/client-feedback.md, row A1): "Alle 'studiekeuze...' moet met
+   * hoofdletters S K". The three inner capitals now hold everywhere, in running
+   * text and in a `<title>`, and the same rule made StudieKeuzeCoach,
+   * StudieKeuzeTraject and StudieKeuzeScan.
    */
-  name: "StudiekeuzeAdvies",
+  name: "StudieKeuzeAdvies",
 } as const;
 
-/** Who answers a request from a city where no coach works yet.
- * TODO: the client still has to decide this internally. null on purpose: an
- * invented address is worse than none, and null forces every caller to handle it. */
-export const unassignedIntakeInbox: string | null = null;
+/**
+ * THE CENTRAL MAILBOX, AND WHY IT IS BACK.
+ *
+ * Decision 2026-08-15 (issue #7) said there is no central sign-up point: a
+ * reader picks a city, sees who works there and writes to that coach. The
+ * client's mail of 21 August 2026 reverses that in its own opening line:
+ * "info@ = info@studiekeuzeadvies.nl; het emailadres waar we straks allemaal
+ * bij moeten kunnen en waar alle centrale vragen op binnen moeten komen."
+ *
+ * THE SPLIT THAT SURVIVED THE REVERSAL, because the client kept it themselves:
+ *
+ *   an intake        goes to the coach the reader picked, and to nobody else.
+ *                    `email` on the coach in app/coaches.ts is that route, and
+ *                    it is still null for all five (question Q9).
+ *   everything else  goes here: a question, a complaint, a StudieKeuzeScan
+ *                    booking, an online request, a school that wants to work
+ *                    with us, somebody who wants to join as a coach.
+ *
+ * So this address is printed on a page, and it therefore has to be a mailbox
+ * that answers. The client named it, so it is theirs to stand behind.
+ */
+export const centralInbox = "info@studiekeuzeadvies.nl";
+
+/** Who answers a request from a city where no coach works yet. The central
+ *  mailbox, since the client named one. */
+export const unassignedIntakeInbox: string | null = centralInbox;
 
 /**
  * Where a coach writes who wants to open a city. PRODUCT.md names the coach as
- * the third user, so this invitation has to exist somewhere.
- * TODO: the same undecided question as `unassignedIntakeInbox`, and the same
- * answer while it is open. It held hallo@studiekeuzeadvies.nl, and that mailbox
- * is cancelled with the seller's tenant (issue #7), so a coach who wrote there
- * got a bounce. null now, and every caller hides its own block while it is null:
- * no invitation is better than an invitation to nowhere. Fill it, and the block
- * on a city page without a coach comes back by itself. The page that this really
- * needs is `/coach-worden`, which is blocked on the client. See issues #20
- * and #44.
+ * the third user, so this invitation has to exist somewhere. It was null while
+ * there was no central mailbox, and every caller hid its own block; now that
+ * the client named one, the invitation can stand again.
  */
-export const coachRecruitmentInbox: string | null = null;
+export const coachRecruitmentInbox: string | null = centralInbox;
+
+/**
+ * Whether /samenwerken is a page or a 404, and whether the footer offers it.
+ *
+ * The client asked for the page and asked for it to be switched off at launch,
+ * in the same breath: "Is het mogelijk om deze linkjes (decanen en scholen) en
+ * dus de pagina Samenwerken bij de lancering nog even 'uit' te zetten? We willen
+ * eerst opstarten." So the page is finished and this flag is the switch. Turn it
+ * true and the route builds and the two footer links appear; nothing else has to
+ * change. See docs/redesign/client-feedback.md, row H16.
+ */
+export const showSamenwerken = false;
 
 /**
  * Where a filled-in application from `/coach-worden` is delivered.
@@ -83,12 +106,14 @@ export const coachApplicationInbox: string | null =
  * - it gets no name and no caption that claims a person. The caption below
  *   describes the traject, and it must keep doing that;
  * - hero only. Never on /studiekeuzecoaches and never on a city page;
- * - A REAL COACH ALWAYS GETS THEIR OWN REAL PHOTO. public/images/coach-janneke.jpg
- *   is one of those: it comes from the old-site archive, and the rights to that
- *   archive are bought;
- * - THE FIVE GENERATED PORTRAITS IN app/coaches.ts STILL MAY NOT GO LIVE. They
- *   belong to coaches who do not exist yet, and `isPlaceholder` is the field
- *   that decides that, not this comment.
+ * - A REAL COACH ALWAYS GETS THEIR OWN REAL PHOTO. All four portraits in
+ *   app/coaches.ts are now the coaches' own photographs, sent by them and taken
+ *   from the client's Drive. The five generated stand-ins are deleted, and so is
+ *   the question they raised.
+ *
+ * The client asked for photographs only, and in colour (row A3). This one is
+ * still a generated scene, and it is the last one on the site. See
+ * docs/redesign/client-feedback.md, question Q2.
  *
  * The alt text sits next to the caption because both describe the same file. It
  * says what is in the frame and it names nobody, for the same reason.
@@ -115,7 +140,7 @@ export const heroImage = {
 export const legacyQuotes = [
   {
     quote:
-      "StudiekeuzeAdvies heeft mij erg op weg geholpen naar een studiekeuze! De lessen waren heel gezellig en nog belangrijker, ook heel leerzaam. Mijn coach oordeelde niet over iets wat ik zei en had vooral veel interesse.",
+      "StudieKeuzeAdvies heeft mij erg op weg geholpen naar een studiekeuze! De lessen waren heel gezellig en nog belangrijker, ook heel leerzaam. Mijn coach oordeelde niet over iets wat ik zei en had vooral veel interesse.",
     person: "Ger, 18 jaar",
     meta: "traject afgerond in november 2023",
   },

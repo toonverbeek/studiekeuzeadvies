@@ -15,13 +15,22 @@
  * copied onto a form that does not need them, and the other way round.
  */
 
-export type ApplicationField =
+/** The fields that hold text, so the form can hand them back after a mistake. */
+export type ApplicationValueField =
   | "naam"
   | "email"
   | "telefoon"
   | "regio"
   | "achtergrond"
   | "motivatie";
+
+/**
+ * Everything that can carry an error message, which is the text fields plus the
+ * CV. The CV is not in the list above on purpose: a browser will not let a page
+ * put a file back into a file input, for good reason, so there is nothing to
+ * hand back and the form says so instead.
+ */
+export type ApplicationField = ApplicationValueField | "cv";
 
 /** The same five states as the intake form, and they mean the same things.
  *  See the comment on `IntakeStatus` in app/intake.ts. */
@@ -38,7 +47,7 @@ export type ApplicationState = {
   /** The address to write to when we could not send. null when we have none. */
   fallbackAddress: string | null;
   errors: Partial<Record<ApplicationField, string>>;
-  values: Record<ApplicationField, string>;
+  values: Record<ApplicationValueField, string>;
 };
 
 export const applicationInitialState: ApplicationState = {
@@ -55,6 +64,37 @@ export const applicationInitialState: ApplicationState = {
     motivatie: "",
   },
 };
+
+/**
+ * The CV, row W2 of the client's mail: "CV moet meegestuurd kunnen worden, is
+ * dat mogelijk om dit als bijlage toe te voegen in het contactformulier?" Yes.
+ * It travels as an attachment on the application mail and is never stored.
+ *
+ * IT IS OPTIONAL. The client asked that a CV *can* be sent, not that one must
+ * be. Somebody who reads this page on a telephone in the evening has their CV
+ * on a laptop, and a required file field would turn a warm applicant into a
+ * closed tab.
+ *
+ * WHAT IS ALLOWED. PDF and Word, because those are what a CV is, and because a
+ * mailbox that accepts anything is a mailbox that receives everything. The
+ * extension is checked as well as the type: a browser can send an empty or a
+ * wrong `type` for a .docx, and the extension is what the reader chose.
+ */
+export const cvMaxBytes = 5 * 1024 * 1024;
+
+/** For the `accept` attribute, so the file picker filters. Not a guarantee. */
+export const cvAccept = ".pdf,.doc,.docx";
+
+export const cvExtensions = [".pdf", ".doc", ".docx"] as const;
+
+export const cvTypes = [
+  "application/pdf",
+  "application/msword",
+  "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+] as const;
+
+/** "5 MB", for a label. One place, so the text cannot drift from the check. */
+export const cvMaxLabel = `${Math.round(cvMaxBytes / (1024 * 1024))} MB`;
 
 /** The client's own four options, from the word-coach page of their design. */
 export const achtergronden = [

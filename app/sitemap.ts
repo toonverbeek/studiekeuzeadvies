@@ -3,6 +3,7 @@ import { articles } from "@/app/articles";
 import { cities } from "@/app/cities";
 import { coaches } from "@/app/coaches";
 import { legacyRedirects } from "@/app/redirects";
+import { showSamenwerken } from "@/app/site-config";
 
 /**
  * The list of addresses this site wants indexed, served at /sitemap.xml.
@@ -55,6 +56,12 @@ export const canonicalOrigin = "https://www.studiekeuzeadvies.nl";
  * The order is the order a reader meets the pages: the front door, the offer,
  * the four situations, the levels, the people, the proof, the questions, and
  * then the two hubs that carry the pages generated below.
+ *
+ * /samenwerken IS DELIBERATELY NOT IN THIS LIST WHILE IT IS OFF. The client
+ * asked for the page and asked for it to be switched off at launch (row H16),
+ * and `showSamenwerken` in app/site-config.ts is that switch: it makes the
+ * route answer 404, so a line here would be a sitemap entry for a 404. It is
+ * added by the spread below the moment the flag is turned on.
  */
 const staticPaths = [
   "/",
@@ -74,6 +81,11 @@ const staticPaths = [
   "/artikelen",
   "/over-ons",
   "/coach-worden",
+  // The four pages the client's mail asked for. See app/central.ts.
+  "/contact",
+  "/studiekeuzescan",
+  "/online-begeleiding",
+  ...(showSamenwerken ? ["/samenwerken"] : []),
 ];
 
 /**

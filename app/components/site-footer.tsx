@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { showSamenwerken, site } from "../site-config";
 import { LogoMark, Wordmark } from "./ui";
 
 type FooterColumn = { heading: string; links: { href: string; label: string }[] };
@@ -7,24 +8,32 @@ type FooterColumn = { heading: string; links: { href: string; label: string }[] 
  * The client's four column footer, with every link pointed at a route that
  * exists in this repo (design-spec 3.3).
  *
- * Two labels differ from the client's export, and both for the same reason:
- * a link has to say what the click does.
- *  - "Contactformulier" became "Kies je coach". There is no central contact
- *    point (decision 2026-08-15, issue #7), and the client's link went to one
- *    coach's own form. The Coaches page is where a reader picks the person
- *    they will write to.
- *  - "Decanen" is gone. No page on this site speaks to a decaan, and a footer
- *    link to a page that does not answer is worse than no link.
- * "Algemene voorwaarden" and "Privacy" are gone for the same reason: neither
- * page exists yet. They come back the day the client delivers the text.
+ * WHAT THE CLIENT'S MAIL CHANGED HERE (rows H15, H16 and W1):
+ *  - "Keuzecheck herstarters" is now "StudieKeuzeScan", and it opens the block
+ *    on the traject page that explains the scan, not the tarieven page;
+ *  - "Extra ondersteuning" is gone. The page it pointed at stays where it is;
+ *    only the footer link went, as asked;
+ *  - "Contactformulier" is a link again, and it goes to /contact. It read
+ *    "Kies je coach" while there was no central mailbox; the client named one
+ *    (`centralInbox` in app/site-config.ts), so the contact page exists and
+ *    this link says what the client's own footer says;
+ *  - "Decanen" and "Scholen" stand under "Voor wie" and both open
+ *    /samenwerken. The client asked for the page AND asked for it to be off at
+ *    launch, so `showSamenwerken` decides whether these two rows are printed;
+ *  - "Word coach" is "Sluit je aan als coach".
+ *
+ * "Algemene voorwaarden" and "Privacy" are still out: neither page exists yet.
+ * They come back the day the client delivers the text.
  */
 const columns: FooterColumn[] = [
   {
     heading: "Aanbod",
     links: [
-      { href: "/studiekeuzetraject", label: "Het studiekeuzetraject" },
-      { href: "/verkeerde-studiekeuze", label: "Verkeerde studiekeuze" },
-      { href: "/studiekeuze-met-add-adhd", label: "Extra ondersteuning" },
+      { href: "/studiekeuzetraject", label: "Het StudieKeuzeTraject" },
+      {
+        href: "/studiekeuzetraject#studiekeuzescan",
+        label: "StudieKeuzeScan",
+      },
       { href: "/tarieven", label: "Tarieven" },
     ],
   },
@@ -34,14 +43,20 @@ const columns: FooterColumn[] = [
       { href: "/eerste-studiekeuze", label: "Scholieren" },
       { href: "/verkeerde-studiekeuze", label: "Studenten" },
       { href: "/voor-wie", label: "Ouders" },
+      ...(showSamenwerken
+        ? [
+            { href: "/samenwerken", label: "Decanen" },
+            { href: "/samenwerken", label: "Scholen" },
+          ]
+        : []),
     ],
   },
   {
     heading: "Contact",
     links: [
-      { href: "/studiekeuzecoaches", label: "Kies je coach" },
+      { href: "/contact", label: "Contactformulier" },
       { href: "/locaties", label: "Locaties" },
-      { href: "/coach-worden", label: "Word coach" },
+      { href: "/coach-worden", label: "Sluit je aan als coach" },
     ],
   },
 ];
@@ -84,7 +99,7 @@ export function SiteFooter() {
 
       <div className="mx-auto w-full max-w-shell px-6 sm:px-8 lg:px-12">
         <p className="flex flex-wrap gap-2 border-t border-hairline-ink pt-5 pb-8 text-micro">
-          <span>© 2026 StudiekeuzeAdvies</span>
+          <span>© 2026 {site.name}</span>
         </p>
       </div>
     </footer>

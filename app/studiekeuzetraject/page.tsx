@@ -5,7 +5,6 @@ import {
   Button,
   Card,
   Container,
-  CtaBand,
   Eyebrow,
   PageIndex,
   Pill,
@@ -13,6 +12,7 @@ import {
   Section,
 } from "@/app/components/ui";
 import { reasons, tests } from "@/app/traject";
+import { ClosingBand } from "@/app/components/closing-band";
 import { GesprekkenPanel } from "./gesprekken-panel";
 import { ScanPanel } from "./scan-panel";
 
@@ -41,8 +41,8 @@ export const metadata: Metadata = {
 const jumps = [
   { href: "#gesprekken", label: "De vier gesprekken" },
   { href: "#testen", label: "De twee testen" },
-  { href: "#studiekeuzescan", label: "Liever een korte scan?" },
-  { href: "#waarom", label: "Waarom StudiekeuzeAdvies" },
+  { href: "#studiekeuzescan", label: "Liever een korte verkenning?" },
+  { href: "#waarom", label: "Waarom StudieKeuzeAdvies" },
 ];
 
 export default function TrajectPage() {
@@ -62,15 +62,16 @@ export default function TrajectPage() {
                 </h1>
 
                 <p className="text-lead mt-5 max-w-[33rem] text-muted">
-                  Met het persoonlijke en doelgerichte studiekeuzetraject werk
+                  Met het persoonlijke en doelgerichte StudieKeuzeTraject werk
                   je gestructureerd toe naar een passende vervolgstudie. Je
                   krijgt een vaste coach met wie je vier bijeenkomsten hebt,
                   op een locatie bij jou in de buurt of online.
                 </p>
+                {/* Row T1. */}
                 <p className="text-lead mt-3.5 max-w-[33rem] text-muted">
                   Je gaat aan de slag met gesprekken, tests en opdrachten voor
-                  thuis. Elk gesprek bouwt op het vorige, tot er een keuze ligt
-                  waar je écht achter staat.
+                  thuis. Elk gesprek bouwt voort op het vorige, zodat jij een
+                  keuze kan maken waar je écht achter staat.
                 </p>
 
                 <div className="mt-7 flex flex-wrap gap-3">
@@ -99,9 +100,10 @@ export default function TrajectPage() {
 
         <GesprekkenPanel />
 
-        {/* The tests came back with the client's feedback of 2026-08-12. The
-            supplier and the "30+ jaar" are the client's claim about a third
-            party, printed as the client wrote them; app/traject.ts says so. */}
+        {/* ROW T6. The right half carried a violet "TD" monogram and
+            "Ontwikkeld door TalentDrives". The client replaced the badge with
+            a heading of their own and rewrote the body under it; app/traject.ts
+            says what went and why. */}
         <Section className="pb-12 lg:pb-18" id="testen" space="none">
           <Container>
             <div className="grid items-start gap-10 lg:grid-cols-2 lg:gap-14">
@@ -109,14 +111,14 @@ export default function TrajectPage() {
                 <Eyebrow className="mb-3.5">De testen</Eyebrow>
                 <h2 className="text-h2 font-bold">Thuis testen, samen duiden</h2>
                 <p className="mt-4 text-muted">
-                  Tijdens onze studiekeuzetrajecten maak je thuis, in je eigen
+                  Tijdens onze StudieKeuzeTrajecten maak je thuis, in je eigen
                   tempo, een persoonlijkheids- en interessetest. Handig, want zo
                   krijg je direct inzicht in wat bij je past. Maar hoe zet je
                   die inzichten om in een studiekeuze waar je écht zeker van
                   bent?
                 </p>
                 <p className="mt-3.5 text-muted">
-                  Daarom ga je na de test in gesprek met een studiekeuzecoach.
+                  Daarom ga je na de test in gesprek met een StudieKeuzeCoach.
                   Geen standaardvragen, maar een gesprek waarin jij centraal
                   staat. Je coach daagt je uit om dieper na te denken, moedigt
                   je aan om over je eigen grenzen heen te kijken en zorgt dat je
@@ -130,22 +132,9 @@ export default function TrajectPage() {
                   pad="none"
                   variant="indigo"
                 >
-                  <div className="flex items-center gap-3">
-                    <span
-                      aria-hidden="true"
-                      className="flex size-11 shrink-0 items-center justify-center rounded-field bg-violet font-display font-bold text-white"
-                    >
-                      {tests.monogram}
-                    </span>
-                    <div>
-                      <h3 className="font-display font-bold">
-                        Ontwikkeld door {tests.supplier}
-                      </h3>
-                      <p className="text-small text-lavender-ink">
-                        {tests.claim}
-                      </p>
-                    </div>
-                  </div>
+                  <h3 className="text-title font-display font-bold">
+                    {tests.heading}
+                  </h3>
 
                   {tests.body.map((paragraph) => (
                     <p
@@ -177,7 +166,7 @@ export default function TrajectPage() {
             door naar het 2e jaar". We cannot prove it, so it is not here. */}
         <Section className="pb-12 lg:pb-18" id="waarom" space="none">
           <Container>
-            <h2 className="text-h2 font-bold">Waarom StudiekeuzeAdvies</h2>
+            <h2 className="text-h2 font-bold">Waarom StudieKeuzeAdvies</h2>
 
             <ul className="mt-8 grid border-t-[1.5px] border-ink lg:mt-9 lg:grid-cols-3">
               {reasons.map((reason) => (
@@ -199,20 +188,15 @@ export default function TrajectPage() {
           </Container>
         </Section>
 
-        {/* No form on this page: there is no central sign-up point, so the
-            invitation is the road to a named coach (decision 2026-08-15). */}
+        {/* ROW T8, and row V3 is the same change on /voor-wie. Three things
+            the client asked for: the new one-liner and the text under it, the
+            "kies je stad" button pointed at the coaches page instead of at
+            /locaties, and "bekijk alle coaches" dropped. It is a closing band
+            with one button now, which is what the client's own wording asks
+            for. An intake still goes to one named coach, so the button is the
+            road to a person and not a form. */}
         <Reveal>
-          <CtaBand
-            accent="Het kost je niets."
-            id="intake"
-            primary={{ href: "/locaties", label: "Kies je stad" }}
-            secondary={{
-              href: "/studiekeuzecoaches",
-              label: "Bekijk eerst alle coaches",
-            }}
-            text="In het intakegesprek vertel je wat er speelt, en horen we of dit traject bij je past. Daarna zeg je gewoon nee als het niet klopt."
-            title="Begin met een gesprek."
-          />
+          <ClosingBand />
         </Reveal>
       </main>
 
